@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace EnterpriseMaterial.Common
 {
@@ -13,6 +9,10 @@ namespace EnterpriseMaterial.Common
         /// <summary>
         /// 邮件发送
         /// </summary>
+        /// <param name="mail">收件地址</param>
+        /// <param name="title">邮件标题</param>
+        /// <param name="content">邮件内容(可包含HTML)</param>
+        /// <returns></returns>
         public static bool SendMail(string mail, string title, string content)
         {
             try

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -7,7 +6,7 @@ using System.Text;
 namespace EnterpriseMaterial.Common
 {
     /// <summary>
-    /// 密码/验证码
+    /// 字符串加密/解密
     /// </summary>
     public static class Security
     {
@@ -52,12 +51,10 @@ namespace EnterpriseMaterial.Common
             {
                 KeyContainerName = key
             };
-            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(param))
-            {
-                byte[] plaindata = Encoding.Default.GetBytes(originalString);
-                byte[] encryptdata = rsa.Encrypt(plaindata, false);
-                return Convert.ToBase64String(encryptdata);
-            }
+            using RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(param);
+            byte[] plaindata = Encoding.Default.GetBytes(originalString);
+            byte[] encryptdata = rsa.Encrypt(plaindata, false);
+            return Convert.ToBase64String(encryptdata);
         }
 
         /// <summary>
@@ -72,12 +69,10 @@ namespace EnterpriseMaterial.Common
             {
                 KeyContainerName = key
             };
-            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(param))
-            {
-                byte[] encryptdata = Convert.FromBase64String(securitylString);
-                byte[] decryptdata = rsa.Decrypt(encryptdata, false);
-                return Encoding.Default.GetString(decryptdata);
-            }
+            using RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(param);
+            byte[] encryptdata = Convert.FromBase64String(securitylString);
+            byte[] decryptdata = rsa.Decrypt(encryptdata, false);
+            return Encoding.Default.GetString(decryptdata);
         }
 
         /// <summary>
@@ -142,45 +137,5 @@ namespace EnterpriseMaterial.Common
             ms.Close();
             return originalString;
         }
-        /// <summary>
-        /// 生成验证码图片
-        /// </summary>
-        /// <param name="codes">需要生成的验证码</param>
-        /// <param name="width">宽度</param>
-        /// <param name="height">高度</param>
-        /// <returns>结果图片</returns>
-        //public static Bitmap VerifiedImage(string codes)
-        //{
-        //    Bitmap map = new Bitmap(codes.Length * 25, 36);
-        //    Graphics graph = Graphics.FromImage(map);
-        //    graph.Clear(Color.AliceBlue);
-        //    graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-        //    Random rand = new Random();
-        //    Pen[] blackPens = new Pen[] { new Pen(Color.Yellow, 3), new Pen(Color.LightSteelBlue, 3), new Pen(Color.MediumTurquoise, 3), new Pen(Color.Pink, 3), new Pen(Color.Gold, 3) };
-        //    for (int i = 0; i < 50; i++)
-        //    {
-        //        int x = rand.Next(0, map.Width);
-        //        int y = rand.Next(0, map.Height);
-        //        graph.DrawRectangle(blackPens[rand.Next(0, blackPens.Length)], x, y, 1, 1);
-        //    }
-        //    char[] chars = codes.ToCharArray();
-        //    StringFormat format = new StringFormat(StringFormatFlags.NoClip)
-        //    {
-        //        Alignment = StringAlignment.Center,
-        //        LineAlignment = StringAlignment.Center
-        //    };
-        //    Color[] c = { Color.YellowGreen, Color.LightSlateGray, Color.MediumSpringGreen, Color.Plum, Color.Goldenrod };
-        //    string[] font = { "Verdana", "Microsoft Sans Serif", "Comic Sans MS", "Arial", "宋体" };
-        //    for (int i = 0; i < chars.Length; i++)
-        //    {
-        //        int cindex = rand.Next(c.Length);
-        //        int findex = rand.Next(font.Length);
-        //        Font f = new Font(font[findex], rand.Next(10, 23), FontStyle.Bold);
-        //        Brush b = new SolidBrush(c[cindex]);
-        //        graph.DrawString(chars[i].ToString(), f, b, i * 25 + 12, 18, format);
-        //    }
-        //    return map;
-        //}
     }
-
 }
