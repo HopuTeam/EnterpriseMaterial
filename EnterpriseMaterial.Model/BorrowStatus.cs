@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EnterpriseMaterial.Model
 {
-    public class BrrowStatus
+    public class BorrowStatus
     {
         [Key]
         public int ID { get; set; }

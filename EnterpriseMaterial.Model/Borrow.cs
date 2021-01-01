@@ -8,7 +8,7 @@ namespace EnterpriseMaterial.Model
     /// <summary>
     /// 借还信息表
     /// </summary>
-    public class Brrow
+    public class Borrow
     {
         [Key]
         public int ID { get; set; }

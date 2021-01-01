@@ -8,8 +8,8 @@ namespace EnterpriseMaterial.Data
     public class CoreEntities : DbContext
     {
         public CoreEntities(DbContextOptions<CoreEntities> options) : base(options) { }
-        public DbSet<Model.Brrow> Brrows { get; set; }
-        public DbSet<Model.BrrowStatus> BrrowStatuses { get; set; }
+        public DbSet<Model.Borrow> Borrows { get; set; }
+        public DbSet<Model.BorrowStatus> BorrowStatuses { get; set; }
         public DbSet<Model.Category> Categories { get; set; }
         public DbSet<Model.Department> Departments { get; set; }
         public DbSet<Model.Goods> Goods { get; set; }
