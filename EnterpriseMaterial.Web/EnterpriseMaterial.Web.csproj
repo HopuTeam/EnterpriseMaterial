@@ -24,4 +24,8 @@
     <ProjectReference Include="..\EnterpriseMaterial.Model\EnterpriseMaterial.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Shared\" />
+  </ItemGroup>
+
 </Project>
