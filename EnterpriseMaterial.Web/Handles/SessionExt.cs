@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
-namespace EnterpriseMaterial.Common
+namespace EnterpriseMaterial.Web
 {
     public static class SessionExt
     {
