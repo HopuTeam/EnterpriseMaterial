@@ -13,10 +13,6 @@ namespace EnterpriseMaterial.Model
         [Key]
         public int ID { get; set; }
         /// <summary>
-        /// Type表外键
-        /// </summary>
-        public int TypeID { get; set; }
-        /// <summary>
         /// Goods表外键
         /// </summary>
         public int GoodsID { get; set; }
@@ -53,7 +49,7 @@ namespace EnterpriseMaterial.Model
         /// </summary>
         public int Number { get; set; }
         /// <summary>
-        /// 
+        /// 是否归还（无需归还的物品直接给true
         /// </summary>
         public bool Complete { get; set; }
         /// <summary>
