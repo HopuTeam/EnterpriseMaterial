@@ -34,6 +34,8 @@ namespace EnterpriseMaterial.Web
             });
             services.AddSession();
             //services.AddScoped<ILogic.IXXX, Logic.XXX>();
+            //BLL²ã½Ó¿Ú×¢Èë
+            services.AddScoped<ILogic.lGoodsBLL, Logic.GoodsBLL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

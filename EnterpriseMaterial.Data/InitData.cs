@@ -75,7 +75,7 @@ namespace EnterpriseMaterial.Data
                 context.BorrowStatuses.Add(new Model.BorrowStatus()
                 {
                     Name = "取消申请"
-                });
+                });             
                 context.SaveChanges();
             }
         }
