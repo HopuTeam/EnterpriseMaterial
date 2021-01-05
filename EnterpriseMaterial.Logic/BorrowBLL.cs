@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace EnterpriseMaterial.Logic
 {
-   public class BorrowBLL:IBorrowBLL
+   public class BorrowBLL//:IBorrowBLL
     {
         private readonly CoreEntities db;
 

@@ -48,13 +48,13 @@ namespace EnterpriseMaterial.Data
                 // Identity Power Middle Table
                 context.IdentityPowers.Add(new Model.IdentityPower()
                 {
-                    IdentityID = 1,
-                    PowerID = 1,
+                    IdentityID = "1",
+                    PowerID = "1",
                 });
                 context.IdentityPowers.Add(new Model.IdentityPower()
                 {
-                    IdentityID = 1,
-                    PowerID = 2,
+                    IdentityID = "1",
+                    PowerID = "2",
                 });
                 // Goods Info
                 context.Goods.Add(new Model.Goods()
@@ -133,7 +133,19 @@ namespace EnterpriseMaterial.Data
                 context.BorrowStatuses.Add(new Model.BorrowStatus()
                 {
                     Name = "取消申请"
-                });             
+                });
+                context.Categories.Add(new Model.Category
+                {
+                    Description = "没有",
+                    Name = "一级目录",
+                    ParentID = 0
+                });
+                context.Categories.Add(new Model.Category
+                {
+                    Description = "没有",
+                    Name = "一级子目录",
+                    ParentID = 1
+                });
                 context.SaveChanges();
             }
         }
