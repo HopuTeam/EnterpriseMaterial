@@ -37,13 +37,13 @@ namespace EnterpriseMaterial.Logic
             Power powerEntity = _dbContext.Set<Power>().Where(u => u.ActionUrl == url).FirstOrDefault();
             if (powerEntity != null)
             {
-                string powerid = powerEntity.Description;
+                string powerid =Convert.ToString(powerEntity.ParentID);
                 //【2.2】查询该用户拥有的所有角色的角色权限中间表--(可以使用缓存优化)
-                var list = _dbContext.Set<Power>().Where(u => allRoleId.Contains(u.RoleId)).ToList();
+                var list = _dbContext.Set<IdentityPower>().Where(u => allRoleId.Contains(u.IdentityID)).ToList();
                 if (list.Count > 0)
                 {
                     //【2.3】查询角色权限表，看看该是否拥有此powerid权限
-                    int count = list.Where(u => u.PowerId == powerid).Count();
+                    int count = list.Where(u => u.PowerID == powerid).Count();
                     if (count > 0)
                     {
                         result = true;

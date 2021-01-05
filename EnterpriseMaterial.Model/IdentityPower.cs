@@ -9,7 +9,7 @@ namespace EnterpriseMaterial.Model
     {
         [Key]
         public int ID { get; set; }
-        public int IdentityID { get; set; }
-        public int PowerID { get; set; }
+        public string IdentityID { get; set; }
+        public string PowerID { get; set; }
     }
 }
