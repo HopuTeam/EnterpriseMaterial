@@ -16,7 +16,7 @@
 <body>
     <div class="layui-col-md8" style="margin-left:10%;margin-right:10%">
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-            <legend>@Model.Name 领取</legend>
+            <legend>@Model.Name 申请</legend>
         </fieldset>
 
         <div class="layui-form layui-form-pane" lay-filter="form_add">
@@ -59,6 +59,7 @@
                 UserID: $('#ID').val(),
                 Number: $('#Number').val(),
                 Description: $('#Reason').val(),
+                GoodsID: $("ID").val(),
             };
 
             $.post({

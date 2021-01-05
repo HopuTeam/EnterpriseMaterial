@@ -109,9 +109,15 @@ namespace EnterpriseMaterial.Logic
 
 
         #region 用户物料申请
-        public bool Verify(int UserID, int Number, string Description)//int UserID 用户ID, int Number数量, string Description申请理由
+        public bool Verify(Model.Borrow borrow)
        {
-            // var mod=db.
+            var mod = db.Goods.FirstOrDefault(x => x.ID == borrow.GoodsID);
+            if (mod.Number <= 0)
+                return false;
+            if (mod.Number < borrow.Number)
+                return false;
+
+
             return true;
        }
 

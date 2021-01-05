@@ -105,12 +105,10 @@ namespace EnterpriseMaterial.Web.Controllers
 
         #region 物料申请
         
-        public IActionResult ToapplySave()//int UserID 用户ID, int Number数量, string Description申请理由
+        public IActionResult ToapplySave(Model.Borrow borrow)//int UserID 用户ID, int Number数量, string Description申请理由
         {
-            var UserID = Request.Query["UserID"];
-            var Number = Request.Query["Number"];
-            var Description = Request.Query["Description"];
-            return Content(UserID+Number+Description);
+           
+            return Content();
         }
         #endregion
     }

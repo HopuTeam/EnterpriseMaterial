@@ -21,8 +21,7 @@ namespace EnterpriseMaterial.ILogic
 
 
         #region 用户物料申请
-        bool Verify(int UserID, int Number, string Description);//int UserID 用户ID, int Number数量, string Description申请理由
-
+        bool Verify(Model.Borrow borrow);
 
 
 
