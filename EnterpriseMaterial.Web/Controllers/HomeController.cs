@@ -8,9 +8,26 @@ namespace EnterpriseMaterial.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private Data.CoreEntities EF { get; }
+
+        public HomeController(Data.CoreEntities _ef)
+        {
+            EF = _ef;
+        }
+
         public IActionResult Index()
         {
             return View();
+        }
+
+        //[HttpPost]
+        public IActionResult GetMenu()
+        {
+            var mod = (from u in EF.Signs
+                      join i in EF.Identities on u.IdentityID equals i.ID
+                      join p in EF.Powers on i.PowerID equals p.ID
+                      select p).ToList();
+            return Json(new { mod });
         }
     }
 }

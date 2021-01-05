@@ -19,10 +19,8 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/Home/Index"><i class="fas fa-home"></i>首页</a>
-                </li>
+            <ul class="navbar-nav" id="navInfo">
+                @*
                 <li class="nav-item">
                     <a class="nav-link" href="/Draw/Index"><i class="fas fa-tasks"></i>抽奖项目</a>
                 </li>
@@ -34,7 +32,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#Logout" id="Logout"><i class="fas fa-running"></i>退出</a>
-                </li>
+                </li>*@
             </ul>
         </div>
     </nav>
@@ -52,6 +50,18 @@
     <script src="~/Content/layui/layui.all.js"></script>
     <script src="~/Scripts/copyright.js"></script>
     <script>
+        $.post("/Home/GetMenu", function (res) {
+            for (var i = 0; i < res.mod.length; i++) {
+                for (x in res.mod[i]) {
+                    //if (x.parentID == 0) {
+                    //    $("#navInfo").append("<li class='nav-item'><a class='nav-link' href=" + x.actionUrl + "><i class='fas fa-home'></i>" + x.name + "</a></li>")
+                    //}
+                    console.log("<li class='nav-item'><a class='nav-link' href=" + x.actionUrl + "><i class='fas fa-home'></i>" + x.name + "</a></li>");
+                    console.log(x);
+                    //txt = txt + person[x];
+                }
+            }
+        });
         $("#Logout").click(function () {
             layer.load(2, { shade: false });
             layer.confirm('确定要退出登录？', {

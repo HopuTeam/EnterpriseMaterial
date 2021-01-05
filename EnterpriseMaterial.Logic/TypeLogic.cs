@@ -1,5 +1,4 @@
-﻿using EnterpriseMaterial.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +7,9 @@ namespace EnterpriseMaterial.Logic
 {
     public class TypeLogic : ILogic.ITypeLogic
     {
-        private CoreEntities EF { get; }
+        private Data.CoreEntities EF { get; }
 
-        public TypeLogic(CoreEntities _ef)
+        public TypeLogic(Data.CoreEntities _ef)
         {
             EF = _ef;
         }

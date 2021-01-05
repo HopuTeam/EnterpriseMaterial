@@ -16,6 +16,7 @@ namespace EnterpriseMaterial.Data
         public DbSet<Model.Identity> Identities { get; set; }
         public DbSet<Model.Log> Logs { get; set; }
         public DbSet<Model.Obtain> Obtains { get; set; }
+        public DbSet<Model.IdentityPower> IdentityPowers { get; set; }
         public DbSet<Model.Power> Powers { get; set; }
         public DbSet<Model.Sign> Signs { get; set; }
         public DbSet<Model.Type> Types { get; set; }

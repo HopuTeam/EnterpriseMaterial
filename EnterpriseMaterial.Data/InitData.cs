@@ -39,6 +39,54 @@ namespace EnterpriseMaterial.Data
                     ParentID = 0,
                     MenuIcon = null,
                 });
+                context.Powers.Add(new Model.Power()
+                {
+                    Name = "Test",
+                    ActionUrl = null,
+                    Description = "this test",
+                    ParentID = 0,
+                    MenuIcon = null,
+                });
+                // Identity Power Middle Table
+                context.IdentityPowers.Add(new Model.IdentityPower()
+                {
+                    IdentityID = 1,
+                    PowerID = 1,
+                });
+                context.IdentityPowers.Add(new Model.IdentityPower()
+                {
+                    IdentityID = 1,
+                    PowerID = 2,
+                });
+                // Goods Info
+                context.Goods.Add(new Model.Goods()
+                {
+                    Name = "测试物品",
+                    Description = "我真的是测试的",
+                    CategoryID = 1,
+                    Specification = "200ml",
+                    Status = true,
+                    EntryTime = DateTime.Now,
+                    Money = 188,
+                    Number = 50,
+                    TypeID = 1,
+                    Unit = "组",
+                    WarningNum = 5,
+                });
+                context.Goods.Add(new Model.Goods()
+                {
+                    Name = "aaa",
+                    Description = "ccc",
+                    CategoryID = 1,
+                    Specification = "200g",
+                    Status = true,
+                    EntryTime = DateTime.Now,
+                    Money = 66,
+                    Number = 22,
+                    TypeID = 2,
+                    Unit = "条",
+                    WarningNum = 5,
+                });
                 // 用户信息
                 context.Signs.Add(new Model.Sign()
                 {
