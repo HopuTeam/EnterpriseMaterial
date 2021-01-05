@@ -17,5 +17,11 @@ namespace EnterpriseMaterial.ILogic
         List<Model.Goods> GetGoodsTwo(out int conut, int pageinde, int pageSize);
         List<Model.Goods> GoodsTwo(string name);
         #endregion
+
+        #region 增删改查
+
+        List<Model.Category> GetCategories();
+        bool EditGoods(Model.Goods view);
+        #endregion
     }
 }

@@ -16,10 +16,7 @@ namespace EnterpriseMaterial.Web.Controllers
         public GoodsController(ILogic.lGoodsBLL goodsBLL) {
             this.goodsBLL = goodsBLL;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+    
         #region 设备借取  
         /// <summary>
         /// 设备借取页面
@@ -72,16 +69,10 @@ namespace EnterpriseMaterial.Web.Controllers
         [HttpPost]
         public IActionResult ToapplySave(int id, int number, string description)
         {
-            bool result = goodsBLL.ToapplyOne(id, number, description);        
-            return View(result);
+            bool result = goodsBLL.ToapplyOne(id, number, description);
+            return Content("ok");
         }
         #endregion
-
-
-
-
-
-
 
         #region 耗材申请
         public IActionResult IndexTwo()
@@ -101,8 +92,46 @@ namespace EnterpriseMaterial.Web.Controllers
             };
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
-#endregion
+        #endregion
 
+
+        #region Goods 物品表的增上改查
+        public IActionResult Index()
+        {
+            return View();
+        }
+        public string GetListGoods(int page = 1, int limit = 5)
+        {
+            int dataConunt;
+            List<Goods> list = goodsBLL.GetGoodsOne(out dataConunt, page, limit);
+            var result = new LayuiJsonModel<Goods>()
+            {
+                code = 0,
+                msg = "",
+                count = dataConunt,
+                data = list
+            };
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+        }
+        /// <summary>
+        /// 修改页面
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IActionResult GetSelect(int id)
+        {
+            Goods goods = goodsBLL.SelectIdGoods(id);
+            ViewData["categories"] = goodsBLL.GetCategories();
+            return View(goods);
+        }
+        [HttpPost]
+        public IActionResult GetSelectSave(Goods view)
+        {
+            bool result = goodsBLL.EditGoods(view);
+            return Content($"{result}");
+        }
+
+        #endregion
 
     }
 }

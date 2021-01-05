@@ -107,8 +107,51 @@ namespace EnterpriseMaterial.Logic
             return db.Goods.Where(a => a.Name.Contains(name) && a.TypeID == 2).ToList();
         }
 
-   
 
+
+
+
+
+        #endregion
+
+
+        #region 增删改查
+        public List<Category> GetCategories()
+        {
+            return db.Categories.ToList();
+        }
+
+        /// <summary>
+        /// 物品表的修改
+        /// </summary>
+        /// <param name="view">页面传进来的数据</param>
+        /// <returns></returns>
+        public bool EditGoods(Goods view)
+        {
+            Goods goods = db.Goods.FirstOrDefault(a => a.ID == view.ID);
+            if (goods==null)
+            {
+                return false;
+            }
+            goods.CategoryID = view.CategoryID;
+            goods.Description = view.Description;         
+            goods.Money = view.Money;
+            goods.Name = view.Name;
+            goods.Number = view.Number;
+            goods.Specification = view.Specification;
+            goods.Status = view.Status;    
+            goods.Unit = view.Unit;
+            goods.WarningNum = view.WarningNum;
+            goods.Status = view.Status;
+            if (db.SaveChanges()>0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         #endregion
     }
