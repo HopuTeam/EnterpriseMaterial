@@ -116,8 +116,6 @@ namespace EnterpriseMaterial.Logic
 
 
         #endregion
-
-
         #region 增删改查
         public List<Model.Category> GetCategories()
         {            
