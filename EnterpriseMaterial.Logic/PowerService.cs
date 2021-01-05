@@ -55,12 +55,101 @@ namespace EnterpriseMaterial.Logic
 
         public List<PowerOutput> GetMenu(string roleID)
         {
+            //【1】拿到对应用户的所有权限,和权限表的所有信息--(从缓存中拿数据)                
+            List<IdentityPower> rRoleInfoPowerInfoList = _memoryCache.Get<List<IdentityPower>>("rRoleInfoPowerInfoList");
+
+            if (rRoleInfoPowerInfoList == null)
+            {
+
+
+                //如果缓存中数据没有，再去数据库查，并放入缓存
+                var rlist = _dbContext.Set<IdentityPower>().Where(u => u.ID > 0).ToList();
+
+                _memoryCache.Set<List<IdentityPower>>("rRoleInfoPowerInfoList", rlist, new MemoryCacheEntryOptions() { SlidingExpiration = TimeSpan.FromMinutes(100) });//设置划滑动过期时间100分钟,注意：当修改数据库时必须清空缓存
+
+                rRoleInfoPowerInfoList = rlist;
+            }
+            List<Power> powerInfoList = _memoryCache.Get<List<Power>>("powerInfoList");
+            if (powerInfoList == null)
+            {
+                //如果缓存中数据没有，再去数据库查，并放入缓存
+                var plist = _dbContext.Set<Power>().Where(u => u.ID > 0).ToList();
+                _memoryCache.Set<List<Power>>("powerInfoList", plist, new MemoryCacheEntryOptions() { AbsoluteExpiration = DateTime.Now.AddMinutes(100) });//设置绝对过期时间100分钟，(因为系统没有修改数据库的功能，手动直接修改数据库无法清空缓存，信息滞后100min，解决办法可以在页面给个情况缓存按钮)
+                powerInfoList = plist;
+            }
+            ////【2】和权限表连表查询，并筛选出菜单权限
+            //var listMenu = (from a in rRoleInfoPowerInfoList.Where(u => allRoleID.Contains(u.RoleId))
+            //                join b in powerInfoList on a.PowerId equals b.PowerId into b_join
+            //                from c in b_join.DefaultIfEmpty()
+            //                select c).Where(u => u.Description.Contains("目录")).ToList();
+            ////【3】去掉重复的权限
+            ////var listOKMenu = listMenu.Distinct(new PowerInfoComparer());
+
+            ////【3.1】原始的去重思路，第一步：创建一个新的list集合
+            //List < //【2】和权限表连表查询，并筛选出菜单权限
+            //var listMenu = (from a in rRoleInfoPowerInfoList.Where(u => allRoleID.Contains(u.RoleId))
+            //                join b in powerInfoList on a.PowerId equals b.PowerId into b_join
+            //                from c in b_join.DefaultIfEmpty()
+            //                select c).Where(u => u.Description.Contains("目录")).ToList();
+            ////【3】去掉重复的权限
+            ////var listOKMenu = listMenu.Distinct(new PowerInfoComparer());
+
+            ////【3.1】原始的去重思路，第一步：创建一个新的list集合
+            //List<PowerInfo> list = new List<PowerInfo>();
+            ////第二步：遍历查询到的数据
+            //foreach (var item in listMenu)
+            //{
+            //    //如果list没有数据，直接添加
+            //    if (list.Count == 0)
+            //    {
+            //        list.Add(item);
+            //    }
+            //    int flag = 0;//标记
+            //    //第三步：遍历新的list集合
+            //    foreach (var item1 in list)
+            //    {
+            //        //第四步：如果新的list集合里，已经存在的数据，把flag改成1
+            //        if (item1.PowerId == item.PowerId)
+            //        {
+            //            flag = 1;
+            //        }
+            //    }
+            //    if (flag == 0)//只有当flag等于0 的时候，才会把数据添加到新的list集合中
+            //    {
+            //        list.Add(item);
+            //    }
+            //}> list = new List<PowerInfo>();
+            ////第二步：遍历查询到的数据
+            //foreach (var item in listMenu)
+            //{
+            //    //如果list没有数据，直接添加
+            //    if (list.Count == 0)
+            //    {
+            //        list.Add(item);
+            //    }
+            //    int flag = 0;//标记
+            //    //第三步：遍历新的list集合
+            //    foreach (var item1 in list)
+            //    {
+            //        //第四步：如果新的list集合里，已经存在的数据，把flag改成1
+            //        if (item1.PowerId == item.PowerId)
+            //        {
+            //            flag = 1;
+            //        }
+            //    }
+            //    if (flag == 0)//只有当flag等于0 的时候，才会把数据添加到新的list集合中
+            //    {
+            //        list.Add(item);
+            //    }
+            //}  
+            
             throw new NotImplementedException();
         }
 
         public PowerTreeOutput GetPowerList(string allRoleID)
         {
             throw new NotImplementedException();
+            //List<Power> d_list = _dbContext.Set<Power>().Where(u => u.ParentID == "0").ToList();
         }
 
         public bool SetPower(string strId, string roleId)
