@@ -1,4 +1,5 @@
 ﻿using EnterpriseMaterial.Data;
+using EnterpriseMaterial.ILogic;
 using EnterpriseMaterial.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,7 +14,7 @@ namespace EnterpriseMaterial.Logic
     {
         private readonly CoreEntities db;
 
-        public GoodsBLL(Data.CoreEntities _db)
+        public GoodsBLL(CoreEntities _db)
         {
             db = _db;
         }
@@ -118,8 +119,8 @@ namespace EnterpriseMaterial.Logic
 
 
         #region 增删改查
-        public List<Category> GetCategories()
-        {
+        public List<Model.Category> GetCategories()
+        {            
             return db.Categories.ToList();
         }
 

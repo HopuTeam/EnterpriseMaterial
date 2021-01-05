@@ -1,73 +1,70 @@
-﻿
+﻿@using EnterpriseMaterial.Model
+@model Goods
 @{
     ViewData["Title"] = "AddGoods";
+    var leixing = ViewData["categories"] as List<Category>;
 }
 <!DOCTYPE html>
 <html>
 <head>
-    <title>添加物品 </title>  
-    <link href="~/Content/layui/css/layui.css" rel="stylesheet" /> 
+    <title>添加物品 </title>
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
 </head>
 <body>
     <div class="layui-col-md8">
         <div class="layui-form layui-form-pane" lay-filter="form_add">
 
             <div class="layui-form-item">
-                <label class="layui-form-label">耗材编号</label>
+                <label class="layui-form-label">物品名称</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="GoodsId" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input"  readonly="readonly" style="color:red;font-weight:600">
+                    <input type="text" id="Name" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
                 </div>
-                <label class="layui-form-label">耗材名称</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="Name" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" >
+                <label class="layui-form-label">物品说明</label>
+                <div class="layui-input-inline ">
+                    <input type="text" id="Description" placeholder="请输入" autocomplete="off" class="layui-input">
                 </div>
             </div>
-
             <div class="layui-form-item">
                 <label class="layui-form-label">耗材类型</label>
                 <div class="layui-input-inline ">
                     <select id="CategoryID">
-                       
+                        @foreach (var item in leixing)
+                        {
+                            <option value=@item.ID>@item.Name</option>
+                        }
                     </select>
-
                 </div>
                 <label class="layui-form-label">耗材规格</label>
                 <div class="layui-input-inline ">
-                    <input type="text" id="Specification" placeholder="请输入" autocomplete="off" class="layui-input" >
+                    <input type="text" id="Specification" placeholder="请输入" autocomplete="off" class="layui-input">
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">耗材数量</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="Num" lay-verify="required||number" placeholder="请输入" autocomplete="off" class="layui-input" >
+                    <input type="text" id="Num" lay-verify="required||number" placeholder="请输入" autocomplete="off" class="layui-input">
                 </div>
                 <label class="layui-form-label">耗材单位</label>
                 <div class="layui-input-inline ">
-                    <input type="text" id="Unit" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" >
+                    <input type="text" id="Unit" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">耗材单价</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="Money" placeholder="请输入" autocomplete="off" class="layui-input" >
+                    <input type="text" id="Money" placeholder="请输入" autocomplete="off" class="layui-input">
                 </div>
                 <label class="layui-form-label">警告数量</label>
                 <div class="layui-input-inline ">
-                    <input type="text" id="WarningNum" placeholder="请输入" autocomplete="off" class="layui-input" >
+                    <input type="text" id="WarningNum" placeholder="请输入" autocomplete="off" class="layui-input">
                 </div>
             </div>
 
-            <div class="layui-form-item">
-                <label class="layui-form-label">物品说明</label>
-                <div class="layui-input-inline ">
-                    <input type="text" id="Description" placeholder="请输入" autocomplete="off" class="layui-input" >
-                </div>
-        
-            </div>
+       
             <div class="layui-form-item" style="text-align:center">
-                <button class="layui-btn" id="edit" lay-submit="" lay-filter="formDemo">确认修改</button>
+                <button class="layui-btn" id="addgoods" lay-submit="" lay-filter="formDemo">确认修改</button>
                 <button class="layui-btn" id="cancel">返回</button>
             </div>
         </div>
@@ -77,6 +74,33 @@
 
     <script src="~/Scripts/jquery-3.5.1.min.js"></script>
     <script src="~/Content/layui/layui.all.js"></script>
+    <script>
+        $('#addgoods').click(function () {
+            var data =
+            {
+                ID: $('#GoodsId').val(),
+                Name: $('#Name').val(),
+                CategoryID: $('#CategoryID').val(),
+                Specification: $('#Specification').val(),
+                Description: $('#Description').val(),
+                WarningNum: $('#WarningNum').val(),
+                Number: $('#Num').val(),
+                Unit: $('#Unit').val(),
+                Money: $('#Money').val(),
+                Status: $('#Status').val(),
+            }
+            $.post('/Goods/AddGoodsSave', data, function (res) {
+                if (res == "success") {
+                    layer.alert("添加成功！");                                 
+                } else {
+                    layer.alert("添加失败！");
+                }
+            })
+        })
+        $('#cancel').click(function () {
+            window.parent.Cancel();
+        })
+    </script>
 </body>
 </html>
 

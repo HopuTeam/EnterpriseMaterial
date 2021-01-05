@@ -159,12 +159,30 @@ namespace EnterpriseMaterial.Web.Controllers
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
         /// <summary>
-        /// 添加物品界面
+        /// 添加物品视图
         /// </summary>
         /// <returns></returns>
         public IActionResult AddGoods()
         {
+            ViewData["categories"] = goodsBLL.GetCategories();
             return View();
+        }
+       /// <summary>
+       /// 保存修改
+       /// </summary>
+       /// <param name="view"></param>
+       /// <returns></returns>
+        public IActionResult AddGoodsSave(Goods view)
+        {
+            bool result = goodsBLL.AddGoods(view);
+            if (result == true)
+            {
+                return Content("success");
+            }
+            else
+            {
+                return Content("fail");
+            }
         }
         #endregion
 

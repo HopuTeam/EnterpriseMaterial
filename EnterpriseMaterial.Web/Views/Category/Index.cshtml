@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>分类管理</h1>
+<div id="test12" class="demo-tree-more"></div>
+
+@section scripts
+{
+    <script>
+          layui.use(['tree', 'util'], function () {
+                var tree = layui.tree
+                    , layer = layui.layer
+                    , util = layui.util
+                //基本演示
+                tree.render({
+                    elem: '#test12'
+                    , data: getData()
+                    , showCheckbox: true  //是否显示复选框
+                    , id: 'demoId1'
+                    //, isJump: true //是否允许点击节点时弹出新窗口跳转
+                    //, click: function (obj) {
+                    //    var data = obj.data;  //获取当前点击的节点数据
+                    //    layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
+                    //}
+                });
+                //按钮事件
+                util.event('lay-demo', {
+                    getChecked: function (othis) {
+                        debugger;
+                        var checkedData = tree.getChecked('demoId1'); //获取选中节点的数据
+                        //转成字符串
+                        var str = JSON.stringify(checkedData);
+                        //即将构造字符串，获取id（其实就是powerId）
+                        var strId = "";
+                        //字符串分割
+                        var arr = str.split('"id"');
+                        //循环构造
+                        if (arr.length > 1) {
+
+                            layer.confirm('确认要配置权限吗?', function(index){
+                                 for (var i = 2; i < arr.length; i++) {
+                                strId += arr[i].split(',')[0].split(':')[1].split('"')[1].split('"')[0]+",";
+                            }
+                            //调用方法，提交请求
+                            SetPower(strId);
+
+                            layer.close(index);
+                            });
+
+                        } else {
+                            layer.alert("请选择需要配置的权限");
+                        }
+
+                    }
+                    , reload: function () {
+                        //重载实例
+                        tree.reload('demoId1', {
+
+                        });
+                    }
+                });
+
+                //给角色配置权限
+                @*function SetPower(strId) {
+
+                    $.ajax({
+                        url: "/Role/SetPower",    //后台数据请求地址
+                        data: {
+                            roleId:"@ViewBag.roleId",
+                            strId: strId,
+                        },
+                        type: "post",
+                        success: function (data) {
+                            if (data=="ok") {
+                                layer.alert("配置成功");
+                                //跳转页面
+                                 window.location.href = "/Role/PowerIndex?roleId="+@ViewBag.roleId+"";
+                            } else {
+                                 layer.alert("配置失败");
+                            }
+                        }
+                    });
+
+                }*@
+
+                //获取目录树数据信息
+                function getData() {
+                    var data = [];                 
+                    $.ajax({
+                        url: '/Category/CategoryTree',
+                        type: "post",
+                        async: false,//重点
+                        success: function (resut) {
+                            debugger;
+                            data = JSON.parse(resut);
+                        }
+                    })
+                    return data;
+                }
+
+            });
+        </script>
+
+
+}
