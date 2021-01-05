@@ -52,12 +52,17 @@ namespace EnterpriseMaterial.Logic
         /// <param name="number">申请的数量</param>
         /// <param name="description">申请理由</param>
         /// <returns></returns>
-        public bool ToapplyOne(int id, int number, string description)
+        public bool ToapplyOne(int UserID, int Number, string Description,int GoodsID)
         {
+            var mod = db.Goods.FirstOrDefault(x => x.ID == GoodsID);
+            if (mod.Number <= 0)
+                return false;
+            if (mod.Number < Number)
+                return false;
             bool x = true;
             //查询这个物品总价属于什么类型
             var goods = (from go in db.Goods
-                         where go.ID == id
+                         where go.ID == GoodsID
                          select go
                        ).FirstOrDefault();
             //如果是设备借取类的就要归还
@@ -66,26 +71,26 @@ namespace EnterpriseMaterial.Logic
                 x = false;
             }
             //物品总价
-            decimal price = goods.Money * number; 
+            decimal price = goods.Money * Number; 
             Model.Borrow borrow = new Model.Borrow()
             {
                 UserID = 1,
-                Number = number,
+                Number = Number,
                 Complete = x,
-                Description = description,
-                GoodsID = id,
+                Description = Description,
+                GoodsID = GoodsID,
                 SendTime = DateTime.Now,
                 StatusID = 1,
             };
             //数量或者价格太多的话需要领导审批
-            if (number >= 10 || price >= 1000)
+            if (Number >= 10 || price >= 1000)
             {
                 borrow.DepartmentID = 1;
             }
             db.Borrows.Add(borrow);
             if (db.SaveChanges() > 0)
             {
-                goods.Number -= number;
+                goods.Number -= Number;
                 db.SaveChanges();
                 return true;
             }
@@ -104,24 +109,44 @@ namespace EnterpriseMaterial.Logic
         {
             return db.Goods.Where(a => a.Name.Contains(name) && a.TypeID == 2).ToList();
         }
+
+
+
+
+        #endregion
+        #region 部门管理申请
+        //管理员查询申请
+        public List<Model.Borrow> UpBorrow(out int conut, int pageinde, int pageSize) 
+        {
+            var mod = db.Borrows.Where(x => x.SendTime != null || x.MiddleTime == null).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+            conut = mod.Count();
+
+
+          return mod;
+        }
+        //上级领导查询申请
+        public List<Model.Borrow> UpSuperior(out int conut, int pageinde, int pageSize)
+        {
+            var mod = db.Borrows.Where(x => x.SendTime != null || x.MiddleTime != null).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+            conut = mod.Count();
+ 
+            return mod;
+        }
+        //public List<object> Dispose(List<Model.Borrow> mod)
+        //{ 
+        
+        //    List<object> list;
+        //    foreach (var item in mod)
+        //    {
+        //        var Dis=from 
+        //    }
+        
+        //}
+
         #endregion
 
 
 
-        #region 用户物料申请
-        public bool Verify(Model.Borrow borrow)
-       {
-            var mod = db.Goods.FirstOrDefault(x => x.ID == borrow.GoodsID);
-            if (mod.Number <= 0)
-                return false;
-            if (mod.Number < borrow.Number)
-                return false;
 
-
-            return true;
-       }
-
-
-        #endregion
     }
 }

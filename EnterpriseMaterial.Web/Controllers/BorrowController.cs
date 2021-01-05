@@ -105,10 +105,54 @@ namespace EnterpriseMaterial.Web.Controllers
 
         #region 物料申请
         
-        public IActionResult ToapplySave(Model.Borrow borrow)//int UserID 用户ID, int Number数量, string Description申请理由
+        public IActionResult ToapplySave(int UserID, int Number, string Description, int GoodsID)//int UserID 用户ID, int Number数量, string Description申请理由
         {
-           
-            return Content();
+            bool T = BorrowBLL.ToapplyOne(UserID, Number,Description,GoodsID);
+            if (T)
+                return Content("申请成功，请等耐心待领导审批");
+            else
+            return Content("申请失败，信息有误，或物品数量太少");
+        }
+        #endregion
+
+
+        #region  管理员管理申请
+        public string GetListThree(int page = 1, int limit = 5)
+        {
+            int dataConunt;
+            List<Model.Borrow> list = BorrowBLL.UpBorrow(out dataConunt, page, limit);
+            
+            foreach (var item in list)
+            {
+
+            }
+            var result = new LayuiJsonModel<Model.Borrow>()
+            {
+                code = 0,
+                msg = "",
+                count = dataConunt,
+                data = list
+            };
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+        }
+        #endregion
+        #region  上级领导管理申请
+        public string GetListFour(int page = 1, int limit = 5)
+        {
+            int dataConunt;
+            List<Model.Borrow> list = BorrowBLL.UpSuperior(out dataConunt, page, limit);
+            foreach (var item in list){
+
+            }
+            var result = new LayuiJsonModel<Model.Borrow>()
+            {
+                code = 0,
+                msg = "",
+                count = dataConunt,
+                data = list
+            
+            };
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
         #endregion
     }
