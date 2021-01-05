@@ -33,10 +33,10 @@ namespace EnterpriseMaterial.Web
                 options.UseMySQL(Configuration.GetConnectionString("EFDbConnection"));
             });
             services.AddSession();
-            //services.AddScoped<ILogic.IXXX, Logic.XXX>();
             //BLL²ã½Ó¿Ú×¢Èë
             services.AddScoped<ILogic.lGoodsBLL, Logic.GoodsBLL>();
             services.AddScoped<ILogic.IBorrowBLL, Logic.BorrowBLL>();
+            services.AddScoped<ILogic.ITypeLogic, Logic.TypeLogic>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

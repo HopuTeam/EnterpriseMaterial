@@ -16,6 +16,7 @@ namespace EnterpriseMaterial.Model
         /// <summary>
         /// 说明
         /// </summary>
+        public int PowerID { get; set; }
         public string Description { get; set; }
         /// <summary>
         /// 状态，表示是否禁用
