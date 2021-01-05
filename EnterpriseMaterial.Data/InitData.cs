@@ -34,18 +34,16 @@ namespace EnterpriseMaterial.Data
                 context.Powers.Add(new Model.Power()
                 {
                     Name = "Main",
-                    ActionUrl = null,
+                    ActionUrl = "#",
                     Description = "this main url",
                     ParentID = 0,
-                    MenuIcon = null,
                 });
                 context.Powers.Add(new Model.Power()
                 {
                     Name = "Test",
-                    ActionUrl = null,
+                    ActionUrl = "#",
                     Description = "this test",
                     ParentID = 0,
-                    MenuIcon = null,
                 });
                 // Identity Power Middle Table
                 context.IdentityPowers.Add(new Model.IdentityPower()

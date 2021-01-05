@@ -7,9 +7,6 @@
     <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon">
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
-    <link href="~/Content/fontawesome/css/brands.min.css" rel="stylesheet" />
-    <link href="~/Content/fontawesome/css/fontawesome.min.css" rel="stylesheet" />
-    <link href="~/Content/fontawesome/css/solid.min.css" rel="stylesheet" />
     @RenderSection("styles", false)
 </head>
 <body>
@@ -20,19 +17,7 @@
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav" id="navInfo">
-                @*
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Draw/Index"><i class="fas fa-tasks"></i>抽奖项目</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Luck/Index"><i class="fas fa-drafting-compass"></i>奖项管理</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/User/Index"><i class="fas fa-cog"></i>个人设置</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#Logout" id="Logout"><i class="fas fa-running"></i>退出</a>
-                    </li>*@
+                @*目录菜单信息插入标记*@
             </ul>
         </div>
     </nav>
@@ -51,10 +36,21 @@
     <script src="~/Scripts/copyright.js"></script>
     <script>
         $.post("/Home/GetMenu", function (res) {
-            for (var i = 0; i < res.mod.length; i++) {
-                $("#navInfo").append("<li class='nav-item'><a class='nav-link' href=" + res.mod[i].actionUrl + "><i class='fas fa-home'></i>" + res.mod[i].name + "</a></li>")
+            for (x in res.mod) {
+                if (res.mod[x].parentID == 0) {
+                    var info = "<li class='nav-item'><a class='nav-link dropdown-toggle' id='navbardrop' data-toggle='dropdown' href=" + res.mod[x].actionUrl + "><i class='layui-icon " + res.mod[x].menuIcon + "'></i> " + res.mod[x].name + "</a>";
+                    for (i in res.mod) {
+                        if (res.mod[i].parentID == res.mod[x].id) {
+                            info += "<div class='dropdown-menu'><a class='dropdown-item' href=" + res.mod[i].actionUrl + ">" + res.mod[i].name + "</a></div>";
+                        };
+                    };
+                    info += "</li>";
+                    $("#navInfo").append(info);
+                };
             };
+            $("#navInfo").append("<li class='nav-item'><a class='nav-link' href='#Logout' id='Logout'><i class='layui-icon layui-icon-logout'></i> 退出</a></li>");
         });
+
         $("#Logout").click(function () {
             layer.load(2, { shade: false });
             layer.confirm('确定要退出登录？', {
