@@ -5,36 +5,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EnterpriseMaterial.Model;
+using EnterpriseMaterial.ILogic;
+using EnterpriseMaterial.Data;
+using Microsoft.Extensions.Logging;
+using EnterpriseMaterial.Logic;
+using EnterpriseMaterial.Dto.IdentityDTO;
 
 namespace EnterpriseMaterial.Web.Controllers
 {
     public class IdentityController : Controller
     {
-     
+        #region  构造函数注入
+        private readonly ILogger<IdentityController> logger;
+        private readonly IIdentityBLL identityBLL;
+
+        public IdentityController(ILogger<IdentityController> logger,IIdentityBLL identityBLL) 
+        {
+            this.logger = logger;
+            this.identityBLL = identityBLL;
+        }
+        #endregion
+
+
 
 
         public IActionResult Index()
         {
             return View();
         }
-        //经理代码
-        //public string GetJsonList(int page, int limit, string selectInfo)
-        //{
-
-        //    int totalCount = 0;
-
-        //    List<Identity> outlist = _roleService.LoadPageEntities(page, limit, out totalCount, selectInfo);
-        //    DataResult<List<RoleOutput>> dataResult = new DataResult<List<RoleOutput>>()
-        //    {
-        //        code = 0,
-        //        msg = "ok",
-        //        count = totalCount,
-        //        data = outlist,
-        //    };
-        //    return JsonNetHelper.SerializetoJson(dataResult);
-        //}
 
 
+
+        public string GetJsonList(int page, int limit, string selectInfo)
+        {
+
+            int totalCount = 0;
+
+            List<IdentityQutput> outlist = identityBLL.LoadPageEntities(page, limit, out totalCount, selectInfo);
+            DataResult<List<IdentityQutput>> dataResult = new DataResult<List<IdentityQutput>>()
+            {
+                code = 0,
+                msg = "ok",
+                count = totalCount,
+                data = outlist,
+            };
+            return JsonNetHelper.SerializetoJson(dataResult);
+        }
 
 
 
