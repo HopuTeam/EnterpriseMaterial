@@ -8,7 +8,7 @@ namespace EnterpriseMaterial.ILogic
     {
         #region 设备借取  
         List<Model.Goods> GetGoodsOne(out int  conut,int pageinde,int pageSize);
-        List<Model.Goods> GoodsOne(string name);
+        List<Model.Goods> GoodsOne(string name, out int conut, int pageinde, int pageSize);
         Model.Goods SelectIdGoods(int ID);
         bool ToapplyOne(int id, int number,string description);
         #endregion
@@ -22,6 +22,8 @@ namespace EnterpriseMaterial.ILogic
 
         List<Model.Category> GetCategories();
         bool EditGoods(Model.Goods view);
+
+        bool AddGoods(Model.Goods view);
         #endregion
     }
 }

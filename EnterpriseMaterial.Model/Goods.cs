@@ -13,6 +13,9 @@ namespace EnterpriseMaterial.Model
         [Key]
         public int ID { get; set; }
         public string Name { get; set; }
+        /// <summary>
+        /// 类型id
+        /// </summary>
         public int CategoryID { get; set; }
         /// <summary>
         /// 规格/200ml

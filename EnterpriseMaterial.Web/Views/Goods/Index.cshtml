@@ -3,6 +3,10 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="layui-row layui-form">
+    <div class="layui-col-md2 layui-col-md-offset5 " style="margin-top:20px;"><input type="text" id="goodsname" placeholder="请输入耗材名称" autocomplete="off" class="layui-input"></div>
+    <div class="layui-col-md1" style="margin-top:20px;"> <button class="layui-btn layui-btn-normal" id="selectgoods" >搜索</button></div>
+</div>
 <table id="demo" class="layui-hide" lay-filter="test"></table>
 
 
@@ -12,10 +16,11 @@
         <div class="layui-btn-container">
             <button class="layui-btn layui-btn-sm" lay-event="getCheckData">Excel导入</button>
             <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">修改记录</button>
+            <button class="layui-btn layui-btn-sm" lay-event="AddGoods">添加物品</button>
         </div>
     </script>
     <script>
-        var Shutdown ;
+        var Shutdown;
         layui.use('table', function () {
             var table = layui.table;
             //第一个实例
@@ -33,7 +38,7 @@
                 , page: true //开启分页
                 , cols: [[ //表头
                     { type: 'checkbox', fixed: 'left' }
-                    ,{ field: 'ID', title: '编号', width: 80, sort: true, fixed: 'left' }
+                    , { field: 'ID', title: '编号', width: 80, sort: true, fixed: 'left' }
                     , { field: 'Name', title: '用户名', width: 80 }
                 ]]
                 , page: true
@@ -44,12 +49,12 @@
                 var checkStatus = table.checkStatus(obj.config.id);
                 switch (obj.event) {
                     case 'getCheckData':
-                   
+
                         break;
                     case 'getCheckLength':
                         var data = checkStatus.data;
                         //选择物品的id
-                        var a = data[0].ID;                      
+                        var a = data[0].ID;
                         Shutdown = layer.open({
                             type: 2,
                             title: '修改页',
@@ -62,7 +67,9 @@
                     case 'isAll':
                         layer.msg(checkStatus.isAll ? '全选' : '未全选');
                         break;
-
+                    case 'AddGoods':
+                        alert("我是添加");
+                        break;
                     //自定义头工具栏右侧图标 - 提示
                     case 'LAYTABLE_TIPS':
                         layer.alert('这是工具栏右侧自定义的一个图标按钮');
@@ -91,10 +98,34 @@
                     });
                 }
             });
+            //查询
+            $('#selectgoods').click(function () {
+                var selectInfo = $('#goodsname').val();
+                if (selectInfo.length > 0) {
+                    table.reload('demo', {
+                        url: '/Goods/SelectName',
+                        page: {
+                            curr: 1//从第一页开始
+                        },
+                        where: {
+                            Name: selectInfo,
+                        } //设定异步数据接口的额外参数
+                    });
+                } else {
+                    table.reload('demo', {
+                        url: '/Goods/GetListOne',
+                    });
+                }
+         
+
+            })
+
         });
         function Cancel() {
             layer.close(Shutdown);
         }
+
+
     </script>
 
 }

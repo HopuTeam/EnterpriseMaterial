@@ -103,31 +103,30 @@
     <script src="~/Content/layui/layui.all.js"></script>
     <script src="~/Scripts/copyright.js"></script>
     <script>
-        $('#edit').click(function ()
-        {
+        $('#edit').click(function () {
             var data =
             {
                 ID: $('#GoodsId').val(),
-                Name:$('#Name').val(),
+                Name: $('#Name').val(),
                 CategoryID: $('#CategoryID').val(),
                 Specification: $('#Specification').val(),
                 Description: $('#Description').val(),
-                WarningNum: $('#WarningNum').val(), 
-                Number: $('#Num').val(),           
-                Unit: $('#Unit').val(),      
-                Money: $('#Money').val(), 
-                Status: $('#Status').val(), 
+                WarningNum: $('#WarningNum').val(),
+                Number: $('#Num').val(),
+                Unit: $('#Unit').val(),
+                Money: $('#Money').val(),
+                Status: $('#Status').val(),
             }
             $.post('/Goods/GetSelectSave', data, function (res) {
-                if (res == "true")
-                {
+                if (res == "success") {
                     layer.alert("修改成功！");
+                } else {
+                    layer.alert("修改失败！");
                 }
             })
         })
         //关闭页面
-        $('#cancel').click(function ()
-        {
+        $('#cancel').click(function () {
             window.parent.Cancel();
         })
     </script>

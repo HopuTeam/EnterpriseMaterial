@@ -128,9 +128,44 @@ namespace EnterpriseMaterial.Web.Controllers
         public IActionResult GetSelectSave(Goods view)
         {
             bool result = goodsBLL.EditGoods(view);
-            return Content($"{result}");
+            if (result==true)
+            {
+                return Content("success");
+            }
+            else
+            {
+                return Content("fail");
+            }
+           
         }
-
+        /// <summary>
+        /// 根据物品名字模糊查询
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        public string SelectName(string Name, int page = 1, int limit = 5)
+        {
+            int dataConunt;
+            List< Goods> goods = goodsBLL.GoodsOne(Name, out dataConunt, page,limit);
+            var result = new LayuiJsonModel<Goods>()
+            {
+                code = 0,
+                msg = "ok",
+                count = dataConunt,
+                data = goods
+            };
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+        }
+        /// <summary>
+        /// 添加物品界面
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult AddGoods()
+        {
+            return View();
+        }
         #endregion
 
     }

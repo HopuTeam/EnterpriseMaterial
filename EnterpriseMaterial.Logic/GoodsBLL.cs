@@ -33,9 +33,11 @@ namespace EnterpriseMaterial.Logic
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public List<Goods> GoodsOne(string name)
+        public List<Goods> GoodsOne(string name, out int conut, int pageinde , int pageSize)
         {
-          return  db.Goods.Where(a => a.Name.Contains(name) ).ToList();
+            List<Goods> res= db.Goods.Where(a => a.Name.Contains(name)).OrderBy(c => c.ID).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+            conut = res.Count();
+            return res;
         }
         /// <summary>
         /// 根据id查询物品
@@ -151,6 +153,33 @@ namespace EnterpriseMaterial.Logic
             {
                 return false;
             }
+        }
+        /// <summary>
+        /// 添加物品
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
+        public bool AddGoods(Goods view)
+        {
+            Goods goods = new Goods()
+            {
+                CategoryID = view.CategoryID,
+                Description = view.Description,
+                EntryTime = DateTime.Now,
+                Money = view.Money,
+                Name = view.Name,
+                Number = view.Number,
+                Specification = view.Specification,
+                Status = true,
+                TypeID = view.TypeID,
+                Unit = view.Unit,
+                WarningNum = view.WarningNum
+            };
+            db.Goods.Add(goods);
+            if (db.SaveChanges() > 0)
+                return true;
+            else
+                return false;
         }
 
         #endregion
