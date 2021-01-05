@@ -46,6 +46,18 @@ namespace EnterpriseMaterial.Data
                     Password = "E1ADC3949BA59ABBE56E057F2F883E",// MD5(123456),
                     IdentityID = 1
                 });
+                context.Users.Add(new Model.User()
+                {
+                    Name = "admin",
+                    Birthday = DateTime.Now,
+                    DepartmentID = 1,
+                    Email = "admin@test.com",
+                    EntryTime = DateTime.Now,
+                    Sex = 0,
+                    SignID = 1,
+                    Phone = "17600000000",
+                    Status = true
+                });
                 // type
                 context.Types.Add(new Model.Type()
                 {
