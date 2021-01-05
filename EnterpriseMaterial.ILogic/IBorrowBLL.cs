@@ -18,24 +18,33 @@ namespace EnterpriseMaterial.ILogic
         List<Model.Goods> GoodsTwo(string name);
         #endregion
 
-        #region 部门管理申请
+        #region 查询申请
 
-        //管理员查询申请
-        List<Model.Borrow> UpBorrow(out int conut, int pageinde, int pageSize);
+        //查询申请
+        List<Model.Borrow> UpBorrow();
+        //查询名字
+        public List<Model.User> UpUsers();
+        //查询物品名字
+        public List<Model.Goods> UpGood();
+        //查询状态
+        public List<Model.BorrowStatus> UpStatu();
+
+  #endregion
+
         //上级领导查询申请
         List<Model.Borrow> UpSuperior(out int conut, int pageinde, int pageSize);
         //同意申请
-        bool Agree();
+       // bool Agree();
         //不同意
-        bool Disagress();
+      //  bool Disagress();
         //删 
-        bool DeleteBrw();
+     //   bool DeleteBrw();
 
         //该
-        bool EidtBrw();
+       //bool EidtBrw();
         //模糊查询申请
 
-        #endregion
+      
 
 
     }

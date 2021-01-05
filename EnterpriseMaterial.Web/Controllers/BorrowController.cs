@@ -113,45 +113,45 @@ namespace EnterpriseMaterial.Web.Controllers
             else
             return Content("申请失败，信息有误，或物品数量太少");
         }
-        #endregion
-
-
+        #endregion 
         #region  管理员管理申请
-        public string GetListThree(int page = 1, int limit = 5)
+        public IActionResult IndexThere()
         {
-            int dataConunt;
-            List<Model.Borrow> list = BorrowBLL.UpBorrow(out dataConunt, page, limit);
-            
-            foreach (var item in list)
-            {
-
-            }
-            var result = new LayuiJsonModel<Model.Borrow>()
-            {
-                code = 0,
-                msg = "",
-                count = dataConunt,
-                data = list
-            };
-            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+            return View();
         }
-        #endregion
-        #region  上级领导管理申请
+
+       
         public string GetListFour(int page = 1, int limit = 5)
         {
             int dataConunt;
-            List<Model.Borrow> list = BorrowBLL.UpSuperior(out dataConunt, page, limit);
-            foreach (var item in list){
-
-            }
+            var mod = (from Borrows in BorrowBLL.UpBorrow()
+                       join Users in BorrowBLL.UpUsers() on Borrows.UserID equals Users.ID
+                       join Goods in BorrowBLL.UpGood() on Borrows.GoodsID equals Goods.ID
+                       join Statuses in BorrowBLL.UpStatu() on Borrows.StatusID equals Statuses.ID
+                       where Borrows.SendTime != null && Borrows.MiddleTime == null
+                       select new
+                       {
+                           Borrows.ID,
+                           Goods.Name,
+                           UserName = Users.Name,
+                           Borrows.Description,
+                           StatusName = Statuses.Name,
+                           Borrows.SendTime,
+                           Borrows.MiddleTime,
+                           Borrows.EndTime,
+                           Borrows.Number,
+                           Complete = Borrows.Complete,
+                       });
+            mod.Skip((page - 1) * limit).Take(limit).ToList();   
+         //  Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+            dataConunt = mod.Count();
             var result = new LayuiJsonModel<Model.Borrow>()
             {
                 code = 0,
                 msg = "",
                 count = dataConunt,
-                data = list
-            
-            };
+                data = (List<Borrow>)mod
+                };
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
         #endregion

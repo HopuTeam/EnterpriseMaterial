@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace EnterpriseMaterial.Logic
 {
@@ -114,16 +115,30 @@ namespace EnterpriseMaterial.Logic
 
 
         #endregion
-        #region 部门管理申请
-        //管理员查询申请
-        public List<Model.Borrow> UpBorrow(out int conut, int pageinde, int pageSize) 
+        #region 查询申请
+        //查询申请表
+        public List<Model.Borrow> UpBorrow()
         {
-            var mod = db.Borrows.Where(x => x.SendTime != null || x.MiddleTime == null).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
-            conut = mod.Count();
-
-
-          return mod;
+            return db.Borrows.ToList() ;
         }
+        //查询 goods物品表
+        public List<Model.Goods> UpGood() 
+        {
+             
+            return db.Goods.ToList();
+        }
+        //查询User表
+        public List<Model.User> UpUsers()
+        {
+            return db.Users.ToList();
+        }
+        //查询状态表
+        public List<Model.BorrowStatus> UpStatu()
+        {
+            return db.BorrowStatuses.ToList();
+        }
+
+       #endregion
         //上级领导查询申请
         public List<Model.Borrow> UpSuperior(out int conut, int pageinde, int pageSize)
         {
@@ -143,7 +158,7 @@ namespace EnterpriseMaterial.Logic
         
         //}
 
-        #endregion
+        
 
 
 
