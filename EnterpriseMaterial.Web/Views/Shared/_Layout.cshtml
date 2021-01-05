@@ -21,18 +21,18 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav" id="navInfo">
                 @*
-                <li class="nav-item">
-                    <a class="nav-link" href="/Draw/Index"><i class="fas fa-tasks"></i>抽奖项目</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Luck/Index"><i class="fas fa-drafting-compass"></i>奖项管理</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/User/Index"><i class="fas fa-cog"></i>个人设置</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#Logout" id="Logout"><i class="fas fa-running"></i>退出</a>
-                </li>*@
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Draw/Index"><i class="fas fa-tasks"></i>抽奖项目</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Luck/Index"><i class="fas fa-drafting-compass"></i>奖项管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/User/Index"><i class="fas fa-cog"></i>个人设置</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#Logout" id="Logout"><i class="fas fa-running"></i>退出</a>
+                    </li>*@
             </ul>
         </div>
     </nav>
@@ -52,15 +52,8 @@
     <script>
         $.post("/Home/GetMenu", function (res) {
             for (var i = 0; i < res.mod.length; i++) {
-                for (x in res.mod[i]) {
-                    //if (x.parentID == 0) {
-                    //    $("#navInfo").append("<li class='nav-item'><a class='nav-link' href=" + x.actionUrl + "><i class='fas fa-home'></i>" + x.name + "</a></li>")
-                    //}
-                    console.log("<li class='nav-item'><a class='nav-link' href=" + x.actionUrl + "><i class='fas fa-home'></i>" + x.name + "</a></li>");
-                    console.log(x);
-                    //txt = txt + person[x];
-                }
-            }
+                $("#navInfo").append("<li class='nav-item'><a class='nav-link' href=" + res.mod[i].actionUrl + "><i class='fas fa-home'></i>" + res.mod[i].name + "</a></li>")
+            };
         });
         $("#Logout").click(function () {
             layer.load(2, { shade: false });
