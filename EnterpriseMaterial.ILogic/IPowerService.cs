@@ -7,7 +7,7 @@ namespace EnterpriseMaterial.ILogic
 {
    public interface IPowerService
     {
-        PowerTreeOutput GetPowerList(string allRoleID);
+        PowerTreeOutput GetPowerList(int allRoleID);
 
         /// <summary>
         /// 给角色配置权限
@@ -15,7 +15,7 @@ namespace EnterpriseMaterial.ILogic
         /// <param name="strId"></param>
         /// <param name="roleId"></param>
         /// <returns></returns>
-        bool SetPower(string strId, string roleId);
+        bool SetPower(string strId, int roleId);
 
         /// <summary>
         /// 判断用户是否有权限--待缓存优化

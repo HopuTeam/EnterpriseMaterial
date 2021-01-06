@@ -10,6 +10,7 @@ namespace EnterpriseMaterial.Dto.PowerDTO
         public string Name { get; set; }
         /// <summary>
         /// 说明
+    public int PowerId { get; set; }
         /// </summary>
         public string Description { get; set; }
         /// <summary>
