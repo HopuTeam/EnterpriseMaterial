@@ -10,11 +10,11 @@ namespace EnterpriseMaterial.Web.Controllers
 {
     public class SignController : Controller
     {
-   
         public IActionResult Index()
         {
             return View();
         }
+
         [HttpPost]
         public IActionResult Login()
         {

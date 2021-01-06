@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - EnterpriseMaterial</title>
     <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon">
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     @RenderSection("styles", false)
 </head>
 <body>
@@ -41,14 +41,14 @@
                     var info = "<li class='nav-item'><a class='nav-link dropdown-toggle' id='navbardrop' data-toggle='dropdown' href=" + res.mod[x].actionUrl + "><i class='layui-icon " + res.mod[x].menuIcon + "'></i> " + res.mod[x].name + "</a>";
                     for (i in res.mod) {
                         if (res.mod[i].parentID == res.mod[x].id) {
-                            info += "<div class='dropdown-menu'><a class='dropdown-item' href=" + res.mod[i].actionUrl + ">" + res.mod[i].name + "</a></div>";
+                            info += "<div class='dropdown-menu'><a class='dropdown-item' href=" + res.mod[i].actionUrl + "><i class='layui-icon " + res.mod[i].menuIcon + "'></i> " + res.mod[i].name + "</a></div>";
                         };
                     };
                     info += "</li>";
                     $("#navInfo").append(info);
                 };
             };
-            $("#navInfo").append("<li class='nav-item'><a class='nav-link' href='#Logout' id='Logout'><i class='layui-icon layui-icon-logout'></i> 退出</a></li>");
+            $("#navInfo").append("<li class='nav-item'><a class='nav-link' href='/User/Index'><i class='layui-icon layui-icon-username'></i> 个人信息</a></li><li class='nav-item'><a class='nav-link' href='#Logout' id='Logout'><i class='layui-icon layui-icon-logout'></i> 退出</a></li>");
         });
 
         $("#Logout").click(function () {

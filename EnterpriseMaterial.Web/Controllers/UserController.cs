@@ -19,7 +19,7 @@ namespace EnterpriseMaterial.Web.Controllers
         public IActionResult Index()
         {
             // Dto.UserDto.UserOut
-            return View(Iuser.GetInfo(1));
+            return View(Iuser.GetInfo(HttpContext.Session.GetModel<Model.Sign>("User").ID));
         }
 
         //[HttpPost]
