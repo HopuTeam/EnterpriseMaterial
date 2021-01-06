@@ -47,7 +47,7 @@ namespace EnterpriseMaterial.Logic
                     Disabled = false,
                     Checked = true
                 };
-                List<Category> list = db.Categories.Where(a => a.ParentID == item.ParentID).ToList();
+                List<Category> list = db.Categories.Where(a => a.ParentID == item.ID).ToList();
                 if (list!=null)
                 {
                     entit.Checked = false;
