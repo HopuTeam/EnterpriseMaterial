@@ -8,29 +8,22 @@ namespace EnterpriseMaterial.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private Data.CoreEntities EF { get; }
+        private ILogic.IUserLogic Iuser { get; }
 
-        public HomeController(Data.CoreEntities _ef)
+        public HomeController(ILogic.IUserLogic Iuser)
         {
-            EF = _ef;
+            this.Iuser = Iuser;
         }
 
         public IActionResult Index()
         {
             return View();
         }
-
+        
         [HttpPost]
         public IActionResult GetMenu()
         {
-            var mod = (from u in EF.Signs
-                       join i in EF.Identities on u.IdentityID equals i.ID
-                       join ip in EF.IdentityPowers on i.ID equals ip.IdentityID
-                       join p in EF.Powers on ip.PowerID equals p.ID
-                       where u.ID == 1
-                       select p).ToList();
-
-            return Json(new { mod });
+            return Json(new { mod = Iuser.GetPower(1) });
         }
     }
 }

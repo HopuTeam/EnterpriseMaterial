@@ -9,10 +9,17 @@ namespace EnterpriseMaterial.Web.Controllers
 {
     public class UserController : Controller
     {
+        private ILogic.IUserLogic Iuser { get; }
+
+        public UserController(ILogic.IUserLogic Iuser)
+        {
+            this.Iuser = Iuser;
+        }
+
         public IActionResult Index()
         {
-            //HttpContext.Session.GetModel<Sign>("User").ID
-            return View();
+            // Dto.UserDto.UserOut
+            return View(Iuser.GetInfo(1));
         }
 
         //[HttpPost]
