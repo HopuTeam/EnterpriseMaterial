@@ -52,9 +52,5 @@ namespace EnterpriseMaterial.Model
         /// 是否归还（无需归还的物品直接给true
         /// </summary>
         public bool Complete { get; set; }
-        /// <summary>
-        /// Department表外键
-        /// </summary>
-        public int DepartmentID { get; set; }
     }
 }
