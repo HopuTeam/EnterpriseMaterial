@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace EnterpriseMaterial.Logic
 {
-   public class BorrowBLL//:IBorrowBLL
+    public class BorrowBLL//:IBorrowBLL
     {
         private readonly CoreEntities db;
 
@@ -53,7 +53,7 @@ namespace EnterpriseMaterial.Logic
         /// <param name="number">申请的数量</param>
         /// <param name="description">申请理由</param>
         /// <returns></returns>
-        public bool ToapplyOne(int UserID, int Number, string Description,int GoodsID)
+        public bool ToapplyOne(int UserID, int Number, string Description, int GoodsID)
         {
             var mod = db.Goods.FirstOrDefault(x => x.ID == GoodsID);
             if (mod.Number <= 0)
@@ -72,7 +72,7 @@ namespace EnterpriseMaterial.Logic
                 x = false;
             }
             //物品总价
-            decimal price = goods.Money * Number; 
+            decimal price = goods.Money * Number;
             Model.Borrow borrow = new Model.Borrow()
             {
                 UserID = 1,
@@ -117,25 +117,30 @@ namespace EnterpriseMaterial.Logic
         #endregion
         #region 查询申请
         //查询申请表
-        public List<Model.Borrow> UpBorrow()
+        public object UpBorrow(out int conut, int pageinde, int pageSize)
         {
-            return db.Borrows.ToList() ;
-        }
-        //查询 goods物品表
-        public List<Model.Goods> UpGood() 
-        {
-             
-            return db.Goods.ToList();
-        }
-        //查询User表
-        public List<Model.User> UpUsers()
-        {
-            return db.Users.ToList();
-        }
-        //查询状态表
-        public List<Model.BorrowStatus> UpStatu()
-        {
-            return db.BorrowStatuses.ToList();
+            var mod = (from Borrows in db.Borrows
+                       join Users in db.Users on Borrows.UserID equals Users.ID
+                       join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
+                       join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
+                       where Borrows.SendTime != null && Borrows.MiddleTime == null
+                       select new
+                       {
+                           Borrows.ID,
+                           Goods.Name,
+                           UserName = Users.Name,
+                           Borrows.Description,
+                           StatusName = Statuses.Name,
+                           Borrows.SendTime,
+                           Borrows.MiddleTime,
+                           Borrows.EndTime,
+                           Borrows.Number,
+                           Complete = Borrows.Complete,
+                       }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+            conut = mod.Count();
+            var list = JsonConvert.DeserializeObject(mod.ToString());
+
+            return list;
         }
 
        #endregion

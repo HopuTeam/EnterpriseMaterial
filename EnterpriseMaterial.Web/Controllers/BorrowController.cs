@@ -3,6 +3,7 @@ using EnterpriseMaterial.Data;
 using EnterpriseMaterial.ILogic;
 using EnterpriseMaterial.Model;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -115,7 +116,7 @@ namespace EnterpriseMaterial.Web.Controllers
         }
         #endregion 
         #region  管理员管理申请
-        public IActionResult IndexThere()
+        public IActionResult IndexFour()
         {
             return View();
         }
@@ -124,33 +125,13 @@ namespace EnterpriseMaterial.Web.Controllers
         public string GetListFour(int page = 1, int limit = 5)
         {
             int dataConunt;
-            var mod = (from Borrows in BorrowBLL.UpBorrow()
-                       join Users in BorrowBLL.UpUsers() on Borrows.UserID equals Users.ID
-                       join Goods in BorrowBLL.UpGood() on Borrows.GoodsID equals Goods.ID
-                       join Statuses in BorrowBLL.UpStatu() on Borrows.StatusID equals Statuses.ID
-                       where Borrows.SendTime != null && Borrows.MiddleTime == null
-                       select new
-                       {
-                           Borrows.ID,
-                           Goods.Name,
-                           UserName = Users.Name,
-                           Borrows.Description,
-                           StatusName = Statuses.Name,
-                           Borrows.SendTime,
-                           Borrows.MiddleTime,
-                           Borrows.EndTime,
-                           Borrows.Number,
-                           Complete = Borrows.Complete,
-                       });
-            mod.Skip((page - 1) * limit).Take(limit).ToList();   
-         //  Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
-            dataConunt = mod.Count();
+            List<Model.Borrow> mod = BorrowBLL.UpBorrow(out dataConunt, page, limit);
             var result = new LayuiJsonModel<Model.Borrow>()
             {
                 code = 0,
                 msg = "",
                 count = dataConunt,
-                data = (List<Borrow>)mod
+                data = mod
                 };
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
