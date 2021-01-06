@@ -79,7 +79,7 @@ namespace EnterpriseMaterial.Logic
             }
             //【2】和权限表连表查询，并筛选出菜单权限
             var listMenu = (from a in rRoleInfoPowerInfoList.Where(u => allRoleID.Contains((char)u.IdentityID))
-                            join b in powerInfoList on a.PowerID equals b.PowerId into b_join
+                            join b in powerInfoList on a.PowerID equals b.ID into b_join
                             from c in b_join.DefaultIfEmpty()
                             select c).Where(u => u.Description.Contains("目录")).ToList();
             ////【3】去掉重复的权限
@@ -100,7 +100,7 @@ namespace EnterpriseMaterial.Logic
                 foreach (var item1 in list)
                 {
                     //第四步：如果新的list集合里，已经存在的数据，把flag改成1
-                    if (item1.PowerId == item.PowerId)
+                    if (item1.ID == item.ID)
                     {
                         flag = 1;
                     }
@@ -121,7 +121,7 @@ namespace EnterpriseMaterial.Logic
                                              MenuIcon = a.MenuIcon,
                                              Name = a.Name,
                                              ParentID = a.ParentID,
-                                             PowerId = a.PowerId,
+                                             PowerId = a.ID,
                                          }).ToList();
             return outlist;
         }
@@ -229,12 +229,12 @@ namespace EnterpriseMaterial.Logic
             {
 
                 //查看对应角色是否拥有该权限
-                IdentityPower rEntity = _dbContext.Set<IdentityPower>().AsNoTracking().Where(u => u.IdentityID == roleId && u.PowerID == item.PowerId).FirstOrDefault();
+                IdentityPower rEntity = _dbContext.Set<IdentityPower>().AsNoTracking().Where(u => u.IdentityID == roleId && u.PowerID == item.ID).FirstOrDefault();
 
                 //赋值
                 PowerTreeOutput entity = new PowerTreeOutput()
                 {
-                    Id = Convert.ToString(item.PowerId),
+                    Id = Convert.ToString(item.ID),
                     Spread = rEntity != null ? true : false,
                     Title = item.Name + "--->" + item.ActionUrl,
                     Field = "",
@@ -245,7 +245,7 @@ namespace EnterpriseMaterial.Logic
 
 
                 //查询是否有子目录
-                List<Power> d_list = _dbContext.Set<Power>().Where(u => u.ParentID == item.PowerId).ToList();
+                List<Power> d_list = _dbContext.Set<Power>().Where(u => u.ParentID == item.ID).ToList();
                 if (d_list.Count > 0)
                 {
                     entity.Checked = false;//如果有子节点,设置为false
