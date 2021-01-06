@@ -41,7 +41,7 @@ namespace EnterpriseMaterial.Logic
             {
                 LayuiTreeModel entit = new LayuiTreeModel()
                 {
-                    Id = item.ParentID,
+                    Id = item.ID,
                     Spread = false,
                     Title = item.Name,
                     Disabled = false,
@@ -59,5 +59,50 @@ namespace EnterpriseMaterial.Logic
           
         }
 
+        public Category Selectid(int id)
+        {
+            return db.Categories.FirstOrDefault(a => a.ID == id);
+        }
+
+        public bool AddSave(int id, string name)
+        {
+            Category category = new Category()
+            {
+                Name = name,
+                ParentID = id
+            };
+            db.Categories.Add(category);
+            if (db.SaveChanges() > 0)
+
+                return true;
+            else
+                return false;
+        }
+
+        public bool EditSave(Category view)
+        {
+            Category category = db.Categories.FirstOrDefault(a => a.ID == view.ID);
+            category.Name = view.Name;
+            if (db.SaveChanges() > 0)
+
+                return true;
+            else
+                return false;
+        }
+
+        public bool Delete(int id)
+        {
+            //删除分类
+            Category category = db.Categories.FirstOrDefault(a => a.ID == id);
+            db.Categories.Remove(category);
+            //删除属于此分类的子分类
+            List<Category> list = db.Categories.Where(c => c.ParentID == id).ToList();
+            db.Categories.RemoveRange(list);
+            if (db.SaveChanges() > 0)
+
+                return true;
+            else
+                return false;
+        }
     }
 }

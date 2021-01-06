@@ -5,124 +5,95 @@
 }
 
 <h1>分类管理</h1>
-<div id="test12" class="demo-tree demo-tree-box" style="width: 500px; height: 300px; overflow: scroll;"></div>
+<div id="test12" class="demo-tree demo-tree-box" style="width: 350px; height: 500px; overflow: scroll;"></div>
 @section scripts
 {
-    <script>
-        layui.use(['tree', 'util'], function () {
-            var data = [];
-                var tree = layui.tree
-                    , layer = layui.layer
-                    , util = layui.util
+    <script>   
+        var Shutdown, tree, layer01, util;
+        var data = [];
+        $(document).ready(function () {
+            Tree();
+        });  
+        //加载Tree
+        function Tree() {
+            layui.use(['tree', 'util'], function () {
+                tree = layui.tree;
+                layer01 = layui.layer;
+                util = layui.util;
                 //基本演示
                 tree.render({
                     elem: '#test12'
                     , data: getData()
                     , showCheckbox: false  //是否显示复选框
-                    , id: 'demoId1'
-                    //, isJump: true //是否允许点击节点时弹出新窗口跳转
-                    //, click: function (obj) {
-                    //    var data = obj.data;  //获取当前点击的节点数据
-                    //    layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
-                    //}
+                    , id: 'demoId1 '
                 });
-                //按钮事件
-                util.event('lay-demo', {
-                    getChecked: function (othis) {
-                        debugger;
-                        var checkedData = tree.getChecked('demoId1'); //获取选中节点的数据
-                        //转成字符串
-                        var str = JSON.stringify(checkedData);
-                        //即将构造字符串，获取id（其实就是powerId）
-                        var strId = "";
-                        //字符串分割
-                        var arr = str.split('"id"');
-                        //循环构造
-                        if (arr.length > 1) {
-
-                            layer.confirm('确认要配置权限吗?', function(index){
-                                 for (var i = 2; i < arr.length; i++) {
-                                strId += arr[i].split(',')[0].split(':')[1].split('"')[1].split('"')[0]+",";
-                            }
-                            //调用方法，提交请求
-                            SetPower(strId);
-
-                            layer.close(index);
+                //开启节点操作图标
+                tree.render({
+                    elem: '#test12'
+                    , data: data
+                    , edit: ['add', 'update', 'del'] //操作节点的图
+                    , operate: function (obj) {
+                        var type = obj.type; //得到操作类型：add、edit、del
+                        var data = obj.data; //得到当前节点的数据
+                        var elem = obj.elem; //得到当前节点元素
+                        //Ajax 操作
+                        var id = data.id; //得到节点索引
+                        if (type === 'add') { //增加节点
+                            Shutdown = layer.open({
+                                type: 2,
+                                title: '添加页',
+                                shadeClose: true,
+                                shade: 0.45,
+                                area: ['40%', '500px'],
+                                content: '/Category/Add?id=' + id
                             });
-
-                        } else {
-                            layer.alert("请选择需要配置的权限");
-                        }
-
-                    }
-                    , reload: function () {
-                        //重载实例
-                        tree.reload('demoId1', {
-
-                        });
+                        } else if (type === 'update') { //修改节点                        
+                            var name = elem.find('.layui-tree-txt').html();//拿到修改的值
+                            $.post('/Category/Edit', { ID: id, Name: name }, function (res) {
+                                if (res == "success") {
+                                    layer.alert("修改成功！");
+                                } else {
+                                    layer.alert("修改失败！");
+                                }
+                                overloading();
+                            });
+                        } else if (type === 'del') {
+                            $.post('/Category/Delete', { id: id }, function (res) {
+                                if (res == "success") {
+                                    layer.alert("删除成功！");
+                                } else {
+                                    layer.alert("删除失败！");
+                                };
+                                overloading();
+                            })
+                        };
                     }
                 });
-
-                //给角色配置权限
-                @*function SetPower(strId) {
-
-                    $.ajax({
-                        url: "/Role/SetPower",    //后台数据请求地址
-                        data: {
-                            roleId:"@ViewBag.roleId",
-                            strId: strId,
-                        },
-                        type: "post",
-                        success: function (data) {
-                            if (data=="ok") {
-                                layer.alert("配置成功");
-                                //跳转页面
-                                 window.location.href = "/Role/PowerIndex?roleId="+@ViewBag.roleId+"";
-                            } else {
-                                 layer.alert("配置失败");
-                            }
-                        }
-                    });
-
-                }*@
-
-                //获取目录树数据信息
-                function getData() {
-
-                    $.ajax({
-                        url: '/Category/CategoryTree',
-                        type: "post",
-                        async: false,//重点
-                        success: function (resut) {
-                            //debugger;
-                            data = JSON.parse(resut);
-                        }
-                    });
-                    return data;
-                }
-              //开启节点操作图标
-              tree.render({
-                  elem: '#test12'
-                  , data: data
-                  , edit: ['add', 'update', 'del'] //操作节点的图
-                  , operate: function (obj) {
-                      var type = obj.type; //得到操作类型：add、edit、del
-                      var data = obj.data; //得到当前节点的数据
-                      var elem = obj.elem; //得到当前节点元素
-
-                      //Ajax 操作
-                      var id = data.id; //得到节点索引
-                      if (type === 'add') { //增加节点
-                        
-                      } else if (type === 'update') { //修改节点
-                          console.log(elem.find('.layui-tree-txt').html()); //得到修改后的内容
-                      } else if (type === 'del') { 
-
-                      };
-                  }
-              });
 
             });
+        }
+        //获取后台数据
+        function getData() {
+            $.ajax({
+                url: '/Category/CategoryTree',
+                type: "post",
+                async: false,//重点
+                success: function (resut) {
+                    //debugger;
+                    data = JSON.parse(resut);
+                }
+            });
+            return data;
+        }
+        //重载
+        function overloading() {
+            Tree();          
+        };
+        //关闭页面弹窗页
+        function Cancel() {
+            layer.close(Shutdown);
+            overloading();
+        }     
     </script>
 
 
