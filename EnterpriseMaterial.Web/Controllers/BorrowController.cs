@@ -76,11 +76,6 @@ namespace EnterpriseMaterial.Web.Controllers
         #endregion
 
 
-
-
-
-
-
         #region 耗材申请
         public IActionResult IndexTwo()
         {
@@ -102,8 +97,6 @@ namespace EnterpriseMaterial.Web.Controllers
         #endregion
 
 
-
-
         #region 物料申请
 
         public IActionResult ToapplySave(int GoodsID, int Number, string Description)//int UserID 用户ID, int Number数量, string Description申请理由
@@ -121,11 +114,10 @@ namespace EnterpriseMaterial.Web.Controllers
             return View();
         }
 
-
         public string GetListFour(int page = 1, int limit = 5)
         {
-           //dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpBorrow(out int dataConunt, page, limit));
-             dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpSuperior(out int dataConunt, page, limit));
+            //dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpBorrow(out int dataConunt, page, limit));
+            dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpSuperior(out int dataConunt, page, limit));
             //List<Borrow> list =(List<Borrow>)JsonConvert.DeserializeObject(mod.ToString());
             var result = new
             {
@@ -141,14 +133,11 @@ namespace EnterpriseMaterial.Web.Controllers
         {
             Borrow borrow = BorrowBLL.Upapply(Bid);
             return View(borrow);
-        
         }
 
         public IActionResult GetApply(int Bid)
         {
-            var mod = JsonConvert.DeserializeObject(BorrowBLL.Upapply(Bid));
-            return Json(mod);
-
+            return Json(BorrowBLL.Upapply(Bid));
         }
         #endregion
     }

@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace EnterpriseMaterial.Logic
 {
-    public class BorrowBLL:IBorrowBLL
+    public class BorrowBLL : IBorrowBLL
     {
         private readonly CoreEntities db;
 
@@ -79,14 +79,14 @@ namespace EnterpriseMaterial.Logic
                 Number = Number,
                 Complete = x,
                 Description = Description,
-                UserID= 1,// /////////////写死UserID
+                UserID = 1,// /////////////写死UserID
                 SendTime = DateTime.Now,
                 StatusID = 1,
             };
             //数量或者价格太多的话需要领导审批
             if (Number >= 10 || price >= 1000)
             {
-               // borrow.DepartmentID = 1;
+                // borrow.DepartmentID = 1;
             }
             db.Borrows.Add(borrow);
             if (db.SaveChanges() > 0)
@@ -126,22 +126,22 @@ namespace EnterpriseMaterial.Logic
                        where Borrows.SendTime != null && Borrows.MiddleTime == null
                        select new
                        {
-                          ID= Borrows.ID,
-                           GoodsName= Goods.Name,
+                           ID = Borrows.ID,
+                           GoodsName = Goods.Name,
                            UserName = Users.Name,
-                           Description=Borrows.Description,
+                           Description = Borrows.Description,
                            StatusName = Statuses.Name,
-                           SendTime=Borrows.SendTime,
-                           MiddleTime=Borrows.MiddleTime,
-                           EndTime=Borrows.EndTime,
-                           Number=Borrows.Number,
+                           SendTime = Borrows.SendTime,
+                           MiddleTime = Borrows.MiddleTime,
+                           EndTime = Borrows.EndTime,
+                           Number = Borrows.Number,
                        }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
             conut = mod.Count();
 
             return JsonConvert.SerializeObject(mod);
         }
 
-       #endregion
+        #endregion
         //上级领导查询申请
         public string UpSuperior(out int conut, int pageinde, int pageSize)
         {
@@ -157,7 +157,7 @@ namespace EnterpriseMaterial.Logic
                            UserName = Users.Name,
                            Description = Borrows.Description,
                            StatusName = Statuses.Name,
-                           Suggest=Borrows.Suggest,
+                           Suggest = Borrows.Suggest,
                            SendTime = Borrows.SendTime,
                            MiddleTime = Borrows.MiddleTime,
                            EndTime = Borrows.EndTime,
@@ -183,10 +183,7 @@ namespace EnterpriseMaterial.Logic
         //同意申请
         public Model.Borrow Upapply(int Bid)
         {
-            var mod = db.Borrows.FirstOrDefault(x => x.ID == Bid);
-            return mod;
+            return db.Borrows.FirstOrDefault(x => x.ID == Bid);
         }
-
-
     }
 }

@@ -83,10 +83,10 @@ namespace EnterpriseMaterial.Logic
                 StatusID = 1,
             };
             //数量或者价格太多的话需要领导审批
-            if (number >=10 || price >=1000)
-            {
-                borrow.DepartmentID = 1;
-            }
+            //if (number >=10 || price >=1000)
+            //{
+            //    borrow.DepartmentID = 1;
+            //}
             db.Borrows.Add(borrow);
             if (db.SaveChanges() > 0)
             {
