@@ -51,12 +51,12 @@ namespace EnterpriseMaterial.Web.Controllers
         //    return Content("success");
         //}
 
-        //[HttpPost]
-        //public IActionResult Logout()
-        //{
-        //    HttpContext.Session.SetModel("User", null);
-        //    return Content("success");
-        //}
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.SetModel("User", null);
+            return Content("success");
+        }
 
         //[HttpGet]
         //public IActionResult Auth(string Code, Sign sign)

@@ -12,7 +12,6 @@ namespace EnterpriseMaterial.Model
     {
         [Key]
         public int ID { get; set; }
-       
         public string Name { get; set; }
         /// <summary>
         /// 说明
@@ -23,7 +22,7 @@ namespace EnterpriseMaterial.Model
         /// </summary>
         public int ParentID { get; set; }
         /// <summary>
-        /// 
+        /// 菜单图标(使用Layui图标 Class name)
         /// </summary>
         public string MenuIcon { get; set; }
         /// <summary>
