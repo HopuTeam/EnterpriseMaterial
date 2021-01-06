@@ -110,29 +110,7 @@ namespace EnterpriseMaterial.Logic
                     list.Add(item);
                 }
             }
-            //第二步：遍历查询到的数据
-            foreach (var item in listMenu)
-            {
-                //如果list没有数据，直接添加
-                if (list.Count == 0)
-                {
-                    list.Add(item);
-                }
-                int flag = 0;//标记
-                             //第三步：遍历新的list集合
-                foreach (var item1 in list)
-                {
-                    //第四步：如果新的list集合里，已经存在的数据，把flag改成1
-                    if (item1.PowerId == item.PowerId)
-                    {
-                        flag = 1;
-                    }
-                }
-                if (flag == 0)//只有当flag等于0 的时候，才会把数据添加到新的list集合中
-                {
-                    list.Add(item);
-                }
-            }
+          
             //【4】转换
             List<PowerOutput> outlist = (from a in list
                                          select new PowerOutput
