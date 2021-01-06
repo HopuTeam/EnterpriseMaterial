@@ -26,7 +26,7 @@ namespace EnterpriseMaterial.ILogic
         //上级领导查询申请
         string UpSuperior(out int conut, int pageinde, int pageSize);
         //同意申请
-        string Upapply(int Bid);
+        Model.Borrow Upapply(int Bid);
         // bool Agree();
         //不同意
         // bool Disagress();

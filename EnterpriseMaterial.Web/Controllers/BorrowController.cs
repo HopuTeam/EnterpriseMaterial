@@ -137,10 +137,10 @@ namespace EnterpriseMaterial.Web.Controllers
             return JsonConvert.SerializeObject(result);
         }
 
-        public IActionResult Apply()
+        public IActionResult Apply(int Bid)
         {
-           
-            return View();
+            Borrow borrow = BorrowBLL.Upapply(Bid);
+            return View(borrow);
         
         }
 

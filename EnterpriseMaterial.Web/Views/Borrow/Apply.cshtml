@@ -1,10 +1,47 @@
-﻿@{
+﻿@using EnterpriseMaterial.Model
+@model Borrow
+@{
     ViewData["Title"] = "Apply";
 }
+<body>
+    <h1>审批申请</h1>
+    <div class="layui-col-md8" style="margin-left:10%;margin-right:10%">
 
-<h1>审批申请</h1>
-<form>
-    <input />
+        <div class="layui-form layui-form-pane" lay-filter="form_add">
+            <div class="layui-form-item">
+                <label class="layui-form-label">耗材编号</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="ID" lay-verify="required" autocomplete="off" class="layui-input" value="@Model.GoodsID" readonly="readonly" style="color:red;font-weight:600">
+                </div>
+            </div>
 
-</form>
+            <div class="layui-form-item">
 
+                <label class="layui-form-label">申请数量</label>
+                <div class="layui-input-inline">
+                    <input type="number" required class="form-control" id="Number" title="数量不能大于存量" value="1" min="1" max="@Model.Number">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">申请理由</label>
+                <div class="layui-input-block">
+                    <textarea  class="layui-textarea" lay-verify="required"  value="@Model.Description"></textarea>
+                </div>
+            </div>
+
+
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">审批理由</label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入领用理由" class="layui-textarea" lay-verify="required" id="Reason" value="@Model.Suggest"></textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item" style="text-align:center">
+                    <button class="layui-btn" id="submit" lay-submit="" lay-filter="formDemo">提交申请</button>
+                    <button class="layui-btn" id="cancel">取消</button>
+                </div>
+
+            </div>
+        </div>
+</body>

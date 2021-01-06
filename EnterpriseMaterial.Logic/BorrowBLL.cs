@@ -86,7 +86,7 @@ namespace EnterpriseMaterial.Logic
             //数量或者价格太多的话需要领导审批
             if (Number >= 10 || price >= 1000)
             {
-                borrow.DepartmentID = 1;
+               // borrow.DepartmentID = 1;
             }
             db.Borrows.Add(borrow);
             if (db.SaveChanges() > 0)
@@ -181,22 +181,10 @@ namespace EnterpriseMaterial.Logic
 
 
         //同意申请
-        public string Upapply(int Bid)
+        public Model.Borrow Upapply(int Bid)
         {
-            var mod = (from Borrows in db.Borrows
-                       join Users in db.Users on Borrows.UserID equals Users.ID
-                       join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
-                       join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
-                       where Borrows.ID==Bid
-                       select new
-                       {
-                           GoodsName = Goods.Name,
-                           UserName = Users.Name,
-                           Description = Borrows.Description,
-                           StatusName = Statuses.Name,
-                           Suggest = Borrows.Suggest,
-                       }).ToList();
-            return JsonConvert.SerializeObject(mod);
+            var mod = db.Borrows.FirstOrDefault(x => x.ID == Bid);
+            return mod;
         }
 
 
