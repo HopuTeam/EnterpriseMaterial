@@ -1,6 +1,8 @@
 ﻿using EnterpriseMaterial.Common;
 using EnterpriseMaterial.ILogic;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +27,12 @@ namespace EnterpriseMaterial.Web.Controllers
         public string CategoryTree()
         {
             LayuiTreeModel view = categoryBLL.LayuiTreeModels();
-            var result = Newtonsoft.Json.JsonConvert.SerializeObject(view);
+            var setting = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                DateFormatString = "yyyy-MM-dd HH:mm:ss"//格式化日期
+            };
+            var result = JsonConvert.SerializeObject(view, Formatting.Indented, setting);
             return "[" + result + "]";
         }
 
