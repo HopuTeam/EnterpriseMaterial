@@ -38,21 +38,17 @@
                 , title: '用户数据表'
                 , cols: [[
                     { type: 'checkbox', fixed: 'left' }
-                    , { field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true }
-                    , { field: 'username', title: '用户名', width: 120, edit: 'text' }
-                    , {
-                        field: 'email', title: '邮箱', width: 150, edit: 'text', templet: function (res) {
-                            return '<em>' + res.email + '</em>'
-                        }
-                    }
-                    , { field: 'sex', title: '性别', width: 80, edit: 'text', sort: true }
-                    , { field: 'city', title: '城市', width: 100 }
-                    , { field: 'sign', title: '签名' }
-                    , { field: 'experience', title: '积分', width: 80, sort: true }
-                    , { field: 'ip', title: 'IP', width: 120 }
-                    , { field: 'logins', title: '登入次数', width: 100, sort: true }
-                    , { field: 'joinTime', title: '加入时间', width: 120 }
-                    , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+                    , { field: 'ID', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true }
+                    , { field: 'GoodsName', title: '物品名称', width: 120, edit: 'text' }
+                    , {field: 'Description', title: '申请理由', width: 120, edit: 'text',  }
+                    , { field: 'UserName', title: '申请人', width: 80, edit: 'text', sort: true }
+                    , { field: 'Number', title: '数量', width: 100, sort: true }
+                    , { field: 'StatusName', title: '流程状态', width: 100 }
+                    , { field: 'Suggest', title: '审批意见', width: 120, edit: 'text', }
+                    , { field: 'SendTime', title: '开始时间' }
+                    , { field: 'MiddleTime', title: '中间时间', width: 80, sort: true }
+                    , { field: 'EndTime', title: '结束时间', width: 120 }
+               
                 ]]
                 , page: true
             });
@@ -63,7 +59,15 @@
                 switch (obj.event) {
                     case 'getCheckData':
                         var data = checkStatus.data;
-                        layer.alert(JSON.stringify(data));
+                        var a = data[0].ID; 
+                        Shutdown = layer.open({
+                            type: 2,
+                            title: '申请页',
+                            shadeClose: true,
+                            shade: 0.8,
+                            area: ['500px', '90%'],
+                            content: '/borrow/Toapply?id=' + a + data,
+                        }); 
                         break;
                     case 'getCheckLength':
                         var data = checkStatus.data;
@@ -81,6 +85,7 @@
             });
 
             //监听行工具事件
+
             table.on('tool(test)', function (obj) {
                 var data = obj.data;
                 //console.log(obj)

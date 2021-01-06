@@ -105,14 +105,14 @@ namespace EnterpriseMaterial.Web.Controllers
 
 
         #region 物料申请
-        
-        public IActionResult ToapplySave(int UserID, int Number, string Description, int GoodsID)//int UserID 用户ID, int Number数量, string Description申请理由
+
+        public IActionResult ToapplySave(int GoodsID, int Number, string Description)//int UserID 用户ID, int Number数量, string Description申请理由
         {
-            bool T = BorrowBLL.ToapplyOne(UserID, Number,Description,GoodsID);
+            bool T = BorrowBLL.ToapplyOne(GoodsID, Number, Description);
             if (T)
                 return Content("申请成功，请等耐心待领导审批");
             else
-            return Content("申请失败，信息有误，或物品数量太少");
+                return Content("申请失败，信息有误，或物品数量太少");
         }
         #endregion 
         #region  管理员管理申请
@@ -121,19 +121,34 @@ namespace EnterpriseMaterial.Web.Controllers
             return View();
         }
 
-       
+
         public string GetListFour(int page = 1, int limit = 5)
         {
-            int dataConunt;
-            List<Model.Borrow> mod = BorrowBLL.UpBorrow(out dataConunt, page, limit);
-            var result = new LayuiJsonModel<Model.Borrow>()
+           //dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpBorrow(out int dataConunt, page, limit));
+             dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpSuperior(out int dataConunt, page, limit));
+            //List<Borrow> list =(List<Borrow>)JsonConvert.DeserializeObject(mod.ToString());
+            var result = new
             {
                 code = 0,
                 msg = "",
                 count = dataConunt,
                 data = mod
-                };
-            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+            };
+            return JsonConvert.SerializeObject(result);
+        }
+
+        public IActionResult Apply()
+        {
+           
+            return View();
+        
+        }
+
+        public IActionResult GetApply(int Bid)
+        {
+            var mod = JsonConvert.DeserializeObject(BorrowBLL.Upapply(Bid));
+            return Json(mod);
+
         }
         #endregion
     }

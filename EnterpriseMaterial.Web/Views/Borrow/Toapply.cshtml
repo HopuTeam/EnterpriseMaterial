@@ -56,15 +56,18 @@
         $('#submit').click(function () {
             var data =
             {
-                UserID: $('#ID').val(),
+                GoodsID: $('#ID').val(),
                 Number: $('#Number').val(),
                 Description: $('#Reason').val(),
-                GoodsID: $("ID").val(),
             };
 
             $.post({
                 url: '/Borrow/ToapplySave', data: data, success: function (res) {
-                    layer.alert(res);
+                    layer.msg(res, function () {
+                        window.parent.Cancel();
+
+                    });
+                   // layer.alert(res),
                     console.log(res)
                 }, error: function (res) { console.log(res); }
             });

@@ -35,7 +35,7 @@ namespace EnterpriseMaterial.Web
             services.AddSession();
             //BLL²ã½Ó¿Ú×¢Èë
             services.AddScoped<ILogic.lGoodsBLL, Logic.GoodsBLL>();
-            //services.AddScoped<ILogic.IBorrowBLL, Logic.BorrowBLL>();
+            services.AddScoped<ILogic.IBorrowBLL, Logic.BorrowBLL>();
             services.AddScoped<ILogic.ITypeLogic, Logic.TypeLogic>();
             services.AddScoped<ILogic.ICategoryBLL, Logic.CategoryBLL>();
             services.AddScoped<ILogic.IUserLogic, Logic.UserLogic>();
