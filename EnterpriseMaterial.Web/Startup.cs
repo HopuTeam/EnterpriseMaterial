@@ -38,6 +38,7 @@ namespace EnterpriseMaterial.Web
             services.AddScoped<ILogic.IBorrowBLL, Logic.BorrowBLL>();
             services.AddScoped<ILogic.ITypeLogic, Logic.TypeLogic>();
             services.AddScoped<ILogic.ICategoryBLL, Logic.CategoryBLL>();
+            services.AddScoped<ILogic.IIdentityBLL, Logic.IdentityBLL>();
             services.AddScoped<ILogic.IUserLogic, Logic.UserLogic>();
         }
 

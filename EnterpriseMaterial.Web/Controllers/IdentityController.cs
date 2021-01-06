@@ -28,15 +28,35 @@ namespace EnterpriseMaterial.Web.Controllers
 
 
 
+        #region MyRegion
 
+        
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult addindex()
         {
             return View();
         }
 
 
 
-        public string GetJsonList(int page, int limit, string selectInfo)
+        public IActionResult Delindex()
+        {
+            return View();
+        }
+
+#endregion
+
+
+
+
+        #region 非页面
+
+
+        public string GetJsonList(int page, int limit, string selectInfo)//分页显示
         {
 
             int totalCount = 0;
@@ -52,7 +72,7 @@ namespace EnterpriseMaterial.Web.Controllers
             return JsonNetHelper.SerializetoJson(dataResult);
         }
 
-
+        #endregion
 
 
 
