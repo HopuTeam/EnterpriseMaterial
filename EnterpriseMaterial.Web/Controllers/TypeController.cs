@@ -18,7 +18,7 @@ namespace EnterpriseMaterial.Web.Controllers
         // 获取类型信息
         public IActionResult GetList()
         {
-            return Json(new { status = true, message = "GetList", data = Ilogic.GetList() });
+            return Json(new { message = "GetList", data = Ilogic.GetList() });
         }
         // 修改类型信息
         public IActionResult Edit(Model.Type type)

@@ -38,6 +38,7 @@ namespace EnterpriseMaterial.Web
             //services.AddScoped<ILogic.IBorrowBLL, Logic.BorrowBLL>();
             services.AddScoped<ILogic.ITypeLogic, Logic.TypeLogic>();
             services.AddScoped<ILogic.ICategoryBLL, Logic.CategoryBLL>();
+            services.AddScoped<ILogic.IUserLogic, Logic.UserLogic>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
