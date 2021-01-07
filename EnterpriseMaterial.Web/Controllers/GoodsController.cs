@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace EnterpriseMaterial.Web.Controllers
 {
+    [TypeFilter(typeof(Filters.AuthFilter))]
     public class GoodsController : Controller
     {
         private readonly lGoodsBLL goodsBLL;

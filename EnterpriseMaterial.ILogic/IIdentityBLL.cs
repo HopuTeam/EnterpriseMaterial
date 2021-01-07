@@ -82,7 +82,11 @@ namespace EnterpriseMaterial.ILogic
 
 
 
-
+        /// <summary>
+        /// 展示角色权限树 
+        /// </summary>
+        /// <returns></returns>
+        Common.LayuiTreeModel LayuiTreeModels(int uid);
 
 
 

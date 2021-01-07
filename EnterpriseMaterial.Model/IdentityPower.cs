@@ -9,7 +9,13 @@ namespace EnterpriseMaterial.Model
     {
         [Key]
         public int ID { get; set; }
+        /// <summary>
+        /// 角色id
+        /// </summary>
         public int IdentityID { get; set; }
+        /// <summary>
+        /// 权限id
+        /// </summary>
         public int PowerID { get; set; }
     }
 }

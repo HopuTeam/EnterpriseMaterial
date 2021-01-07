@@ -7,7 +7,7 @@
     <div class="layui-col-md2 layui-col-md-offset5 " style="margin-top:20px;"><input type="text" id="goodsname" placeholder="请输入耗材名称" autocomplete="off" class="layui-input"></div>
     <div class="layui-col-md1" style="margin-top:20px;"> <button class="layui-btn layui-btn-normal" id="selectgoods" >搜索</button></div>
 </div>
-<table id="demo" class="layui-hide" lay-filter="test"></table>
+<table id="demo" class="layui-hide" style="width:500px" lay-filter="test"></table>
 
 
 @section scripts
@@ -27,7 +27,8 @@
             //第一个实例
             table.render({
                 elem: '#demo'
-                , height: 312
+                , height: 315
+             
                 , url: '/Goods/GetListOne' //数据接口
                 , toolbar: '#toolbarDemo'
                 , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
@@ -42,21 +43,26 @@
                     , { field: 'ID', title: '编号', width: 80, sort: true}
                     , { field: 'Name', title: '用户名', width: 80 }
                     , { field: 'Money', title: '价格', width: 80 }
+                    , { field: 'Number', title: '数量', width: 80 }
+                    , { field: 'Unit', title: '单位', width: 80 }               
+                    , { field: 'Status', title: '状态', width: 80 ,}
                 ]]
                 , page: true
             });
 
             //头工具栏事件
             table.on('toolbar(test)', function (obj) {
-                var checkStatus = table.checkStatus(obj.config.id);
+                var checkStatus = table.checkStatus(obj.config.id);          
                 switch (obj.event) {
                     case 'getCheckData':
-
                         break;
                     case 'getCheckLength':
                         var data = checkStatus.data;
                         //选择物品的id
                         var a = data[0].ID;
+                        if (a <= 0) {
+                            layui.alert("请选择一个物品");
+                        }
                         Shutdown = layer.open({
                             type: 2,
                             title: '修改页',

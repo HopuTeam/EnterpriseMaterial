@@ -26,6 +26,7 @@ namespace EnterpriseMaterial.Web
         {
             services.AddMvc(options =>
             {
+               // options.Filters.Add<Filters.AuthFilter>();
                 options.EnableEndpointRouting = false;
             });
             services.AddDbContext<Data.CoreEntities>(options =>

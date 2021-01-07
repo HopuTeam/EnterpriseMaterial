@@ -74,8 +74,6 @@ namespace EnterpriseMaterial.Web.Controllers
         /// <param name="description">理由</param>
         /// <returns></returns>
         #endregion
-
-
         #region 耗材申请
         public IActionResult IndexTwo()
         {
@@ -95,8 +93,6 @@ namespace EnterpriseMaterial.Web.Controllers
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
         #endregion
-
-
         #region 物料申请
 
         public IActionResult ToapplySave(int GoodsID, int Number, string Description)//int UserID 用户ID, int Number数量, string Description申请理由

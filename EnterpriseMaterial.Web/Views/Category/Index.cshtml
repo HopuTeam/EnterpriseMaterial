@@ -55,7 +55,7 @@
                                 } else {
                                     layer.alert("修改失败！");
                                 }
-                                overloading();
+                                //overloading();
                             });
                         } else if (type === 'del') {
                             $.post('/Category/Delete', { id: id }, function (res) {
@@ -64,7 +64,7 @@
                                 } else {
                                     layer.alert("删除失败！");
                                 };
-                                overloading();
+                                //overloading();
                             })
                         };
                     }

@@ -45,8 +45,12 @@ namespace EnterpriseMaterial.Common
         /// </summary>
         public bool Disabled { get; set; }
         /// <summary>
+        /// 点击节点弹出新窗口对应的 url。需开启 isJump 参数
+        /// </summary>
+        public string Href { get; set; }
+        /// <summary>
         /// 子节点。支持设定选项同父节点
-        /// </summary>       
+        /// </summary> 
         public List<LayuiTreeModel> Children { get; set; }
     }
 }

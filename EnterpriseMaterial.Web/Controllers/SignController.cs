@@ -5,9 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
 using EnterpriseMaterial.Common;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EnterpriseMaterial.Web.Controllers
 {
+    [AllowAnonymous]
     public class SignController : Controller
     {
         private ILogic.ISignLogic Isign { get; }

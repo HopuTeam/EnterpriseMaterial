@@ -7,6 +7,10 @@ namespace EnterpriseMaterial.ILogic
 {
    public interface ICategoryBLL
     {
+        /// <summary>
+        /// 展示分类树 
+        /// </summary>
+        /// <returns></returns>
         Common.LayuiTreeModel LayuiTreeModels();
         /// <summary>
         /// 根据id查询

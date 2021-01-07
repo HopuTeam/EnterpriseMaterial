@@ -131,7 +131,8 @@ namespace EnterpriseMaterial.Web.Controllers
                 count = totalCount,
                 data = outlist,
             };
-            return JsonNetHelper.SerializetoJson(dataResult);
+           // return JsonNetHelper.SerializetoJson(dataResult);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(dataResult);
         }
 
 
