@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+
+
+    <div class="layui-row layui-form">
+        <div class="layui-col-md2 layui-col-md-offset5 " style="margin-top:20px;"><input type="text" id="txt_Select" placeholder="请输入部门名称" autocomplete="off" class="layui-input"></div>
+        <div class="layui-col-md1" style="margin-top:20px;"> <button class="layui-btn layui-btn-normal" onclick="btn_search()">搜索</button></div>
+    </div>
+
+    <div class="layui-row">
+        <table id="mytable" lay-filter="test"></table>
+    </div>
+
+
+</div>
+<script type="text/javascript">
+    var table;
+    var active;
+    var url = "";
+    var action;
+
+    layui.use('table', function () {
+        table = layui.table;
+        var form = layui.form;
+        //第一个实例
+        table.render({
+            elem: '#mytable'
+            , skin: 'line' //行边框风格
+            , url: '/Department/GetJsonList' //数据接口
+            , toolbar: '#toolbarDemo'
+            , cellMinWidth: 70    //  自适应宽度，最短宽度80
+            , page: true //开启分页
+            , limits: [5, 10, 15, 20, 25, 30]
+            , limit: 15 //每页默认显示的数量
+            , defaultToolbar: ['filter', 'print', 'exports']//自由配置头部工具栏右侧的图标,导出乱码bug
+            , cols: [[ //表头
+                { type: 'checkbox', fixed: 'left' }
+                //, { field: 'Id', title: 'Id', sort: false, fixed: 'left', width: 70 }
+                , { field: 'DepartmentId', title: '部门Id', sort: false }
+                , { field: 'Name', title: '部门名称', sort: false }
+                , { field: 'LeaderName', title: '主管名字', sort: false }
+                , { field: 'ParentIdName', title: '上级部门', sort: false }
+                //, { field: 'lock', title: '角色状态', templet: '#checkboxTpl', unresize: true }
+                , { field: 'EntryTime', title: '添加时间', sort: false }
+            ]],
+
+        });
+
+    });
+
+
+
+    //查询
+    btn_search = function () {
+
+        var selectInfo = $("#txt_Select").val();
+        table.reload('mytable', {
+            url: '/Department/GetJsonList',
+            page: {
+                curr: 1//从第一页开始
+            },
+            where: {
+                selectInfo: selectInfo,
+            } //设定异步数据接口的额外参数
+        });
+    };
+
+
+
+</script>

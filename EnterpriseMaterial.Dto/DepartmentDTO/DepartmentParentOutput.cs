@@ -6,7 +6,7 @@ namespace EnterpriseMaterial.Dto.DepartmentDTO
 {
     public class DepartmentParentOutput
     {
-        public string LeaderId { get; set; }
+        public int LeaderId { get; set; }
         public string LeaderName { get; set; }
     }
 }

@@ -50,7 +50,7 @@ namespace EnterpriseMaterial.ILogic
         /// 获取签核人的信息（对应部门的领导）--递归获取对应用户以及他所有上级领导的信息，并从上往下排列好
         /// </summary>
         /// <returns></returns>
-        List<DepartmentParentOutput> GetReviewerMsg(string userId);
+        List<DepartmentParentOutput> GetReviewerMsg(int userId);
     }
 }
 
