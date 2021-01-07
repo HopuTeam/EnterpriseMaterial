@@ -6,204 +6,206 @@
 
 
 
-<div class="layui-card">
+<div>
 
 
-
-    <div>
-        <div class="layui-row layui-form">
-            <div class="layui-col-md2 layui-col-md-offset5 " style="margin-top:20px;"><input type="text" id="txt_Select" placeholder="请输入角色名称" autocomplete="off" class="layui-input"></div>
-            <div class="layui-col-md1" style="margin-top:20px;"> <button class="layui-btn layui-btn-normal" onclick="btn_search()">搜索</button></div>
-        </div>
-
-        <div class="layui-row">
-            <table id="mytable" lay-filter="test"></table>
-        </div>
-
-        <script type="text/html" id="toolbarDemo">
-            <div class="layui-row">
-                <div class="layui-btn-container layui-col-md6">
-                    <button class="layui-btn layui-btn-sm" onclick="btn_add()"><i class="layui-icon"></i>添加角色信息</button>
-                    <button class="layui-btn layui-btn-sm" lay-event="update"><i class="layui-icon"></i>修改角色信息</button>
-                    <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="checkpower"><i class="layui-icon"></i>为角色分配权限</button>
-                </div>
-            </div>
-        </script>
-
-        <script type="text/html" id="checkboxTpl">
-            <!-- 这里的 checked 的状态只是演示 -->
-            <input type="checkbox" name="lock" value="{{d.Id}}" title="开启角色" lay-filter="lockDemo" {{ d.DelFlag == 0 ? 'checked' : '' }}>
-        </script>
+    <div class="layui-row layui-form">
+        <div class="layui-col-md2 layui-col-md-offset5 " style="margin-top:20px;"><input type="text" id="txt_Select" placeholder="请输入角色名称" autocomplete="off" class="layui-input"></div>
+        <div class="layui-col-md1" style="margin-top:20px;"> <button class="layui-btn layui-btn-normal" onclick="btn_search()">搜索</button></div>
     </div>
+
+    <div class="layui-row">
+        <table id="mytable" lay-filter="test"></table>
+    </div>
+
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-row">
+            <div class="layui-btn-container layui-col-md6">
+                <button class="layui-btn layui-btn-sm" onclick="btn_add()"><i class="layui-icon"></i>添加角色信息</button>
+                <button class="layui-btn layui-btn-sm" lay-event="update"><i class="layui-icon"></i>修改角色信息</button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="checkpower"><i class="layui-icon"></i>为角色分配权限</button>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="checkboxTpl">
+        <!-- 这里的 checked 的状态只是演示 -->
+        <input type="checkbox" name="lock" value="{{d.Id}}" title="开启角色" lay-filter="lockDemo" {{ d.DelFlag == 0 ? 'checked' : '' }}>
+    </script>
+
 </div>
 
-<script type="text/javascript">
+@section scripts{
+    <script type="text/javascript">
 
 
-    var table;
-    var active;
-    var url = "";
-    var action;
+        var table;
+        var active;
+        var url = "";
+        var action;
 
-    layui.use('table', function () {
-        table = layui.table;
-        var form = layui.form;
-        //第一个实例
-        table.render({
-            elem: '#mytable'
-            , skin: 'line' //行边框风格
-            , url: '/identity/GetJsonList' //数据接口
-            , toolbar: '#toolbarDemo'
-            , cellMinWidth: 70    //  自适应宽度，最短宽度80
-            , page: true //开启分页
-            , limits: [5, 10, 15, 20, 25, 30]
-            , limit: 15 //每页默认显示的数量
-            , defaultToolbar: ['filter', 'print', 'exports']//自由配置头部工具栏右侧的图标,导出乱码bug
-            , cols: [[ //表头
-                { type: 'checkbox', fixed: 'left' }
-                //, { field: 'Id', title: 'Id', sort: false, fixed: 'left', width: 70 }
-                , { field: 'ID', title: '角色Id', sort: false }
-                , { field: 'Name', title: '角色名称', sort: false }
-                , { field: 'Description', title: '角色描述', sort: false }
-                , { field: 'Status', title: '角色状态', templet: '#checkboxTpl', unresize: true }
-                , { field: 'EntryTime', title: '添加时间', sort: false }
-                , { field: 'LockTime', title: '禁用时间', sort: false }
-            ]],
+        layui.use('table', function () {
+            table = layui.table;
+            var form = layui.form;
+            //第一个实例
+            table.render({
+                elem: '#mytable'
+                , skin: 'line' //行边框风格
+                , url: '/identity/GetJsonList' //数据接口
+                , toolbar: '#toolbarDemo'
+                , cellMinWidth: 70    //  自适应宽度，最短宽度80
+                , page: true //开启分页
+                , limits: [5, 10, 15, 20, 25, 30]
+                , limit: 15 //每页默认显示的数量
+                , defaultToolbar: ['filter', 'print', 'exports']//自由配置头部工具栏右侧的图标,导出乱码bug
+                , cols: [[ //表头
+                    { type: 'checkbox', fixed: 'left' }
+                    //, { field: 'Id', title: 'Id', sort: false, fixed: 'left', width: 70 }
+                    , { field: 'ID', title: '角色Id', sort: false }
+                    , { field: 'Name', title: '角色名称', sort: false }
+                    , { field: 'Description', title: '角色描述', sort: false }
+                    , { field: 'Status', title: '角色状态', templet: '#checkboxTpl', unresize: true }
+                    , { field: 'EntryTime', title: '添加时间', sort: false }
+                    , { field: 'LockTime', title: '禁用时间', sort: false }
+                ]],
 
-        });
-        //工具栏事件
-        table.on('toolbar(test)', function (obj) {
-            var checkStatus = table.checkStatus(obj.config.id);
-            switch (obj.event) {
-                case 'update':
-                    //获取选中的个数
-                    if (checkStatus.data.length == 1) {
-                        //获取选中的信息
-                        var data = checkStatus.data;
-                        //转成json格式的字符串
-                        var strdata = JSON.stringify(data);
-                        //转成json格式
-                        var jsondata = JSON.parse(strdata);
-                        //调用更新的方法
-                        btn_update(jsondata[0].Id);
-                    } else {
-                        layer.alert("必须选中且只能选中一条信息！");
-                    }
-                    break;
-                case 'checkpower':
-                    //获取选中的个数
-                    if (checkStatus.data.length == 1) {
-                        //获取选中的信息
-                        var data = checkStatus.data;
-                        //转成json格式的字符串
-                        var strdata = JSON.stringify(data);
-                        //转成json格式
-                        var jsondata = JSON.parse(strdata);
-                        //调用更新的方法
-                        btn_checkpower(jsondata[0].RoleId);
-                    } else {
-                        layer.alert("必须选中且只能选中一条信息！");
-                    }
-                    break;
-            };
-        });
-
-        //监听锁定操作
-        form.on('checkbox(lockDemo)', function (obj) {
-            //layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
-
-            $.ajax({
-                type: 'post',
-                url: '/Role/ForbidRole',
-                data: {
-                    id: this.value,
-                    flag: obj.elem.checked,
-                },
-                success: function (data) {
-                    layer.alert(data);
-                    btn_search();
-                }
             });
-        });
-    });
-
-    layui.use('layer', function () {
-        //触发事件
-        var id = "100";
-        active = {
-            notice: function () {
-                //示范一个公告层
-                layer.open({
-                    type: 1
-                    , title: [action, 'font-size:18px;']
-                    , closeBtn: 1
-                    , area: ['780px', '420px']
-                    , shade: 0.8
-                    , id: 'LAY_layuipro' //设定一个id，防止重复弹出
-                    , btnAlign: 'c'
-                    , moveType: 1 //拖拽模式，0或者1
-                    , content: '<iframe data-frameid="' + id + '" scrolling="auto" frameborder="0" src="' + url + '" style="width:100%;height:99%;"></iframe>'
-
-                    , success: function (layero) {
-                    }
-                    , yes: function (index, layero) {
-                        if (confirm('确定要' + action + '吗？')) { //只有当点击confirm框的确定时，该层才会关闭
-                            layer.close(index)
+            //工具栏事件
+            table.on('toolbar(test)', function (obj) {
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch (obj.event) {
+                    case 'update':
+                        //获取选中的个数
+                        if (checkStatus.data.length == 1) {
+                            //获取选中的信息
+                            var data = checkStatus.data;
+                            //转成json格式的字符串
+                            var strdata = JSON.stringify(data);
+                            //转成json格式
+                            var jsondata = JSON.parse(strdata);
+                            //调用更新的方法
+                            btn_update(jsondata[0].Id);
+                        } else {
+                            layer.alert("必须选中且只能选中一条信息！");
                         }
-                    }
-                    , cancel: function (index, layero) {
-                        layer.close(index);
-                        //刷新table
+                        break;
+                    case 'checkpower':
+                        //获取选中的个数
+                        if (checkStatus.data.length == 1) {
+                            //获取选中的信息
+                            var data = checkStatus.data;
+                            //转成json格式的字符串
+                            var strdata = JSON.stringify(data);
+                            //转成json格式
+                            var jsondata = JSON.parse(strdata);
+                            //调用更新的方法
+                            btn_checkpower(jsondata[0].RoleId);
+                        } else {
+                            layer.alert("必须选中且只能选中一条信息！");
+                        }
+                        break;
+                };
+            });
+
+            //监听锁定操作
+            form.on('checkbox(lockDemo)', function (obj) {
+                //layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+
+                $.ajax({
+                    type: 'post',
+                    url: '/Role/ForbidRole',
+                    data: {
+                        id: this.value,
+                        flag: obj.elem.checked,
+                    },
+                    success: function (data) {
+                        layer.alert(data);
                         btn_search();
                     }
                 });
-            }
-
-        };
-    });
-
-    //查询
-    btn_search = function () {
-
-        var selectInfo = $("#txt_Select").val();
-        table.reload('mytable', {
-            url: '/Role/GetJsonList',
-            page: {
-                curr: 1//从第一页开始
-            },
-            where: {
-                selectInfo: selectInfo,
-            } //设定异步数据接口的额外参数
+            });
         });
-    };
 
-    //添加
-    btn_add = function () {
+        layui.use('layer', function () {
+            //触发事件
+            var id = "100";
+            active = {
+                notice: function () {
+                    //示范一个公告层
+                    layer.open({
+                        type: 1
+                        , title: [action, 'font-size:18px;']
+                        , closeBtn: 1
+                        , area: ['780px', '420px']
+                        , shade: 0.8
+                        , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                        , btnAlign: 'c'
+                        , moveType: 1 //拖拽模式，0或者1
+                        , content: '<iframe data-frameid="' + id + '" scrolling="auto" frameborder="0" src="' + url + '" style="width:100%;height:99%;"></iframe>'
 
-        action = "添加";
-        url = "/Role/AddIndex";
-        var othis = $(this);
-        active["notice"] ? active["notice"].call(this, othis) : '';
-    };
+                        , success: function (layero) {
+                        }
+                        , yes: function (index, layero) {
+                            if (confirm('确定要' + action + '吗？')) { //只有当点击confirm框的确定时，该层才会关闭
+                                layer.close(index)
+                            }
+                        }
+                        , cancel: function (index, layero) {
+                            layer.close(index);
+                            //刷新table
+                            btn_search();
+                        }
+                    });
+                }
 
-    //修改
-    btn_update = function (Id) {
-        //alert(Id);
-        action = "修改";
-        url = "/Role/UpdateIndex?id=" + Id + "";
-        var othis = $(this);
-        active["notice"] ? active["notice"].call(this, othis) : '';
-    };
+            };
+        });
+
+        //查询
+        btn_search = function () {
+
+            var selectInfo = $("#txt_Select").val();
+            table.reload('mytable', {
+                url: '/Role/GetJsonList',
+                page: {
+                    curr: 1//从第一页开始
+                },
+                where: {
+                    selectInfo: selectInfo,
+                } //设定异步数据接口的额外参数
+            });
+        };
+
+        //添加
+        btn_add = function () {
+
+            action = "添加";
+            url = "/Role/AddIndex";
+            var othis = $(this);
+            active["notice"] ? active["notice"].call(this, othis) : '';
+        };
+
+        //修改
+        btn_update = function (Id) {
+            //alert(Id);
+            action = "修改";
+            url = "/Role/UpdateIndex?id=" + Id + "";
+            var othis = $(this);
+            active["notice"] ? active["notice"].call(this, othis) : '';
+        };
 
 
-    //配置角色信息
-    btn_checkpower = function (roleid) {
-        //alert(powerid);
-        action = "配置权限信息";
-        url = "/Role/PowerIndex?roleId=" + roleid + "";
-        var othis = $(this);
-        active["notice"] ? active["notice"].call(this, othis) : '';
-    };
-</script>
+        //配置角色信息
+        btn_checkpower = function (roleid) {
+            //alert(powerid);
+            action = "配置权限信息";
+            url = "/Role/PowerIndex?roleId=" + roleid + "";
+            var othis = $(this);
+            active["notice"] ? active["notice"].call(this, othis) : '';
+        };
+    </script>
+}
+
+
 
 

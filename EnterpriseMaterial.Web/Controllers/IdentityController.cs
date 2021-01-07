@@ -28,7 +28,7 @@ namespace EnterpriseMaterial.Web.Controllers
 
 
 
-        #region MyRegion
+        #region 页面
 
         
         public IActionResult Index()
@@ -48,7 +48,7 @@ namespace EnterpriseMaterial.Web.Controllers
             return View();
         }
 
-#endregion
+        #endregion
 
 
 
@@ -56,6 +56,57 @@ namespace EnterpriseMaterial.Web.Controllers
         #region 非页面
 
 
+        /// <summary>
+        /// 给用户配置角色的方法
+        /// </summary>
+        /// <param name="strjson"></param>
+        /// <returns></returns>
+        public string ConfigRole(string userID, string arrRoleID)
+        {
+            if (identityBLL.ConfigRole(userID, arrRoleID))
+            {
+                return "操作成功";
+            }
+            else
+            {
+                return "操作失败";
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// 获取角色信息,不分页
+        /// </summary>
+        /// <returns></returns>
+        public string GetJsonList1()// 获取角色信息,不分页
+        {
+
+
+            List<IdentityQutput> outlist = identityBLL.LoadEntities();
+            DataResult<List<IdentityQutput>> dataResult = new DataResult<List<IdentityQutput>>()
+            {
+                code = 0,
+                msg = "ok",
+                data = outlist,
+            };
+            return JsonNetHelper.SerializetoJson(dataResult);
+        }
+
+
+
+
+        /// <summary>
+        /// 获取角色分页信息
+        /// </summary>
+        /// <returns></returns>
         public string GetJsonList(int page, int limit, string selectInfo)//分页显示
         {
 
@@ -71,6 +122,43 @@ namespace EnterpriseMaterial.Web.Controllers
             };
             return JsonNetHelper.SerializetoJson(dataResult);
         }
+
+
+
+
+
+        /// <summary>
+        /// 获取角色对应的权限
+        /// </summary>
+        /// <returns></returns>
+        //public string GetPowerList(string roleId)
+        //{
+
+        //    PowerTreeOutput outlist = _powerService.GetPowerList(roleId);
+        //    var a = JsonNetHelper.SerialzeoJsonForCamelCase(outlist);
+        //    return "[" + a + "]";
+        //}
+
+
+        /// <summary>
+        /// 为角色配置权限
+        /// </summary>
+        /// <returns></returns>
+        //public string SetPower(string strId, string roleId)
+        //{
+
+        //    if (_powerService.SetPower(strId, roleId))
+        //    {
+        //        return "ok";
+        //    }
+        //    else
+        //    {
+        //        return "no";
+        //    }
+
+        //}
+
+
 
         #endregion
 
