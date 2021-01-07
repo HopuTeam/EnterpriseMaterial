@@ -16,7 +16,7 @@ namespace EnterpriseMaterial.ILogic
         /// <returns></returns>
         int Add(identityInput inputEntity);
 
-
+         
 
 
 

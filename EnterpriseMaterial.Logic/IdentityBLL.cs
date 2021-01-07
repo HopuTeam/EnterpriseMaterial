@@ -45,19 +45,18 @@ namespace EnterpriseMaterial.Logic
         public int Add(identityInput inputEntity)
         {
 
-            RoleInfo entity = new RoleInfo
+            Identity  entity = new Identity
             {
-                Id = inputEntity.Id,
-                AddTime = DateTime.Now,
-                DelFlag = 0,
-                DelTime = DateTime.Now,
-                Description = inputEntity.Description,
-                RoleId = inputEntity.RoleId,
-                RoleName = inputEntity.RoleName,
+                ID = inputEntity.ID,
+                EntryTime = DateTime.Now,
+                Status = false,
+                LockTime = DateTime.Now,
+                Description = inputEntity.Description,               
+                Name = inputEntity.RoleName,
             };
 
-            _dbContext.Set<RoleInfo>().Add(entity);
-            return _dbContext.SaveChanges();
+            coreEntities.Set<Identity>().Add(entity);
+            return coreEntities.SaveChanges();
         }
 
 
