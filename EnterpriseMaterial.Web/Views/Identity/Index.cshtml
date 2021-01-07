@@ -35,7 +35,7 @@
     <script type="text/javascript">
 
 
-        var table;
+        var table, Shutdown;
         var active;
         var url = "";
         var action;
@@ -80,7 +80,7 @@
                             //转成json格式
                             var jsondata = JSON.parse(strdata);
                             //调用更新的方法
-                            btn_update(jsondata[0].Id);
+                            btn_update(jsondata[0].Id);                           
                         } else {
                             layer.alert("必须选中且只能选中一条信息！");
                         }
@@ -95,7 +95,15 @@
                             //转成json格式
                             var jsondata = JSON.parse(strdata);
                             //调用更新的方法
-                            btn_checkpower(jsondata[0].RoleId);
+                            powerid = jsondata[0].ID;                         
+                            Shutdown = layer.open({
+                                type: 2,
+                                title: '分配权限页',
+                                shadeClose: true,
+                                shade: 0.45,
+                                area: ['40%', '500px'],
+                                content: '/identity/IdentityPower?id=' + powerid
+                            });
                         } else {
                             layer.alert("必须选中且只能选中一条信息！");
                         }
@@ -109,7 +117,7 @@
 
                 $.ajax({
                     type: 'post',
-                    url: '/identity/ForbidRole',
+                    url: '/Role/ForbidRole',
                     data: {
                         id: this.value,
                         flag: obj.elem.checked,
@@ -162,7 +170,7 @@
 
             var selectInfo = $("#txt_Select").val();
             table.reload('mytable', {
-                url: '/identity/GetJsonList',
+                url: '/Role/GetJsonList',
                 page: {
                     curr: 1//从第一页开始
                 },
@@ -185,7 +193,7 @@
         btn_update = function (Id) {
             //alert(Id);
             action = "修改";
-            url = "/identity/DelIndex?id=" + Id + "";
+            url = '/Identity/IdentityPower?id='+Id ;
             var othis = $(this);
             active["notice"] ? active["notice"].call(this, othis) : '';
         };

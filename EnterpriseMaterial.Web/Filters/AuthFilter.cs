@@ -12,7 +12,7 @@ namespace EnterpriseMaterial.Web.Filters
     {
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            throw new NotImplementedException();
+            var user = context.HttpContext.Session.GetModel<Model.User>("User");
         }
 
         public void OnActionExecuting(ActionExecutingContext context)

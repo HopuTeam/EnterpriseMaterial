@@ -261,7 +261,69 @@ namespace EnterpriseMaterial.Logic
             throw new NotImplementedException();
         }
 
+        public Model.Identity Selectid(int id)
+        {
+            return coreEntities.Identities.FirstOrDefault(a => a.ID == id);
+        }
 
+        public bool SetPower(string powerUrl, int ldentityid)
+        {
+            //查询到当前身份拥有的权限
+            List<Model.IdentityPower> list = coreEntities.IdentityPowers.Where(a => a.IdentityID == ldentityid).ToList();
+            string[] arrUrl = powerUrl.Split(',');//分割拿到ldentity表的id
+            if (list.Count>0)
+            {
+                //删除身份原本拥有的权限
+                coreEntities.IdentityPowers.RemoveRange(list);
+                //如果保存数据库成功
+                if (coreEntities.SaveChanges()>0)
+                {
+                    //为当前角色重新添加权限                  
+                    for (int i = 0; i < arrUrl.Length-1; i++)
+                    {
+                        IdentityPower identityPower = new IdentityPower()
+                        {
+                            IdentityID = ldentityid,
+                            PowerID =Convert.ToInt32(  arrUrl[i])
+                        };
+                        coreEntities.IdentityPowers.Add(identityPower);
+                    }
+                    if (coreEntities.SaveChanges()>0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                
+                for (int i = 0; i < arrUrl.Length - 1; i++)
+                {
+                    IdentityPower identityPower = new IdentityPower()
+                    {
+                        IdentityID = ldentityid,
+                        PowerID = Convert.ToInt32(arrUrl[i])
+                    };
+                    coreEntities.IdentityPowers.Add(identityPower);
+                }
+                if (coreEntities.SaveChanges() > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
 
 
 

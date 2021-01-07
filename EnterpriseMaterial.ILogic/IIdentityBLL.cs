@@ -106,10 +106,14 @@ namespace EnterpriseMaterial.ILogic
         /// </summary>
         /// <returns></returns>
         Common.LayuiTreeModel LayuiTreeModels(int uid);
+        /// <summary>
+        /// 根据id查身份表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Model.Identity Selectid(int id);
 
-
-
-
+        bool SetPower(string powerUrl, int ldentityid);
 
 
 

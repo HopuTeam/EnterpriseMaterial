@@ -54,8 +54,9 @@ namespace EnterpriseMaterial.Web.Controllers
         /// 角色分配权限视图
         /// </summary>
         /// <returns></returns>
-        public IActionResult IdentityPower()
+        public IActionResult IdentityPower(int id)
         {
+            ViewData["power"] = identityBLL.Selectid(id);
             return View();
         }
 
@@ -234,9 +235,9 @@ namespace EnterpriseMaterial.Web.Controllers
         /// 角色权限Tree
         /// </summary>
         /// <returns></returns>
-        public string GetIdentityPower()
+        public string GetIdentityPower(int id)
         {
-            int id= HttpContext.Session.GetModel<User>("User").ID;
+           // int id= HttpContext.Session.GetModel<User>("User").ID;
             LayuiTreeModel view = identityBLL.LayuiTreeModels(id);
             var setting = new JsonSerializerSettings
             {
@@ -247,7 +248,24 @@ namespace EnterpriseMaterial.Web.Controllers
             return "[" + result + "]";
          
         }
-
+        /// <summary>
+        /// 为身份配置权限
+        /// </summary>
+        /// <param name="powerUrl">选中的权限</param>
+        /// <param name="ldentityid">ldentity表的id</param>
+        /// <returns></returns>
+        public string SetPower(string powerUrl,int ldentityid)
+        {
+            bool result= identityBLL.SetPower(powerUrl, ldentityid);
+            if (result == true)
+            {
+                return "success";
+            }
+            else
+            {
+                return "fail";
+            }
+        }
         #endregion
 
 
