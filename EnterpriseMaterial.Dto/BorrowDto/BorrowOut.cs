@@ -28,6 +28,6 @@ namespace EnterpriseMaterial.Dto.BorrowDto
         /// 结束时间
         /// </summary>
         public DateTime? EndTime { get; set; }
-        public bool Complete { get; set; }
+        public string Complete { get; set; }
     }
 }

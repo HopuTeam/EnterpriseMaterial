@@ -97,7 +97,7 @@ namespace EnterpriseMaterial.Web.Controllers
 
         public IActionResult ToapplySave(int GoodsID, int Number, string Description)//int UserID 用户ID, int Number数量, string Description申请理由
         {
-            bool T = BorrowBLL.ToapplyOne(GoodsID, Number, Description);
+            bool T = BorrowBLL.ToapplyOne(GoodsID,Number,Description);
             if (T)
                 return Content("申请成功，请等耐心待领导审批");
             else
@@ -147,14 +147,14 @@ namespace EnterpriseMaterial.Web.Controllers
         }
         public IActionResult Apply(int id)
         {
-            dynamic mod = BorrowBLL.Upapply(id);
+            Dto.BorrowDto.BorrowOut mod = BorrowBLL.Upapply(id);
             return View(mod);
         }
 
         #endregion
 
 
-        public IActionResult GetApply(Model.Borrow borrow)
+        public IActionResult GetApply(Dto.BorrowDto.BorrowOut borrow)
         {
             bool mod = BorrowBLL.Agree(borrow);
             if (mod)

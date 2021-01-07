@@ -85,14 +85,56 @@ namespace EnterpriseMaterial.Logic
                 StatusID = 1,
             };
             //数量或者价格太多的话需要领导审批
-            if (Number >= 10 || price >= 1000)
+            db.Borrows.Add(borrow);
+            if (db.SaveChanges() > 0)
+            {
+                goods.Number -= Number;
+                db.SaveChanges();
+                return true;
+            }
+            else
+                return false;
+        }
+        public bool Agree(Dto.BorrowDto.BorrowOut borrowOut)
+        {
+            var mod = db.Goods.FirstOrDefault(x => x.Name == borrowOut.GoodsName);
+            var User = db.Users.FirstOrDefault(x => x.Name == borrowOut.UserName);
+            if (mod.Number <= 0)
+                return false;
+            if (mod.Number < borrowOut.Number)
+                return false;
+            bool x = true;
+            //查询这个物品总价属于什么类型
+            var goods = (from go in db.Goods
+                         where go.Name == borrowOut.GoodsName
+                         select go
+                       ).FirstOrDefault();
+            //如果是设备借取类的就要归还
+            if (goods.TypeID == 2)
+            {
+                x = false;
+            }
+            //物品总价
+            decimal price = goods.Money * borrowOut.Number;
+            Model.Borrow borrow = new Model.Borrow()
+            {
+                GoodsID = mod.ID,
+                Number = borrowOut.Number,
+                Complete = x,
+                Description = mod.Description,
+                UserID = User.ID,// /////////////写死UserID
+                SendTime = DateTime.Now,
+                StatusID = 1,
+            };
+            //数量或者价格太多的话需要领导审批
+            if (borrowOut.Number >= 10 || price >= 1000)
             {
                 // borrow.DepartmentID = 1;
             }
             db.Borrows.Add(borrow);
             if (db.SaveChanges() > 0)
             {
-                goods.Number -= Number;
+                goods.Number -= borrowOut.Number;
                 db.SaveChanges();
                 return true;
             }
@@ -136,7 +178,9 @@ namespace EnterpriseMaterial.Logic
                            MiddleTime = Borrows.MiddleTime,
                            EndTime = Borrows.EndTime,
                            Number = Borrows.Number,
-                       }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+             Complete =Borrows.Complete,
+                       
+        }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
             conut = mod.Count();
 
             return JsonConvert.SerializeObject(mod);
@@ -163,7 +207,8 @@ namespace EnterpriseMaterial.Logic
                            MiddleTime = Borrows.MiddleTime,
                            EndTime = Borrows.EndTime,
                            Number = Borrows.Number,
-                       }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+                           
+        }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
             conut = mod.Count();
 
             return JsonConvert.SerializeObject(mod);
@@ -198,33 +243,30 @@ namespace EnterpriseMaterial.Logic
                            StatusName = Statuses.Name,
                            Suggest = Borrows.Suggest,
                            Number = Borrows.Number,
+                           Complete=Borrows.Complete
                        }).FirstOrDefault();
+            string Complete = null;
+            if (mod.Complete)
+            {
+                Complete = "耗材领用"; 
+            }
+            else {
+               Complete = "设备借取";
+            }
             BorrowOut borrow = new BorrowOut()
             {
-                ID=mod.ID,
-                GoodsName=mod.GoodsName,
-                UserName=mod.UserName,
-                Description=mod.Description,
-                StatusName=mod.StatusName,
-                Suggest=mod.Suggest,
-                Number= mod.Number,
+                ID = mod.ID,
+                GoodsName = mod.GoodsName,
+                UserName = mod.UserName,
+                Description = mod.Description,
+                StatusName = mod.StatusName,
+                Suggest = mod.Suggest,
+                Number = mod.Number,
+                Complete = Complete
             };
 
             return borrow;
         }
 
-        public bool Agree(Model.Borrow borrow)
-        {
-            var mod = db.Borrows.FirstOrDefault(x => x.GoodsID == borrow.GoodsID && x.UserID == borrow.UserID);
-            mod.Suggest = borrow.Suggest;
-            mod.StatusID = borrow.StatusID;
-            if (borrow.StatusID == 3)
-                mod.MiddleTime = DateTime.Now;
-            mod.EndTime = DateTime.Now;
-            if (db.SaveChanges() > 0)
-                return true;
-            else
-                return false;
-        }
     }
 }

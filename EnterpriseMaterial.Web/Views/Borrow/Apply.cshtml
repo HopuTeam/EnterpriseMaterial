@@ -15,57 +15,68 @@
 <body>
     <h1>审批申请</h1>
     <div class="layui-col-md8" style="margin-left:10%;margin-right:10%">
-
-
-
-        div class="layui-form-item">
-        <label class="layui-form-label">申请人</label>
-        <div class="layui-input-inline">
-            <input type="text" id="UserName" lay-verify="required" autocomplete="off" class="layui-input"value="@Model.UserName" readonly="readonly" style="color:red;font-weight:600">
-        </div>
-    </div> 
-
-    <div class="layui-form layui-form-pane" lay-filter="form_add">
         <div class="layui-form-item">
-            <label class="layui-form-label">耗材</label>
+            <label class="layui-form-label">编号</label>
             <div class="layui-input-inline">
-                <input type="text" id="GoodName" lay-verify="required" autocomplete="off" class="layui-input" value="@Model.GoodsName" readonly="readonly" style="color:red;font-weight:600">
+                <input type="number" required class="form-control" id="Number" value="1" min="1" max="@Model.ID">
             </div>
         </div>
+
+
 
         <div class="layui-form-item">
-
-            <label class="layui-form-label">申请数量</label>
+            <label class="layui-form-label">申请人</label>
             <div class="layui-input-inline">
-                <input type="number" required class="form-control" id="Number" value="1" min="1" max="@Model.Number">
-            </div>
-        </div>
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">申请理由</label>
-            <div class="layui-input-block">
-                <textarea class="layui-textarea" lay-verify="required">@Model.Description</textarea>
-            </div>
-        </div>
-        <div>
-            <select id="Sele">
-                <option value="1">申请通过</option>
-                <option value="5">驳回申请</option>
-                <option value="3">代仓库审批</option>
-            </select>
-        </div>
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">审批理由</label>
-            <div class="layui-input-block">
-                <textarea placeholder="请输入领用理由" class="layui-textarea" lay-verify="required" id="Reason" value="@Model.Suggest"></textarea>
+                <input type="text" id="UserName" lay-verify="required" autocomplete="off" class="layui-input" value="@Model.UserName" readonly="readonly" style="color:red;font-weight:600">
             </div>
         </div>
 
-        <div class="layui-form-item" style="text-align:center">
-            <button class="layui-btn" id="submit" lay-submit="" lay-filter="formDemo">提交申请</button>
-            <button class="layui-btn" id="cancel">取消</button>
-        </div>
+        <div class="layui-form layui-form-pane" lay-filter="form_add">
+            <div class="layui-form-item">
+                <label class="layui-form-label">耗材</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="GoodName" lay-verify="required" autocomplete="off" class="layui-input" value="@Model.GoodsName" readonly="readonly" style="color:red;font-weight:600">
+                </div>
+            </div>
 
-    </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">申请数量</label>
+                <div class="layui-input-inline">
+                    <input type="number" required class="form-control" id="Number" value="1" min="1" max="@Model.Number">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">申请理由</label>
+                <div class="layui-input-block">
+                    <textarea class="layui-textarea" lay-verify="required">@Model.Description</textarea>
+                </div>
+            </div>
+
+
+            <div>
+                <select id="Sele">
+                    <option value="1">申请通过</option>
+                    <option value="2">驳回申请</option>
+                </select>
+            </div>
+
+
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">审批理由</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入领用理由" class="layui-textarea" lay-verify="required" id="Reason" value="@Model.Suggest"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="text-align:center">
+                <button class="layui-btn" id="submit" lay-submit="" lay-filter="formDemo">提交申请</button>
+                <button class="layui-btn" id="cancel">取消</button>
+            </div>
+
+        </div>
     </div>
 
 
@@ -76,12 +87,14 @@
     <script>
         $("submit").click(function () {
             var data = {
-                GoodsID: $("#ID").val(),
+                ID: $("#ID").val(),
                 StatusID=$("#selec").get(0).selectedIndex,
                 Suggest=$("#Reason").val(),
-                UserID=$("#User").val(),
+                GoodName=$("#GoodName").val(),
+                Number=$("#Number").val(),
+                UserName=$("UserName").val(),
             }
-            $.post("", data, function (res) {
+            $.post("/borrow/GetApply", data, function (res) {
                 layer.msg(res, function () {
                     window.parent.Cancel();
 
