@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace EnterpriseMaterial.Model
+namespace EnterpriseMaterial.Dto.DepartmentDTO
 {
-    /// <summary>
-    /// 部门表
-    /// </summary>
-    public class Departments
+    public class DepartmentInput
     {
-        [Key]
         public int ID { get; set; }
         /// <summary>
         /// 部门名字
@@ -27,6 +22,7 @@ namespace EnterpriseMaterial.Model
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime? EntryTime { get; set; }
+        
+
     }
 }
