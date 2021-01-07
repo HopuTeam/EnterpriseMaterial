@@ -67,27 +67,10 @@ namespace EnterpriseMaterial.Web.Controllers
         #region 非页面
 
 
-        /// <summary>
-        /// 给用户配置角色的方法
-        /// </summary>
-        /// <param name="strjson"></param>
-        /// <returns></returns>
-        //public string ConfigRole(string userID, string arrRoleID)
-        //{
-        //    if (identityBLL.ConfigRole(userID, arrRoleID))
-        //    {
-        //        return "操作成功";
-        //    }
-        //    else
-        //    {
-        //        return "操作失败";
-        //    }
+    
+       
 
-        //}
-        //未完成
-
-
-        public string Add(identityInput inputEntity)
+        public string Add(identityInput inputEntity) ///添加
         {
 
             if (identityBLL.Add(inputEntity) > 0)
@@ -101,7 +84,26 @@ namespace EnterpriseMaterial.Web.Controllers
         }
 
 
+        /// <summary>
+        /// 角色信息更新的方法
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public string Update(identityInput inputEntity)
+        {
 
+            if (identityBLL.Update(inputEntity) > 0)
+            {
+
+                return "ok";
+
+            }
+            else
+            {
+                return "no";
+            }
+
+        }
 
 
         /// <summary>
@@ -167,6 +169,34 @@ namespace EnterpriseMaterial.Web.Controllers
 
         }
 
+
+
+
+        /// <summary>
+        /// 开启/禁用角色的方法
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="flag"></param>
+        /// <returns></returns>
+        public string ForbidRole(int ID, string flag)
+        {
+            if (identityBLL.ForbidRole(ID, flag))
+            {
+                if (flag == "true")
+                {
+                    return "角色已开启";
+                }
+                else
+                {
+                    return "角色已禁用";
+                }
+
+            }
+            else
+            {
+                return "操作失败";
+            }
+        }
 
 
         /// <summary>

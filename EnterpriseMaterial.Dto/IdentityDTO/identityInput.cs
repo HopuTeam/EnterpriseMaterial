@@ -12,11 +12,11 @@ namespace EnterpriseMaterial.Dto.IdentityDTO
 
         [Required]
         [StringLength(16)]
-        public string RoleId { get; set; }
+        public int RoleId { get; set; }
 
         [Required]
         [StringLength(16)]
-        public string RoleName { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [StringLength(32)]

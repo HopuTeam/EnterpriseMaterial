@@ -16,6 +16,13 @@ namespace EnterpriseMaterial.ILogic
         /// <returns></returns>
         int Add(identityInput inputEntity);
 
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="inputModel"></param>
+        /// <returns></returns>
+        int Update(identityInput inputEntity);
+
 
 
         /// <summary>
@@ -62,6 +69,18 @@ namespace EnterpriseMaterial.ILogic
 
 
         #endregion
+
+
+
+        /// <summary>
+        /// 开启/禁用角色
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="flag"></param>
+        /// <returns></returns>
+        bool ForbidRole(int id, string flag);
+
+
 
 
 

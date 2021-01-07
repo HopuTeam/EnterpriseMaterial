@@ -53,7 +53,7 @@ namespace EnterpriseMaterial.Logic
                 Status = false,
                 LockTime = DateTime.Now,
                 Description = inputEntity.Description,               
-                Name = inputEntity.RoleName,
+                Name = inputEntity.Name,
             };
 
             coreEntities.Set<Identity>().Add(entity);
@@ -62,6 +62,28 @@ namespace EnterpriseMaterial.Logic
 
 
 
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="inputModel"></param>
+        /// <returns></returns>
+        public int Update(identityInput inputEntity)
+        {
+            Identity entity = coreEntities.Set<Identity>().Where(u => u.ID == inputEntity.RoleId).FirstOrDefault();
+            if (entity != null)
+            {
+                entity.Description = inputEntity.Description;
+                entity.Name = inputEntity.Name;
+                coreEntities.Set<Identity>().Attach(entity);
+                coreEntities.Set<Identity>().Update(entity);
+                return coreEntities.SaveChanges();
+            }
+            else
+            {
+                return 0;
+            }
+
+        }
 
 
         /// <summary>
@@ -106,10 +128,6 @@ namespace EnterpriseMaterial.Logic
 
 
 
-
-
-
-
         ///实现接口 并在这里处理数据    
         public List<IdentityQutput> LoadPageEntities(int pageIndex, int pageSize, out int totalCount, string selectInfo)//分页查询
         {
@@ -138,6 +156,48 @@ namespace EnterpriseMaterial.Logic
 
             return list;
         }
+
+
+
+
+
+        /// <summary>
+        /// 开启/禁用角色
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="flag"></param>
+        /// <returns></returns>
+        public bool ForbidRole(int id, string flag)
+        {
+
+            Identity entity = coreEntities.Set<Identity>().Where(u => u.ID == id).FirstOrDefault();
+            if (entity != null)
+            {
+                if (flag == "true")
+                {
+                    entity.Status = true;//表示开启
+                    coreEntities.Set<Identity>().Attach(entity);
+                    coreEntities.Set<Identity>().Update(entity);
+                    if (coreEntities.SaveChanges() > 0)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    entity.Status = false;//表示禁用
+                    coreEntities.Set<Identity>().Attach(entity);
+                    coreEntities.Set<Identity>().Update(entity);
+                    if (coreEntities.SaveChanges() > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+
 
 
 

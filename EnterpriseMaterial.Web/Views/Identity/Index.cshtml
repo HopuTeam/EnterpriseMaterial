@@ -109,7 +109,7 @@
 
                 $.ajax({
                     type: 'post',
-                    url: '/Role/ForbidRole',
+                    url: '/identity/ForbidRole',
                     data: {
                         id: this.value,
                         flag: obj.elem.checked,
@@ -162,7 +162,7 @@
 
             var selectInfo = $("#txt_Select").val();
             table.reload('mytable', {
-                url: '/Role/GetJsonList',
+                url: '/identity/GetJsonList',
                 page: {
                     curr: 1//从第一页开始
                 },
@@ -185,7 +185,7 @@
         btn_update = function (Id) {
             //alert(Id);
             action = "修改";
-            url = "/identity/UpdateIndex?id=" + Id + "";
+            url = "/identity/DelIndex?id=" + Id + "";
             var othis = $(this);
             active["notice"] ? active["notice"].call(this, othis) : '';
         };
