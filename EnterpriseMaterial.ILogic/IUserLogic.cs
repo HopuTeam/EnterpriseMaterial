@@ -8,5 +8,6 @@ namespace EnterpriseMaterial.ILogic
     {
         Dto.UserDto.UserOut GetInfo(int ID);
         List<Model.Power> GetPower(int ID);
+        Model.User GetEmail(string Email);
     }
 }

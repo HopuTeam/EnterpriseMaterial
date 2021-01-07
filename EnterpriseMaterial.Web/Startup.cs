@@ -40,6 +40,7 @@ namespace EnterpriseMaterial.Web
             services.AddScoped<ILogic.ICategoryBLL, Logic.CategoryBLL>();
             services.AddScoped<ILogic.IIdentityBLL, Logic.IdentityBLL>();
             services.AddScoped<ILogic.IUserLogic, Logic.UserLogic>();
+            services.AddScoped<ILogic.ISignLogic, Logic.SignLogic>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +52,7 @@ namespace EnterpriseMaterial.Web
 
             app.UseMvc(options =>
             {
-                options.MapRoute("Default", "{Controller=Home}/{Action=Index}/{ID?}");
+                options.MapRoute("Default", "{Controller=Sign}/{Action=Index}/{ID?}");
             });
         }
     }

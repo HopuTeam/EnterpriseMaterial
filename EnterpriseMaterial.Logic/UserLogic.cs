@@ -26,7 +26,7 @@ namespace EnterpriseMaterial.Logic
 
         public Dto.UserDto.UserOut GetInfo(int ID)
         {
-            return (Dto.UserDto.UserOut)(from s in EF.Signs
+            return ((Dto.UserDto.UserOut)(from s in EF.Signs
                                          join u in EF.Users on s.ID equals u.SignID
                                          where s.ID == ID
                                          select new
@@ -39,7 +39,12 @@ namespace EnterpriseMaterial.Logic
                                              u.Sex,
                                              u.Status,
                                              u.EntryTime
-                                         });
+                                         }));
+        }
+
+        public Model.User GetEmail(string Email)
+        {
+            return EF.Users.FirstOrDefault(x => x.Email == Email);
         }
     }
 }

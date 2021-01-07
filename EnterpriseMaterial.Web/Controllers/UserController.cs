@@ -19,7 +19,7 @@ namespace EnterpriseMaterial.Web.Controllers
         public IActionResult Index()
         {
             // Dto.UserDto.UserOut
-            return View(Iuser.GetInfo(HttpContext.Session.GetModel<Model.Sign>("User").ID));
+            return View(Iuser.GetInfo(HttpContext.Session.GetModel<Model.User>("User").SignID));
         }
 
         //[HttpPost]
@@ -55,7 +55,7 @@ namespace EnterpriseMaterial.Web.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.SetModel("User", null);
-            return Content("success");
+            return Json(new { message = "", status = true });
         }
 
         //[HttpGet]

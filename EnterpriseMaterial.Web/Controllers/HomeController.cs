@@ -23,7 +23,7 @@ namespace EnterpriseMaterial.Web.Controllers
         [HttpPost]
         public IActionResult GetMenu()
         {
-            return Json(new { mod = Iuser.GetPower(1) });
+            return Json(new { mod = Iuser.GetPower(HttpContext.Session.GetModel<Model.User>("User").SignID) });
         }
     }
 }

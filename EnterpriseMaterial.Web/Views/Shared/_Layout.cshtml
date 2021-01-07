@@ -35,35 +35,37 @@
     <script src="~/Content/layui/layui.all.js"></script>
     <script src="~/Scripts/copyright.js"></script>
     <script>
-        $.post("/Home/GetMenu", function (res) {
-            for (x in res.mod) {
-                if (res.mod[x].parentID == 0) {
-                    var info = "<li class='nav-item'><a class='nav-link dropdown-toggle' id='navbardrop' data-toggle='dropdown' href=" + res.mod[x].actionUrl + "><i class='layui-icon " + res.mod[x].menuIcon + "'></i> " + res.mod[x].name + "</a>";
-                    for (i in res.mod) {
-                        if (res.mod[i].parentID == res.mod[x].id) {
-                            info += "<div class='dropdown-menu'><a class='dropdown-item' href=" + res.mod[i].actionUrl + "><i class='layui-icon " + res.mod[i].menuIcon + "'></i> " + res.mod[i].name + "</a></div>";
+        $(function () {
+            $.post("/Home/GetMenu", function (res) {
+                for (x in res.mod) {
+                    if (res.mod[x].parentID == 0) {
+                        var info = "<li class='nav-item'><a class='nav-link dropdown-toggle' id='navbardrop' data-toggle='dropdown' href=" + res.mod[x].actionUrl + "><i class='layui-icon " + res.mod[x].menuIcon + "'></i> " + res.mod[x].name + "</a>";
+                        for (i in res.mod) {
+                            if (res.mod[i].parentID == res.mod[x].id) {
+                                info += "<div class='dropdown-menu'><a class='dropdown-item' href=" + res.mod[i].actionUrl + "><i class='layui-icon " + res.mod[i].menuIcon + "'></i> " + res.mod[i].name + "</a></div>";
+                            };
                         };
+                        info += "</li>";
+                        $("#navInfo").append(info);
                     };
-                    info += "</li>";
-                    $("#navInfo").append(info);
                 };
-            };
-            $("#navInfo").append("<li class='nav-item'><a class='nav-link' href='/User/Index'><i class='layui-icon layui-icon-username'></i> 个人信息</a></li><li class='nav-item'><a class='nav-link' href='#Logout' id='Logout'><i class='layui-icon layui-icon-logout'></i> 退出</a></li>");
+                $('#navInfo').append('<li class="nav-item"><a class="nav-link" href="/User/Index"><i class="layui-icon layui-icon-username"></i> 个人信息</a></li><li class="nav-item"><a class="nav-link logout" href="#logout" id="logout"><i class="layui-icon layui-icon-logout"></i> 退出</a></li>');
+            });
         });
 
-        $("#Logout").click(function () {
+        $('.logout').click(function () {
             layer.load(2, { shade: false });
             layer.confirm('确定要退出登录？', {
                 btn: ['确定', '取消']
             }, function () {
-                $.post("/User/Logout", function (res) {
-                    if (res == "success") {
-                        layer.alert("您已退出账户！");
+                $.post('/User/Logout', function (res) {
+                    if (res.status) {
+                        layer.alert('您已退出账户！');
                         setTimeout(function () {
-                            window.location.href = "/Sign/Index";
+                            window.location.href = '/Sign/Index';
                         }, 1500);
                     } else {
-                        layer.alert(res);
+                        layer.alert(res.message);
                     };
                 });
             });
