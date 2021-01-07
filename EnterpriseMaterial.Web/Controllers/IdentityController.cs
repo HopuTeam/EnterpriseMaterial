@@ -10,6 +10,8 @@ using EnterpriseMaterial.Data;
 using Microsoft.Extensions.Logging;
 using EnterpriseMaterial.Logic;
 using EnterpriseMaterial.Dto.IdentityDTO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace EnterpriseMaterial.Web.Controllers
 {
@@ -44,6 +46,15 @@ namespace EnterpriseMaterial.Web.Controllers
 
 
         public IActionResult Delindex()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 角色分配权限视图
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult IdentityPower()
         {
             return View();
         }
@@ -189,7 +200,23 @@ namespace EnterpriseMaterial.Web.Controllers
 
         //}
 
-
+        /// <summary>
+        /// 角色权限Tree
+        /// </summary>
+        /// <returns></returns>
+        public string GetIdentityPower()
+        {
+            int id= HttpContext.Session.GetModel<User>("User").ID;
+            LayuiTreeModel view = identityBLL.LayuiTreeModels(id);
+            var setting = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                DateFormatString = "yyyy-MM-dd HH:mm:ss"//格式化日期
+            };
+            var result = JsonConvert.SerializeObject(view, Formatting.Indented, setting);
+            return "[" + result + "]";
+         
+        }
 
         #endregion
 
