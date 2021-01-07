@@ -61,19 +61,19 @@ namespace EnterpriseMaterial.Web.Controllers
         /// </summary>
         /// <param name="strjson"></param>
         /// <returns></returns>
-        public string ConfigRole(string userID, string arrRoleID)
-        {
-            if (identityBLL.ConfigRole(userID, arrRoleID))
-            {
-                return "操作成功";
-            }
-            else
-            {
-                return "操作失败";
-            }
+        //public string ConfigRole(string userID, string arrRoleID)
+        //{
+        //    if (identityBLL.ConfigRole(userID, arrRoleID))
+        //    {
+        //        return "操作成功";
+        //    }
+        //    else
+        //    {
+        //        return "操作失败";
+        //    }
 
-        }
-
+        //}
+        //未完成
 
 
 

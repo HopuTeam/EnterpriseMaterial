@@ -9,7 +9,12 @@ namespace EnterpriseMaterial.ILogic
 
   public  interface IIdentityBLL
     {
-
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="inputModel"></param>
+        /// <returns></returns>
+        int Add(identityInput inputEntity);
 
 
 
@@ -20,7 +25,7 @@ namespace EnterpriseMaterial.ILogic
 
         #region 查询
 
-       
+
         /// <summary>
         /// 普通查询
         /// </summary>
@@ -60,7 +65,7 @@ namespace EnterpriseMaterial.ILogic
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        string GetRoleID(string userID);
+        //string GetRoleID(string userID);
 
         /// <summary>
         /// 给用户配置角色

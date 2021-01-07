@@ -42,23 +42,23 @@ namespace EnterpriseMaterial.Logic
         /// </summary>
         /// <param name="inputModel"></param>
         /// <returns></returns>
-        //public int Add(RoleInput inputEntity)
-        //{
+        public int Add(identityInput inputEntity)
+        {
 
-        //    RoleInfo entity = new RoleInfo
-        //    {
-        //        Id = inputEntity.Id,
-        //        AddTime = DateTime.Now,
-        //        DelFlag = 0,
-        //        DelTime = DateTime.Now,
-        //        Description = inputEntity.Description,
-        //        RoleId = inputEntity.RoleId,
-        //        RoleName = inputEntity.RoleName,
-        //    };
+            RoleInfo entity = new RoleInfo
+            {
+                Id = inputEntity.Id,
+                AddTime = DateTime.Now,
+                DelFlag = 0,
+                DelTime = DateTime.Now,
+                Description = inputEntity.Description,
+                RoleId = inputEntity.RoleId,
+                RoleName = inputEntity.RoleName,
+            };
 
-        //    _dbContext.Set<RoleInfo>().Add(entity);
-        //    return _dbContext.SaveChanges();
-        //}
+            _dbContext.Set<RoleInfo>().Add(entity);
+            return _dbContext.SaveChanges();
+        }
 
 
 
@@ -137,6 +137,44 @@ namespace EnterpriseMaterial.Logic
                                      }).ToList();
 
             return list;
+        }
+
+
+
+        /// <summary>
+        /// 获取用户拥有的角色
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public string GetRoleID(int userID)//可以用的
+        {
+            var iquery = coreEntities.Set<IdentityPower>().Where(u => u.IdentityID == userID);
+            //获取roleid-->（筛选被禁止的角色，严格来说，必须筛选）
+            var roleIquery = coreEntities.Set<Identity>().Where(u => u.ID > 0);
+            var r_roleIquery = (from a in iquery
+                                join b in roleIquery on a.IdentityID equals b.ID into b_join
+                                from c in b_join.DefaultIfEmpty()
+                                select new
+                                {
+                                    UserID = a.ID,
+                                    RoleID = a.IdentityID,
+                                    Status = c.Status,
+                                }).Where(u => u.Status == false);//筛选
+                                                              //构造角色id字符串             
+            if (r_roleIquery.Count() > 0)
+            {
+                string strRoleID = "";
+                foreach (var item in r_roleIquery)
+                {
+                    strRoleID += item.RoleID + ",";
+                }
+                //去掉最后一个逗号               
+                return strRoleID.Substring(0, strRoleID.Length - 1);
+            }
+            else
+            {
+                return "0";
+            }
         }
 
 
