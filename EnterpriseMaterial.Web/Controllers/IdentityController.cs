@@ -251,12 +251,33 @@ namespace EnterpriseMaterial.Web.Controllers
         /// <summary>
         /// 为身份配置权限
         /// </summary>
-        /// <param name="powerUrl">选中的权限</param>
+        /// <param name="IdentiyiList">选中的权限</param>
         /// <param name="ldentityid">ldentity表的id</param>
         /// <returns></returns>
-        public string SetPower(string powerUrl,int ldentityid)
+        [HttpPost]
+        public string SetPower(string  IdentiyiList,int ldentityid)
         {
-            bool result= identityBLL.SetPower(powerUrl, ldentityid);
+            bool result= identityBLL.SetPower(IdentiyiList, ldentityid);
+  
+            if (result == true)
+            {
+                return "success";
+            }
+            else
+            {
+                return "fail";
+            }
+        }
+
+        /// <summary>
+        /// 重置权限
+        /// </summary>
+        /// <param name="ldentityid"></param>
+        /// <returns></returns>
+        public string Seset(int ldentityid)
+        {
+            bool result = identityBLL.Seset(ldentityid);
+
             if (result == true)
             {
                 return "success";

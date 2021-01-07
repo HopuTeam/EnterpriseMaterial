@@ -42,6 +42,7 @@ namespace EnterpriseMaterial.Web
             services.AddScoped<ILogic.IIdentityBLL, Logic.IdentityBLL>();
             services.AddScoped<ILogic.IUserLogic, Logic.UserLogic>();
             services.AddScoped<ILogic.ISignLogic, Logic.SignLogic>();
+            services.AddScoped<ILogic.IDepartmentService, Logic.DepartmentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

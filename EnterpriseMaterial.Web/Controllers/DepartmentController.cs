@@ -1,5 +1,6 @@
 ﻿using EnterpriseMaterial.Common;
 using EnterpriseMaterial.Dto.DepartmentDTO;
+using EnterpriseMaterial.ILogic;
 using EnterpriseMaterial.Logic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,21 +14,25 @@ namespace EnterpriseMaterial.Web.Controllers
     
     public class DepartmentController : Controller
     {
+        private readonly IDepartmentService _departmentService;
         #region 构造函数注入
-        private readonly DepartmentService _departmentService;
+        //private readonly DepartmentService _departmentService;
 
-        public DepartmentController(DepartmentService departmentService)
-        {
-            _departmentService = departmentService;
+        //public DepartmentController(DepartmentService departmentService)
+        //{
+        //    _departmentService = departmentService;
+        //}
+
+        //private ILogger<DepartmentController> _logger;
+
+        //public DepartmentController(ILogger<DepartmentController> logger)
+        //{
+        //    _logger = logger;
+        //}
+
+        public DepartmentController(ILogic.IDepartmentService departmentService) {
+            this._departmentService = departmentService;
         }
-
-        private ILogger<DepartmentController> _logger;
-
-        public DepartmentController(ILogger<DepartmentController> logger)
-        {
-            _logger = logger;
-        }
-
         #endregion
         public IActionResult Index()
         {

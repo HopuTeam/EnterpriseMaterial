@@ -256,9 +256,22 @@ namespace EnterpriseMaterial.Logic
             }
         }
 
-        public LayuiTreeModel LayuiTreeModels(int uid)
+        public LayuiTreeModel LayuiTreeModels(int powerid)
         {
-            throw new NotImplementedException();
+            //查找顶级目录，就是所有父id为0的
+            List<Power> powers = coreEntities.Powers.Where(a => a.ParentID == 0).ToList();
+            LayuiTreeModel layuiTreeModel = new LayuiTreeModel()
+            {
+                Id = 0,
+                Spread = true,
+                Title = "权限目录",
+                Field = "",
+                Disabled = false,
+                Checked = false,
+                Href = ""
+            };
+            DiGui(ref layuiTreeModel, powers, powerid);
+            return layuiTreeModel;
         }
 
         public Model.Identity Selectid(int id)
@@ -266,11 +279,11 @@ namespace EnterpriseMaterial.Logic
             return coreEntities.Identities.FirstOrDefault(a => a.ID == id);
         }
 
-        public bool SetPower(string powerUrl, int ldentityid)
+        public bool SetPower(string IdentiyiList, int ldentityid)
         {
             //查询到当前身份拥有的权限
             List<Model.IdentityPower> list = coreEntities.IdentityPowers.Where(a => a.IdentityID == ldentityid).ToList();
-            string[] arrUrl = powerUrl.Split(',');//分割拿到ldentity表的id
+            string[] arrUrl = string.Join(',' ,IdentiyiList.Split(',').Distinct().ToArray()).Split(',');//去重，分割后拿到ldentity表的id          
             if (list.Count>0)
             {
                 //删除身份原本拥有的权限
@@ -279,7 +292,7 @@ namespace EnterpriseMaterial.Logic
                 if (coreEntities.SaveChanges()>0)
                 {
                     //为当前角色重新添加权限                  
-                    for (int i = 0; i < arrUrl.Length-1; i++)
+                    for (int i = 0; i < arrUrl.Length; i++)
                     {
                         IdentityPower identityPower = new IdentityPower()
                         {
@@ -305,7 +318,7 @@ namespace EnterpriseMaterial.Logic
             else
             {
                 
-                for (int i = 0; i < arrUrl.Length - 1; i++)
+                for (int i = 0; i < arrUrl.Length ; i++)
                 {
                     IdentityPower identityPower = new IdentityPower()
                     {
@@ -325,9 +338,53 @@ namespace EnterpriseMaterial.Logic
             }
         }
 
+        public bool Seset(int ldentityid)
+        {
+            List<Model.IdentityPower> list = coreEntities.IdentityPowers.Where(a => a.IdentityID == ldentityid).ToList();
+            coreEntities.IdentityPowers.RemoveRange(list);
+            if (coreEntities.SaveChanges() > 0)
 
+                return true;
+            else
+                return false;
+        }
 
+        /// <summary>
+        /// 递归
+        /// </summary>
+        /// <param name="layuiTreeModel">laiuiTree需要的类型</param>
+        /// <param name="powers"></param>
+        /// <param name="powerid">当前身份id</param>
+        public void DiGui(ref LayuiTreeModel  layuiTreeModel,List<Power> powers ,int powerid)
+        {
+            List<LayuiTreeModel> treeModels = new List<LayuiTreeModel>();
+            foreach (var item in powers)
+            {
+                //查询是否有这个权限
+                IdentityPower identity = coreEntities.IdentityPowers.Where(a => a.IdentityID == powerid && a.PowerID == item.ID).FirstOrDefault();
+                LayuiTreeModel entity = new LayuiTreeModel()
+                {
+                    Id = item.ID,
+                    Spread = identity != null ? true : false,
+                    Title = item.Name + "-->" + item.ActionUrl,
+                    Field = "",
+                    Disabled = false,
+                    Checked = identity != null ? true : false,
+                    Href = ""
+                };
+                //查询当前权限是否有子目录
+                List<Power> powerlist = coreEntities.Powers.Where(o => o.ParentID == item.ID).ToList();
+                if (powerlist !=null)
+                {
+                    entity.Checked = false;
+                    DiGui(ref entity, powerlist, powerid);
+                }
+                treeModels.Add(entity);
+                layuiTreeModel.Children = treeModels;
+            }
+        }
 
+      
         #endregion
 
 

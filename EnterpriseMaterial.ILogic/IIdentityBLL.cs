@@ -105,7 +105,7 @@ namespace EnterpriseMaterial.ILogic
         /// 展示角色权限树 
         /// </summary>
         /// <returns></returns>
-        Common.LayuiTreeModel LayuiTreeModels(int uid);
+        Common.LayuiTreeModel LayuiTreeModels(int powerid);
         /// <summary>
         /// 根据id查身份表
         /// </summary>
@@ -113,9 +113,20 @@ namespace EnterpriseMaterial.ILogic
         /// <returns></returns>
         Model.Identity Selectid(int id);
 
-        bool SetPower(string powerUrl, int ldentityid);
+        /// <summary>
+        /// 配置权限
+        /// </summary>
+        /// <param name="IdentiyiList"></param>
+        /// <param name="ldentityid"></param>
+        /// <returns></returns>
+        bool SetPower(string IdentiyiList, int ldentityid);
 
-
+        /// <summary>
+        /// 重置权限，删除该身份全部权限
+        /// </summary>
+        /// <param name="ldentityid"></param>
+        /// <returns></returns>
+        bool Seset(int ldentityid);
 
 
 
