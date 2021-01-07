@@ -8,7 +8,7 @@ namespace EnterpriseMaterial.Model
     /// <summary>
     /// 部门表
     /// </summary>
-    public class Departments
+    public class Department
     {
         [Key]
         public int ID { get; set; }

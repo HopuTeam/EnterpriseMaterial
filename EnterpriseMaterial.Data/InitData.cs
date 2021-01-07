@@ -23,7 +23,7 @@ namespace EnterpriseMaterial.Data
                     Status = true
                 });
                 // User department
-                context.Departments.Add(new Model.Departments()
+                context.Departments.Add(new Model.Department()
                 {
                     Name = "管理部门",
                     EntryTime = DateTime.Now,

@@ -8,6 +8,7 @@ using EnterpriseMaterial.Model;
 using System.Linq;
 using EnterpriseMaterial.Data;
 using Microsoft.Extensions.Logging;
+using EnterpriseMaterial.Common;
 
 namespace EnterpriseMaterial.Logic
 {
@@ -193,6 +194,11 @@ namespace EnterpriseMaterial.Logic
             {
                 return false;
             }
+        }
+
+        public LayuiTreeModel LayuiTreeModels(int uid)
+        {
+            throw new NotImplementedException();
         }
 
 

@@ -11,7 +11,7 @@ namespace EnterpriseMaterial.Data
         public DbSet<Model.Borrow> Borrows { get; set; }
         public DbSet<Model.BorrowStatus> BorrowStatuses { get; set; }
         public DbSet<Model.Category> Categories { get; set; }
-        public DbSet<Model.Departments> Departments { get; set; }
+        public DbSet<Model.Department> Departments { get; set; }
         public DbSet<Model.Goods> Goods { get; set; }
         public DbSet<Model.Identity> Identities { get; set; }
         public DbSet<Model.Log> Logs { get; set; }

@@ -28,7 +28,7 @@ namespace EnterpriseMaterial.Logic
 
         public List<DepartmentOutput> GetList()
         {
-            return (from a in _dbContext.Set<Departments>()
+            return (from a in _dbContext.Set<Department>()
                     join b in _dbContext.Set<User>() on a.UserID equals b.ID into join_a
                     from c in join_a.DefaultIfEmpty()
                     select new DepartmentOutput
