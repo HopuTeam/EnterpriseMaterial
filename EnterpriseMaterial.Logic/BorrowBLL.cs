@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Newtonsoft.Json;
+using EnterpriseMaterial.Dto.BorrowDto;
 
 namespace EnterpriseMaterial.Logic
 {
@@ -181,9 +182,49 @@ namespace EnterpriseMaterial.Logic
 
 
         //同意申请
-        public Model.Borrow Upapply(int Bid)
+        public BorrowOut Upapply(int Bid)
         {
-            return db.Borrows.FirstOrDefault(x => x.ID == Bid);
+            var mod = (from Borrows in db.Borrows
+                       join Users in db.Users on Borrows.UserID equals Users.ID
+                       join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
+                       join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
+                       where Borrows.ID == Bid
+                       select new
+                       {
+                           ID = Borrows.ID,
+                           GoodsName = Goods.Name,
+                           UserName = Users.Name,
+                           Description = Borrows.Description,
+                           StatusName = Statuses.Name,
+                           Suggest = Borrows.Suggest,
+                           Number = Borrows.Number,
+                       }).FirstOrDefault();
+            BorrowOut borrow = new BorrowOut()
+            {
+                ID=mod.ID,
+                GoodsName=mod.GoodsName,
+                UserName=mod.UserName,
+                Description=mod.Description,
+                StatusName=mod.StatusName,
+                Suggest=mod.Suggest,
+                Number= mod.Number,
+            };
+
+            return borrow;
+        }
+
+        public bool Agree(Model.Borrow borrow)
+        {
+            var mod = db.Borrows.FirstOrDefault(x => x.GoodsID == borrow.GoodsID && x.UserID == borrow.UserID);
+            mod.Suggest = borrow.Suggest;
+            mod.StatusID = borrow.StatusID;
+            if (borrow.StatusID == 3)
+                mod.MiddleTime = DateTime.Now;
+            mod.EndTime = DateTime.Now;
+            if (db.SaveChanges() > 0)
+                return true;
+            else
+                return false;
         }
     }
 }

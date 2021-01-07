@@ -107,14 +107,35 @@ namespace EnterpriseMaterial.Web.Controllers
             else
                 return Content("申请失败，信息有误，或物品数量太少");
         }
-        #endregion 
+        #endregion
         #region  管理员管理申请
+
+             //管理员
         public IActionResult IndexFour()
         {
             return View();
         }
-
         public string GetListFour(int page = 1, int limit = 5)
+        {
+            dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpBorrow(out int dataConunt, page, limit));
+           // dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpSuperior(out int dataConunt, page, limit));
+            //List<Borrow> list =(List<Borrow>)JsonConvert.DeserializeObject(mod.ToString());
+            var result = new
+            {
+                code = 0,
+                msg = "",
+                count = dataConunt,
+                data = mod
+            };
+            return JsonConvert.SerializeObject(result);
+        }
+
+        //上级领导
+        public IActionResult IndexFive()
+        {
+            return View();
+        }
+        public string GetListFive(int page = 1, int limit = 5)
         {
             //dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpBorrow(out int dataConunt, page, limit));
             dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpSuperior(out int dataConunt, page, limit));
@@ -128,17 +149,23 @@ namespace EnterpriseMaterial.Web.Controllers
             };
             return JsonConvert.SerializeObject(result);
         }
-
-        public IActionResult Apply(int Bid)
+        public IActionResult Apply(int id)
         {
-            Borrow borrow = BorrowBLL.Upapply(Bid);
-            return View(borrow);
+            dynamic mod = BorrowBLL.Upapply(id);
+            return View(mod);
         }
 
-        public IActionResult GetApply(int Bid)
-        {
-            return Json(BorrowBLL.Upapply(Bid));
-        }
         #endregion
+
+
+        public IActionResult GetApply(Model.Borrow borrow)
+        {
+            bool mod = BorrowBLL.Agree(borrow);
+            if (mod)
+                return Content("成功");
+            else
+                return Content("失败");
+
+        }
     }
 }
