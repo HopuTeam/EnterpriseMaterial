@@ -36,7 +36,7 @@ namespace EnterpriseMaterial.Web.Controllers
             return View();
         }
 
-        public IActionResult addindex()
+        public IActionResult Addindex()
         {
             return View();
         }
@@ -76,7 +76,18 @@ namespace EnterpriseMaterial.Web.Controllers
         //未完成
 
 
+        public string Add(identityInput inputEntity)
+        {
 
+            if (identityBLL.Add(inputEntity) > 0)
+            {
+                return "ok";
+            }
+            else
+            {
+                return "no";
+            }
+        }
 
 
 
@@ -124,6 +135,25 @@ namespace EnterpriseMaterial.Web.Controllers
         }
 
 
+        /// <summary>
+        /// 判断角色id是否重复
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public string CheckRepeat(int value)
+        {
+
+            if (identityBLL.CheckRepeat(value))
+            {
+                //如果有记录，说明用户id重复，不可以
+                return "no";
+            }
+            else
+            {
+                return "ok";
+            }
+
+        }
 
 
 

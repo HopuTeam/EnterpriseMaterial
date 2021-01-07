@@ -16,9 +16,14 @@ namespace EnterpriseMaterial.ILogic
         /// <returns></returns>
         int Add(identityInput inputEntity);
 
-         
 
 
+        /// <summary>
+        /// 判断RoleID是否重复
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        bool CheckRepeat(int value);
 
 
 

@@ -70,7 +70,7 @@ namespace EnterpriseMaterial.Logic
         public List<IdentityQutput> LoadEntities()// 普通查询,获取未被禁用的所有
         {
 
-            List<IdentityQutput> list = (from a in coreEntities.Set<Identity>().Where(u => u.Status)
+            List<IdentityQutput> list = (from a in coreEntities.Set<Identity>().Where(u => u.Status==false)
                                      select new IdentityQutput
                                      {
                                          ID = a.ID,
@@ -177,7 +177,23 @@ namespace EnterpriseMaterial.Logic
         }
 
 
+        /// <summary>
+        /// 判断RoleID是否重复,重复返回true
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool CheckRepeat(int roleID)
+        {
+            if (coreEntities.Set<Identity>().Where(u => u.ID == roleID).Count() > 0)
 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 
 
