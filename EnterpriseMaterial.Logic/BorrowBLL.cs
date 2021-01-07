@@ -84,7 +84,7 @@ namespace EnterpriseMaterial.Logic
                 SendTime = DateTime.Now,
                 StatusID = 1,
             };
-            //数量或者价格太多的话需要领导审批
+            
             db.Borrows.Add(borrow);
             if (db.SaveChanges() > 0)
             {
@@ -97,49 +97,41 @@ namespace EnterpriseMaterial.Logic
         }
         public bool Agree(Dto.BorrowDto.BorrowOut borrowOut)
         {
-            var mod = db.Goods.FirstOrDefault(x => x.Name == borrowOut.GoodsName);
-            var User = db.Users.FirstOrDefault(x => x.Name == borrowOut.UserName);
-            if (mod.Number <= 0)
-                return false;
-            if (mod.Number < borrowOut.Number)
-                return false;
-            bool x = true;
-            //查询这个物品总价属于什么类型
-            var goods = (from go in db.Goods
-                         where go.Name == borrowOut.GoodsName
-                         select go
-                       ).FirstOrDefault();
-            //如果是设备借取类的就要归还
-            if (goods.TypeID == 2)
+           
+
+            var mod = db.Borrows.FirstOrDefault(x => x.ID == borrowOut.ID);
+
+            if (mod.MiddleTime == null)
             {
-                x = false;
+                var Sta = db.BorrowStatuses.FirstOrDefault(x => x.Name == borrowOut.StatusName);
+                mod.Suggest = borrowOut.Suggest;
+                mod.StatusID = Sta.ID;
+                var goog = db.Goods.FirstOrDefault(x => x.Name == borrowOut.GoodsName);
+                if (goog.Money * borrowOut.Number > 100)
+                {
+                    mod.MiddleTime = DateTime.Now;
+                    mod.StatusID = 2;
+                    if (db.SaveChanges() > 0)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                {
+                    mod.EndTime = DateTime.Now;
+                    if (db.SaveChanges() > 0)
+                        return true;
+                    else
+                        return false;
+                }
             }
-            //物品总价
-            decimal price = goods.Money * borrowOut.Number;
-            Model.Borrow borrow = new Model.Borrow()
-            {
-                GoodsID = mod.ID,
-                Number = borrowOut.Number,
-                Complete = x,
-                Description = mod.Description,
-                UserID = User.ID,// /////////////写死UserID
-                SendTime = DateTime.Now,
-                StatusID = 1,
-            };
-            //数量或者价格太多的话需要领导审批
-            if (borrowOut.Number >= 10 || price >= 1000)
-            {
-                // borrow.DepartmentID = 1;
+            else {
+                mod.EndTime = DateTime.Now;
+                if (db.SaveChanges() > 0)
+                    return true;
+                else
+                    return false;
             }
-            db.Borrows.Add(borrow);
-            if (db.SaveChanges() > 0)
-            {
-                goods.Number -= borrowOut.Number;
-                db.SaveChanges();
-                return true;
-            }
-            else
-                return false;
         }
         #endregion
         #region 耗材申领  

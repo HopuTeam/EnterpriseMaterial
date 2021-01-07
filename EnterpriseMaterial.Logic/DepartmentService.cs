@@ -43,13 +43,13 @@ namespace EnterpriseMaterial.Logic
                     }).ToList();
         }
 
-        public List<DepartmentParentOutput> GetReviewerMsg(int userId)
+        public list<departmentparentoutput> getreviewermsg(int userid)
         {
-            User userEntity = _dbContext.Set<User>().Where(u => u.ID == userId).FirstOrDefault();
+            user userentity = _dbcontext.set<user>().where(u => u.id == userid).firstordefault();
             //查到对应用户的部门信息--只有一条记录（暂时只做一对一的关系，一个人只有一个部门，一个部门只有一个领导）
-            List<Departments> dpEntity = _dbContext.Set<Departments>().Where(u => u.ID == userEntity.DepartmentID).ToList();
-            List<DepartmentParentOutput> list = new List<DepartmentParentOutput>();
-            GetParentBoss(ref list, dpEntity);
+            list<departments> dpentity = _dbcontext.set<departments>().where(u => u.id == userentity.departmentid).tolist();
+            list<departmentparentoutput> list = new list<departmentparentoutput>();
+            getparentboss(ref list, dpentity);
             return list;
         }
 
@@ -78,7 +78,7 @@ namespace EnterpriseMaterial.Logic
                        join e in _dbContext.Set<Departments>() on a.ParentID equals e.ID
                        select new DepartmentOutput
                        {
-                          
+
                            Name = a.Name,
                            Id = a.ID,
                            UserID = a.UserID,
@@ -95,32 +95,32 @@ namespace EnterpriseMaterial.Logic
             throw new NotImplementedException();
         }
         #endregion
-        public void GetParentBoss(ref List<DepartmentParentOutput> list, List<Departments> sonEntity)
-        {
-            DepartmentParentOutput parenEntity = new DepartmentParentOutput();
+        //public void GetParentBoss(ref List<DepartmentParentOutput> list, List<Departments> sonEntity)
+        //{
+        //    DepartmentParentOutput parenEntity = new DepartmentParentOutput();
 
-            //连表->获取本级别部门领导名字,并存起来
-            parenEntity = (from a in sonEntity
-                           join b in _dbContext.Set<User>() on a.UserID equals b.ID into join_a
-                           from c in join_a.DefaultIfEmpty()
-                           select new DepartmentParentOutput
-                           {
-                               LeaderId = a.UserID,
-                               LeaderName = c.Name,
-                           }).FirstOrDefault();
-            list.Add(parenEntity);
-            if (sonEntity[0].ParentID == sonEntity[0].ID)
-            {
-                //说明到最顶级
-                return;
-            }
-            else
-            {
-                //查到他的上一级部门
-                List<Departments> parentList = _dbContext.Set<Departments>().Where(u => u.ID == sonEntity[0].ParentID).ToList();
-                GetParentBoss(ref list, parentList);
-            }
-        }
+        //    //连表->获取本级别部门领导名字,并存起来
+        //    parenEntity = (from a in sonEntity
+        //                   join b in _dbContext.Set<User>() on a.UserID equals b.ID into join_a
+        //                   from c in join_a.DefaultIfEmpty()
+        //                   select new DepartmentParentOutput
+        //                   {
+        //                       LeaderId = a.UserID,
+        //                       LeaderName = c.Name,
+        //                   }).FirstOrDefault();
+        //    list.Add(parenEntity);
+        //    if (sonEntity[0].ParentID == sonEntity[0].ID)
+        //    {
+        //        //说明到最顶级
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        //查到他的上一级部门
+        //        List<Departments> parentList = _dbContext.Set<Departments>().Where(u => u.ID == sonEntity[0].ParentID).ToList();
+        //        GetParentBoss(ref list, parentList);
+        //    }
+        //}
 
 
     }
