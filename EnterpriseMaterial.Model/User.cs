@@ -16,7 +16,7 @@ namespace EnterpriseMaterial.Model
         /// <summary>
         /// 出生年月日
         /// </summary>
-        public DateTime? Birthday { get; set; }
+        public string Birthday { get; set; }
         /// <summary>
         /// 邮箱
         /// </summary>

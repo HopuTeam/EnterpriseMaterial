@@ -36,7 +36,7 @@ namespace EnterpriseMaterial.Web.Controllers
                 return Json(new { status = false, message = "用户名或密码错误" });
 
             HttpContext.Session.SetModel("User", mod);
-            return Json(new { status = true, message = "登录成功" });
+            return Json(new { status = true, message = $"{ sign.Account },欢迎回来" });
         }
 
         // User register
@@ -48,7 +48,7 @@ namespace EnterpriseMaterial.Web.Controllers
         [HttpPost]
         public IActionResult Register(Model.Sign sign, string Email)
         {
-            if (Isign.GetAccount(sign) != null)
+            if (Isign.GetAccount(sign.Account) != null)
                 return Json(new { status = false, message = "用户名被占用" });
 
             if (Iuser.GetEmail(Email) != null)
@@ -75,7 +75,7 @@ namespace EnterpriseMaterial.Web.Controllers
             if (Code != code)
                 return Json(new { status = false, message = "验证码错误" });
 
-            var acc = Isign.GetAccount(sign);
+            var acc = Isign.GetAccount(sign.Account);
             var eml = Iuser.GetEmail(Email);
             if (acc == null || eml == null || acc.ID != eml.ID)
                 return Json(new { status = false, message = "邮箱与账号信息不匹配" });
@@ -94,7 +94,7 @@ namespace EnterpriseMaterial.Web.Controllers
             Random random = new Random();
             code = Security.MD5Encrypt32(random.Next(0, 9999).ToString()).Substring(random.Next(1, 16), 6).ToUpper();
 
-            var acc = Isign.GetAccount(sign);
+            var acc = Isign.GetAccount(sign.Account);
             var eml = Iuser.GetEmail(Email);
             if (acc == null || eml == null || acc.ID != eml.ID)
                 return Json(new { status = false, message = "邮箱与账号信息不匹配" });

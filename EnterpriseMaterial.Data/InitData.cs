@@ -95,7 +95,7 @@ namespace EnterpriseMaterial.Data
                 context.Users.Add(new Model.User()
                 {
                     Name = "admin",
-                    Birthday = DateTime.Now,
+                    Birthday = "2020-12-31",
                     DepartmentID = 1,
                     Email = "admin@test.com",
                     EntryTime = DateTime.Now,

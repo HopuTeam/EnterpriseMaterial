@@ -12,8 +12,8 @@ namespace EnterpriseMaterial.Dto.UserDto
         public string Email { get; set; }
         public string Phone { get; set; }
         public bool Status { get; set; }
-        public DateTime Birthday { get; set; }
+        public string Birthday { get; set; }
         public int Sex { get; set; }
-        public DateTime EntryTime { get; set; }
+        public DateTime? EntryTime { get; set; }
     }
 }

@@ -24,22 +24,52 @@ namespace EnterpriseMaterial.Logic
                     select p).ToList();
         }
 
+        public Model.User GetAccount(string Email, int SignID = 0)
+        {
+            if (Email != null)
+                return EF.Users.FirstOrDefault(x => x.Email == Email);
+            else
+                return EF.Users.FirstOrDefault(x => x.SignID == SignID);
+        }
+
+        public bool Auth(int SignID)
+        {
+            var mod = EF.Users.FirstOrDefault(x => x.SignID == SignID);
+            mod.Status = true;
+
+            if (EF.SaveChanges() > 0)
+                return true;
+            else
+                return false;
+        }
+
         public Dto.UserDto.UserOut GetInfo(int ID)
         {
-            return (Dto.UserDto.UserOut)(from s in EF.Signs
-                                         join u in EF.Users on s.ID equals u.SignID
-                                         where s.ID == ID
-                                         select new
-                                         {
-                                             s.Account,
-                                             u.Name,
-                                             u.Email,
-                                             u.Phone,
-                                             u.Birthday,
-                                             u.Sex,
-                                             u.Status,
-                                             u.EntryTime
-                                         });
+            var mod = (from s in EF.Signs
+                       join u in EF.Users on s.ID equals u.SignID
+                       where s.ID == ID
+                       select new
+                       {
+                           s.Account,
+                           u.Name,
+                           u.Email,
+                           u.Phone,
+                           u.Birthday,
+                           u.Sex,
+                           u.Status,
+                           u.EntryTime
+                       }).FirstOrDefault();
+            return new Dto.UserDto.UserOut()
+            {
+                Account = mod.Account,
+                Name = mod.Name,
+                Email = mod.Email,
+                Phone = mod.Phone,
+                Birthday = mod.Birthday,
+                Sex = mod.Sex,
+                Status = mod.Status,
+                EntryTime = mod.EntryTime
+            };
         }
 
         public Model.User GetEmail(string Email)

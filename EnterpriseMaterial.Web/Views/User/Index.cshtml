@@ -26,8 +26,35 @@
         }
     </div>
     <div class="form-group">
-        <label>Password:</label>
-        <input type="password" class="form-control" id="Password">
+        <label>联系方式:</label>
+        <input type="tel" class="form-control" id="Phone" value="@Model.Phone">
+    </div>
+    <div class="form-group">
+        <label>性别:</label>
+        <select class="form-control" id="Sex">
+            @switch (Model.Sex)
+            {
+                case 0:
+                    <option value="0" selected>女</option>
+                    <option value="1">男</option>
+                    <option value="2">保密</option>
+                    break;
+                case 1:
+                    <option value="0">女</option>
+                    <option value="1" selected>男</option>
+                    <option value="2">保密</option>
+                    break;
+                case 2:
+                    <option value="0">女</option>
+                    <option value="1">男</option>
+                    <option value="2" selected>保密</option>
+                    break;
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>生日:</label>
+        <input type="date" class="form-control" id="Birthday" value="@Model.Birthday">
     </div>
     <div class="form-group">
         <label>密码:</label>
@@ -36,6 +63,10 @@
     <div class="form-group">
         <label>确认密码:</label>
         <input type="password" class="form-control" id="PWD" placeholder="不修改密码无需填写">
+    </div>
+    <div class="form-group">
+        <label>注册时间:</label>
+        <input type="text" disabled class="form-control" value="@Model.EntryTime.ToString()">
     </div>
     <div class="btn-group">
         <button type="submit" class="btn btn-primary">保存</button>
@@ -62,22 +93,24 @@
             if ($("#Password").val() == $("#PWD").val()) {
                 layer.load(2, { shade: false });
                 var data = {
+                    Sex: $("#Sex").val(),
+                    Name: $("#Name").val(),
                     Email: $("#Email").val(),
+                    Phone: $("#Phone").val(),
+                    Birthday: $("#Birthday").val(),
                     Password: $("#Password").val(),
                 };
                 $.post("/User/Edit", data, function (res) {
-                    setTimeout(function () {
-                        layer.closeAll('loading');
-                    }, 350);
-                    if (res == "success") {
-                        layer.alert("修改成功");
+                    layer.alert(res.message);
+                    if (res.status) {
                         setTimeout(function () {
                             window.location.href = "/User/Index";
                         }, 1500);
-                    } else {
-                        layer.alert(res);
                     };
                 });
+                setTimeout(function () {
+                    layer.closeAll('loading');
+                }, 350);
             } else {
                 layer.alert("两次输入的密码不一致");
             };

@@ -24,9 +24,12 @@ namespace EnterpriseMaterial.Logic
             return mod;
         }
 
-        public Model.Sign GetAccount(Model.Sign sign)
+        public Model.Sign GetAccount(string Account, int ID = 0)
         {
-            return EF.Signs.FirstOrDefault(x => x.Account == sign.Account);
+            if (Account != null)
+                return EF.Signs.FirstOrDefault(x => x.Account == Account);
+            else
+                return EF.Signs.FirstOrDefault(x => x.ID == ID);
         }
 
         public bool GetRegister(Model.Sign sign)
