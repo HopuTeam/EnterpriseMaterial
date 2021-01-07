@@ -48,7 +48,7 @@ namespace EnterpriseMaterial.ILogic
         /// 根据id查询
         /// </summary>
         /// <returns></returns>
-        List<IdentityQutput> LoadEntities(int id);
+        List<IdentityQutput> LoadEntities(int ID);
 
 
 

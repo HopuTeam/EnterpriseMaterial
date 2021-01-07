@@ -32,12 +32,18 @@ namespace EnterpriseMaterial.Web.Controllers
 
         #region 页面
 
-        
+        /// <summary>
+        /// 身份首页
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View();
         }
-
+        /// <summary>
+        /// 添加视图
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Addindex()
         {
             return View();
@@ -45,8 +51,10 @@ namespace EnterpriseMaterial.Web.Controllers
 
 
 
-        public IActionResult Delindex()
+        public IActionResult Delindex(int ID)//根据ID查询并且修改
         {
+            IdentityQutput model = identityBLL.LoadEntities(ID).FirstOrDefault();
+            ViewBag.model = model;
             return View();
         }
 
