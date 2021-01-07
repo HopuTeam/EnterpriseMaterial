@@ -50,5 +50,16 @@ namespace EnterpriseMaterial.Logic
             else
                 return false;
         }
+
+        public bool EditPassword(Model.Sign sign)
+        {
+            var mod = EF.Signs.FirstOrDefault(x => x.Account == sign.Account);
+            mod.Password = sign.Password;
+
+            if (EF.SaveChanges() > 0)
+                return true;
+            else
+                return false;
+        }
     }
 }

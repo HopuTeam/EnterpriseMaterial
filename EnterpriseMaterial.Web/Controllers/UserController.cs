@@ -18,7 +18,6 @@ namespace EnterpriseMaterial.Web.Controllers
 
         public IActionResult Index()
         {
-            // Dto.UserDto.UserOut
             return View(Iuser.GetInfo(HttpContext.Session.GetModel<Model.User>("User").SignID));
         }
 

@@ -1,9 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
@@ -33,7 +28,7 @@
         </div>
         <div class="form-group">
             <label>验证码(<a id="getCode" style="color:blue;" href="#getCode">获取验证码</a>):</label>
-            
+
             <input type="text" required class="form-control" id="Code" placeholder="点击按钮获取验证码">
         </div>
         <div class="form-group">
@@ -60,13 +55,13 @@
                 setTimeout(function () {
                     layer.closeAll('loading');
                 }, 350);
-                if (res == "success") {
-                    layer.alert("重置成功");
+                if (res.status) {
+                    layer.alert(res.message);
                     setTimeout(function () {
                         window.parent.closeFrame();
                     }, 1500);
                 } else {
-                    layer.alert(res);
+                    layer.alert(res.message);
                 };
             });
             return false;
@@ -77,19 +72,19 @@
                 layer.load(2, { shade: false });
                 var data = {
                     Account: $("#Account").val(),
-                    mail: $("#Email").val(),
+                    Email: $("#Email").val(),
                 };
-                $.post("/Sign/SendMail", data, function (res) {
-                    setTimeout(function () {
-                        layer.closeAll('loading');
-                    }, 350);
-                    if (res == "success") {
-                        layer.alert("验证码发送成功");
-                    } else {
-                        layer.alert(res);
-                    };
-                });
-            }
+                if (data.Account == "" || data.Email == "") {
+                    layer.alert("请填写完整信息");
+                } else {
+                    $.post("/Sign/SendMail", data, function (res) {
+                        layer.alert(res.message);
+                    });
+                }
+                setTimeout(function () {
+                    layer.closeAll('loading');
+                }, 350);
+            };
         });
 
         $("#btnClose").click(function () {

@@ -9,5 +9,6 @@ namespace EnterpriseMaterial.ILogic
         Model.User GetSign(Model.Sign sign);
         Model.Sign GetAccount(Model.Sign sign);
         bool GetRegister(Model.Sign sign);
+        bool EditPassword(Model.Sign sign);
     }
 }

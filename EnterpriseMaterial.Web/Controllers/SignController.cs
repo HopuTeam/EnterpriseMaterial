@@ -70,21 +70,34 @@ namespace EnterpriseMaterial.Web.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Forget(string Code, Model.Sign sign)
+        public IActionResult Forget(string Code, string Email, Model.Sign sign)
         {
             if (Code != code)
                 return Json(new { status = false, message = "验证码错误" });
 
-            var mod = EF.Signs.FirstOrDefault(x => x.Account == sign.Account && x.Email == sign.Email);
-            if (mod == null)
-                return Content("邮箱或帐号错误");
+            if (Isign.GetAccount(sign).ID != Iuser.GetEmail(Email).SignID)
+                return Json(new { status = false, message = "邮箱与账号信息不匹配" });
 
-            mod.Password = Security.MD5Encrypt32(sign.Password);
+            sign.Password = Security.MD5Encrypt32(sign.Password);
 
-            if (EF.SaveChanges() > 0)
-                return Content("success");
+            if (Isign.EditPassword(sign))
+                return Json(new { status = true, message = "重置密码成功" });
             else
-                return Content("重置密码失败，请重试");
+                return Json(new { status = false, message = "未修改任何信息" });
+        }
+
+        [HttpPost]
+        public IActionResult SendMail(string Email, Model.Sign sign)
+        {
+            Random random = new Random();
+            code = Security.MD5Encrypt32(random.Next(0, 9999).ToString()).Substring(random.Next(1, 16), 6).ToUpper();
+            if (Isign.GetAccount(sign).ID != Iuser.GetEmail(Email).SignID)
+                return Json(new { status = false, message = "邮箱与账号信息不匹配" });
+
+            if (MailExt.SendMail(Email, "找回密码操作", $"尊敬的用户 { sign.Account }：<br />您正在进行<span style='color:red;'>找回密码</span>操作！<br />本次操作的验证码是：<span style='color:red;'>{ code }</span>。<br />请注意谨防验证码泄露，保护账号安全！"))
+                return Json(new { status = true, message = "邮件发送成功" });
+            else
+                return Json(new { status = false, message = "邮件发送失败" });
         }
     }
 }
