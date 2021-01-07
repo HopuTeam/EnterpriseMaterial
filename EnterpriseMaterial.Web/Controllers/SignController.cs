@@ -54,7 +54,7 @@ namespace EnterpriseMaterial.Web.Controllers
             if (Iuser.GetEmail(Email) != null)
                 return Json(new { status = false, message = "邮箱被占用" });
 
-            sign.IdentityID = 0;
+            sign.IdentityID = 1;
             sign.Password = Security.MD5Encrypt32(sign.Password);
 
             if (Isign.GetRegister(sign))
@@ -75,7 +75,9 @@ namespace EnterpriseMaterial.Web.Controllers
             if (Code != code)
                 return Json(new { status = false, message = "验证码错误" });
 
-            if (Isign.GetAccount(sign).ID != Iuser.GetEmail(Email).SignID)
+            var acc = Isign.GetAccount(sign);
+            var eml = Iuser.GetEmail(Email);
+            if (acc == null || eml == null || acc.ID != eml.ID)
                 return Json(new { status = false, message = "邮箱与账号信息不匹配" });
 
             sign.Password = Security.MD5Encrypt32(sign.Password);
@@ -91,7 +93,10 @@ namespace EnterpriseMaterial.Web.Controllers
         {
             Random random = new Random();
             code = Security.MD5Encrypt32(random.Next(0, 9999).ToString()).Substring(random.Next(1, 16), 6).ToUpper();
-            if (Isign.GetAccount(sign).ID != Iuser.GetEmail(Email).SignID)
+
+            var acc = Isign.GetAccount(sign);
+            var eml = Iuser.GetEmail(Email);
+            if (acc == null || eml == null || acc.ID != eml.ID)
                 return Json(new { status = false, message = "邮箱与账号信息不匹配" });
 
             if (MailExt.SendMail(Email, "找回密码操作", $"尊敬的用户 { sign.Account }：<br />您正在进行<span style='color:red;'>找回密码</span>操作！<br />本次操作的验证码是：<span style='color:red;'>{ code }</span>。<br />请注意谨防验证码泄露，保护账号安全！"))
