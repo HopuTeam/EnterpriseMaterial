@@ -41,7 +41,7 @@ namespace EnterpriseMaterial.Web.Controllers
             return View();
         }
         /// <summary>
-        /// 添加视图
+        /// 添加视图 
         /// </summary>
         /// <returns></returns>
         public IActionResult Addindex()
@@ -49,14 +49,15 @@ namespace EnterpriseMaterial.Web.Controllers
             return View();
         }
 
-
-
-        public IActionResult Delindex(int ID)//根据ID查询并且修改
+        
+          public IActionResult Updateindex(int ID)
         {
             IdentityQutput model = identityBLL.LoadEntities(ID).FirstOrDefault();
             ViewBag.model = model;
             return View();
+           
         }
+       
 
         /// <summary>
         /// 角色分配权限视图
@@ -78,17 +79,17 @@ namespace EnterpriseMaterial.Web.Controllers
 
     
        
-
-        public string Add(identityInput inputEntity) ///添加
+        [HttpPost]
+        public IActionResult Add(identityInput inputEntity) ///添加
         {
-
             if (identityBLL.Add(inputEntity) > 0)
             {
-                return "ok";
+                return Content("ok");
+
             }
             else
             {
-                return "no";
+                return Content("no");
             }
         }
 

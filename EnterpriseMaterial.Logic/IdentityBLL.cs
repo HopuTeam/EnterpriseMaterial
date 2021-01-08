@@ -46,11 +46,11 @@ namespace EnterpriseMaterial.Logic
         public int Add(identityInput inputEntity)
         {
 
-            Identity  entity = new Identity
+            Identity entity = new Identity
             {
                 ID = inputEntity.ID,
                 EntryTime = DateTime.Now,
-                Status = false,
+                
                 LockTime = DateTime.Now,
                 Description = inputEntity.Description,               
                 Name = inputEntity.Name,

@@ -186,6 +186,7 @@
             action = "添加";
             url = "/identity/ADDIndex";
             var othis = $(this);
+
             active["notice"] ? active["notice"].call(this, othis) : '';
         };
 
@@ -193,7 +194,7 @@
         btn_update = function (Id) {
             //alert(Id);
             action = "修改";
-            url = '/Identity/DelIndex?id='+ID ;
+            url = '/Identity/UpdateIndex?ID=' + Id + "";
             var othis = $(this);
             active["notice"] ? active["notice"].call(this, othis) : '';
         };

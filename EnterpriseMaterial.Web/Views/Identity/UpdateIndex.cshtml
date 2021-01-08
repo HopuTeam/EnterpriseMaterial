@@ -7,36 +7,37 @@
     <script src="~/Scripts/jquery-3.5.1.min.js"></script>
 </head>
 <body>
+
     <div class="layui-col-md8">
-        <form class="layui-form layui-form-pane" lay-filter="form_add" @*action="/identity/Add"*@>
+        <form class="layui-form layui-form-pane" lay-filter="form_add" @*action="/identrity/Update"*@>
+
             <div class="layui-form-item">
-                <label class="layui-form-label">身份Id</label>
+                <label class="layui-form-label">角色编号</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="ID" lay-verify="required||isrepeat" placeholder="请输入" autocomplete="off" class="layui-input">
+                    <input type="text" name="ID" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" value="@ViewBag.model.ID" readonly="readonly" style="color:red;font-weight:600">
                 </div>
-                <label class="layui-form-label">身份名称</label>
+                <label class="layui-form-label">角色名称</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="Name" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                    <input type="text" name="Name" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" value="@ViewBag.model.Name">
                 </div>
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">身份描述</label>
+                <label class="layui-form-label">角色描述</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="Description" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                    <input type="text" name="Description" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" value="@ViewBag.model.Description">
                 </div>
+
             </div>
-
-
             <div class="layui-form-item" style="text-align:center">
-                <button class="layui-btn" lay-submit="" lay-filter="formDemo">确认添加</button>
+                <button class="layui-btn" lay-submit="" lay-filter="formDemo">确认修改</button>
             </div>
         </form>
     </div>
 
-
-
     <script>
+
+
 
         layui.use(['form', 'layedit', 'laydate'], function () {
             var form = layui.form
@@ -46,44 +47,27 @@
             //自定义验证规则
             form.verify({
                 maxlength: function (value) {
-                    if (value.length > 16) {
+                    if (value.length >16) {
                         return '不能超过16个字符';
                     }
                 }
-                //判断用户账号是否存在
-                , isrepeat: function (value) {
-                    //debugger;
-                    var callbackdata;
-                    $.ajax({
-                        url: "/identity/CheckRepeat",
-                        type: "post",
-                        async: false,//同步
-                        data: {
-                            value: value
-                        },
-                        success: function (data) {
-                            callbackdata = data;
-                        }
-                    });
-                    if (callbackdata == "no") {
-                        return ("同一用户名的信息已存在，请添加其他用户信息！");
-                    }
-                }
+
             });
-            //监听提交
+
+               //监听提交
             form.on('submit(formDemo)', function (data) {
-                //debugger;
+                debugger;
                 $.ajax({
-                    url: '/Identity/Add',
+                    url: '/identity/Update',
                     method: 'post',
                     data: data.field,
                     success: function (data) {
 
                         if (data == "ok") {
-                            layer.alert("添加成功！");
+                            layer.alert("修改成功！");
                             setTimeout(function () {
                                 //休眠1秒后页面跳转
-                                window.location.href = "/identity/AddIndex";
+                                window.location.href = "/identity/UpdateIndex?id="+@ViewBag.model.ID+"";
                                 //关闭当前弹框
                                 //var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                                 //parent.layer.close(index); //再执行关闭
@@ -91,21 +75,13 @@
 
 
                         } else {
-                            layer.alert("添加失败");
+                            layer.alert("修改失败");
                         }
                     }
                 });
                 return false;//防止页面跳转
             });
-
-
         });
     </script>
-
-
-
-
-
-
 </body>
 </html>

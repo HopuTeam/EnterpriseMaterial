@@ -11,7 +11,6 @@ namespace EnterpriseMaterial.Dto.IdentityDTO
         public int ID { get; set; }
 
         [Required]
-        [StringLength(16)]
         public int RoleId { get; set; }
 
         [Required]
