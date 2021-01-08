@@ -22,7 +22,7 @@ namespace EnterpriseMaterial.ILogic
         /// <param name="whereLambda"></param>
         /// <param name="orderbyLambda"></param>
         /// <returns></returns>
-        List<DepartmentOutput> LoadPageEntities(int pageIndex, int pageSize, out int totalCount, string selectInfo);
+        object LoadPageEntities(int pageIndex, int pageSize, out int totalCount, string selectInfo);
 
         /// <summary>
         /// 添加

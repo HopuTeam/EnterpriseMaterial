@@ -39,20 +39,19 @@ namespace EnterpriseMaterial.Web.Controllers
             return View();
         }
   #region 非页面       
-        public string GetJsonList(int page, int limit, string selectInfo)
+        public string GetJsonList(string selectInfo=null ,int page = 1, int limit = 10)
         {
-
             int totalCount = 0;
 
-            List<DepartmentOutput> outlist = _departmentService.LoadPageEntities(page, limit, out totalCount, selectInfo);
-            DataResult<List<DepartmentOutput>> dataResult = new DataResult<List<DepartmentOutput>>()
+            var outlist = _departmentService.LoadPageEntities(page, limit, out totalCount, selectInfo);
+            var result = new 
             {
                 code = 0,
-                msg = "ok",
+                msg = "",
                 count = totalCount,
-                data = outlist,
+                data = outlist
             };
-            return JsonNetHelper.SerializetoJson(dataResult);
+            return JsonNetHelper.SerializetoJson(result);
         }
 
 #endregion

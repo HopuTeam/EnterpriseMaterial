@@ -20,6 +20,8 @@
         <div class="layui-btn-container">
             <button type="button" class="layui-btn layui-btn-sm" lay-demo="getChecked">点击配置权限</button>
             <button type="button" class="layui-btn layui-btn-sm" lay-demo="reload">重置权限</button>
+          
+            <button type="button" class="layui-btn layui-btn-sm" id="btn-cancel" lay-demo="">关闭页面</button>
         </div>
         <div id="test01" class="demo-tree demo-tree-box"></div>
     </div>
@@ -146,7 +148,10 @@
 
         });
         }
-
+        //关闭页面
+        $('#btn-cancel').click(function () {
+            window.parent.Cancel();
+        })
     </script>
 
 

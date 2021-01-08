@@ -16,57 +16,68 @@
 
 
 </div>
-<script type="text/javascript">
-    var table;
-    var active;
-    var url = "";
-    var action;
+@section scripts
+{
 
-    layui.use('table', function () {
-        table = layui.table;
-        var form = layui.form;
-        //第一个实例
-        table.render({
-            elem: '#mytable'
-            , skin: 'line' //行边框风格
-            , url: '/Department/GetJsonList' //数据接口
-            , toolbar: '#toolbarDemo'
-            , cellMinWidth: 70    //  自适应宽度，最短宽度80
-            , page: true //开启分页
-            , limits: [5, 10, 15, 20, 25, 30]
-            , limit: 15 //每页默认显示的数量
-            , defaultToolbar: ['filter', 'print', 'exports']//自由配置头部工具栏右侧的图标,导出乱码bug
-            , cols: [[ //表头
-                { type: 'checkbox', fixed: 'left' }
-                //, { field: 'Id', title: 'Id', sort: false, fixed: 'left', width: 70 }
-                , { field: 'DepartmentId', title: '部门Id', sort: false }
-                , { field: 'Name', title: '部门名称', sort: false }
-                , { field: 'LeaderName', title: '主管名字', sort: false }
-                , { field: 'ParentIdName', title: '上级部门', sort: false }       
-                , { field: 'EntryTime', title: '添加时间', sort: false }
-            ]],
+    <script type="text/javascript">
+        var table;
+        var active;
+        var url = "";
+        var action;
+
+        layui.use('table', function () {
+            table = layui.table;
+            var form = layui.form;
+            //第一个实例
+            table.render({
+                elem: '#mytable'
+                , skin: 'line' //行边框风格
+                , url: '/Department/GetJsonList' //数据接口
+                , toolbar: '#toolbarDemo'
+                , cellMinWidth: 70    //  自适应宽度，最短宽度80
+                , page: true //开启分页
+                , limits: [5, 10, 15, 20, 25, 30]
+                , limit: 15 //每页默认显示的数量
+                , defaultToolbar: ['filter', 'print', 'exports']//自由配置头部工具栏右侧的图标,导出乱码bug
+                , cols: [[ //表头
+                    { type: 'checkbox', fixed: 'left' }           
+                    , { field: 'ID', title: '部门Id', sort: false }
+                    , { field: 'DeqName', title: '部门名称', sort: false }
+                    , { field: 'Uname', title: '主管名字', sort: false, }                  
+                    , {
+                        field: 'VipName', title: '上级部门', sort: false, templet(d) {
+                            if (d.VipName == null) {
+                                return "最高部门";
+                            };
+                        }
+                    }
+                    , { field: 'ShiJian', title: '添加时间', sort: false }
+                ]],
+
+            });
 
         });
 
-    });
+
+
+        //查询
+        btn_search = function () {
+            layer.alert("此功能暂未开放");
+            //var selectInfo = $("#txt_Select").val();
+            //table.reload('mytable', {
+            //    url: '/Department/GetJsonList',
+            //    page: {
+            //        curr: 1//从第一页开始
+            //    },
+            //    where: {
+            //        selectInfo: selectInfo,
+            //    } //设定异步数据接口的额外参数
+            //});
+        };
 
 
 
-    //查询
-    btn_search = function () {
+    </script>
 
-        var selectInfo = $("#txt_Select").val();
-        table.reload('mytable', {
-            url: '/Department/GetJsonList',
-            page: {
-                curr: 1//从第一页开始
-            },
-            where: {
-                selectInfo: selectInfo,
-            } //设定异步数据接口的额外参数
-        });
-    };
+}
 
-
-
-</script>

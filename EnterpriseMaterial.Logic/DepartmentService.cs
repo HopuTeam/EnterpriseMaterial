@@ -58,36 +58,50 @@ namespace EnterpriseMaterial.Logic
             throw new NotImplementedException();
         }
 
-        public List<DepartmentOutput> LoadPageEntities(int pageIndex, int pageSize, out int totalCount, string selectInfo)
+        public object LoadPageEntities(int pageIndex, int pageSize, out int totalCount, string selectInfo)
         {
-            IQueryable<Department> iquery;
-            if (string.IsNullOrEmpty(selectInfo))
+            
+            if (selectInfo==null)
             {
-                totalCount = _dbContext.Set<Department>().Count();
-                iquery = _dbContext.Set<Department>().OrderBy(u => u.ID).Skip((pageIndex - 1) * pageSize).Take(pageSize);
-
+                var list = (from deq in _dbContext.Departments
+                            join u in _dbContext.Users on deq.UserID equals u.SignID
+                            select new
+                            {
+                                ID = deq.ID,
+                                DeqName = deq.Name,
+                                Uname = u.Name,
+                                VipName = (from d in _dbContext.Departments
+                                           where d.ID == deq.ParentID
+                                           select d.Name
+                                      ).FirstOrDefault(),
+                                ShiJian = deq.EntryTime
+                            }
+                   ).OrderBy(u => u.ID).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                totalCount = list.Count();
+                return list;
             }
             else
             {
-                totalCount = _dbContext.Set<Department>().Where(u => u.Name.Contains(selectInfo)).Count();
-                iquery = _dbContext.Set<Department>().Where(u => u.Name.Contains(selectInfo)).OrderBy(u => u.ID).Skip((pageIndex - 1) * pageSize).Take(pageSize);
-            }
-            var linq = from a in iquery
-                       join b in _dbContext.Set<User>() on a.UserID equals b.ID into join_a
-                       from c in join_a.DefaultIfEmpty()
-                       join e in _dbContext.Set<Department>() on a.ParentID equals e.ID
-                       select new DepartmentOutput
-                       {
+                IQueryable<Department> iquery = _dbContext.Set<Department>().Where(u => u.Name.Contains(selectInfo)).OrderBy(u => u.ID).Skip((pageIndex - 1) * pageSize).Take(pageSize) ;
+                var list = (from a in iquery
+                            join u in _dbContext.Users on a.UserID equals u.ID into join_a
+                            from c in join_a.DefaultIfEmpty()
+                            join d in _dbContext.Departments on a.ParentID equals d.ID
+                            select new
+                            {
+                                ID = a.ID,
+                                DeqName = a.Name,
+                                Uname = c.Name,
+                                VipName = d.Name,
+                                ShiJian = a.EntryTime
+                            }
+                          ).ToList();
+               
 
-                           Name = a.Name,
-                           Id = a.ID,
-                           UserID = a.UserID,
-                           LeaderName = c.Name,
-                           ParentID = a.ParentID,
-                           ParentIdName = e.Name,
-                           EntryTime = a.EntryTime,
-                       };
-            return linq.ToList();
+                  totalCount = list.Count();
+                return list;
+            }
+         
         }
 
         public int Update(DepartmentInput inputEntity)

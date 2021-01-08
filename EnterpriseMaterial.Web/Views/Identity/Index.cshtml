@@ -208,6 +208,11 @@
             var othis = $(this);
             active["notice"] ? active["notice"].call(this, othis) : '';
         };
+        //关闭页面弹窗页
+        function Cancel() {
+            layer.close(Shutdown);
+            Tree();
+        }
     </script>
 }
 
