@@ -10,25 +10,16 @@
     <div class="layui-col-md8">
         <form class="layui-form layui-form-pane" lay-filter="form_add" @*action="/identity/Add"*@>
             <div class="layui-form-item">
-                <label class="layui-form-label">身份Id</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="ID" lay-verify="required||isrepeat" placeholder="请输入" autocomplete="off" class="layui-input">
-                </div>
                 <label class="layui-form-label">身份名称</label>
                 <div class="layui-input-inline">
                     <input type="text" name="Name" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
                 </div>
-            </div>
-
-            <div class="layui-form-item">
                 <label class="layui-form-label">身份描述</label>
                 <div class="layui-input-inline">
                     <input type="text" name="Description" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
                 </div>
             </div>
-
-
-            <div class="layui-form-item" style="text-align:center">
+         <div class="layui-form-item" style="text-align:center">
                 <button class="layui-btn" lay-submit="" lay-filter="formDemo">确认添加</button>
             </div>
         </form>
@@ -78,12 +69,11 @@
                     method: 'post',
                     data: data.field,
                     success: function (data) {
-
-                        if (data == "ok") {
+                       if (data == "ok") {
                             layer.alert("添加成功！");
                             setTimeout(function () {
                                 //休眠1秒后页面跳转
-                                window.location.href = "/identity/AddIndex";
+                                window.location.href = "/identity/ADDIndex";
                                 //关闭当前弹框
                                 //var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                                 //parent.layer.close(index); //再执行关闭

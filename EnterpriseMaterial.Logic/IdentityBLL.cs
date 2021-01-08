@@ -50,10 +50,9 @@ namespace EnterpriseMaterial.Logic
             {
                 ID = inputEntity.ID,
                 EntryTime = DateTime.Now,
-                
-                LockTime = DateTime.Now,
-                Description = inputEntity.Description,               
+                Description = inputEntity.Description,
                 Name = inputEntity.Name,
+                Status = true
             };
 
             coreEntities.Set<Identity>().Add(entity);
@@ -69,7 +68,7 @@ namespace EnterpriseMaterial.Logic
         /// <returns></returns>
         public int Update(identityInput inputEntity)
         {
-            Identity entity = coreEntities.Set<Identity>().Where(u => u.ID == inputEntity.RoleId).FirstOrDefault();
+            Identity entity = coreEntities.Set<Identity>().Where(u => u.ID == inputEntity.ID).FirstOrDefault();
             if (entity != null)
             {
                 entity.Description = inputEntity.Description;
@@ -90,10 +89,9 @@ namespace EnterpriseMaterial.Logic
         /// 普通查询,获取未被禁用的所有
         /// </summary>
         /// <returns></returns>
-        public List<IdentityQutput> LoadEntities()// 普通查询,获取未被禁用的所有
+        public List<IdentityQutput> LoadEntities(out int conut, int pageinde, int pageSize)// 普通查询,获取未被禁用的所有
         {
-
-            List<IdentityQutput> list = (from a in coreEntities.Set<Identity>().Where(u => u.Status==false)
+            List<IdentityQutput> list = (from a in coreEntities.Set<Identity>().Where(u => u.Status==true)
                                      select new IdentityQutput
                                      {
                                          ID = a.ID,
@@ -103,7 +101,7 @@ namespace EnterpriseMaterial.Logic
                                          Description = a.Description,
                                          Name = a.Name,
                                      }).ToList();
-
+            conut = list.Count();
             return list;
         }
 
@@ -155,6 +153,7 @@ namespace EnterpriseMaterial.Logic
                                      }).ToList();
 
             return list;
+         
         }
 
 
@@ -186,6 +185,7 @@ namespace EnterpriseMaterial.Logic
                 else
                 {
                     entity.Status = false;//表示禁用
+                    entity.LockTime = DateTime.Now;
                     coreEntities.Set<Identity>().Attach(entity);
                     coreEntities.Set<Identity>().Update(entity);
                     if (coreEntities.SaveChanges() > 0)

@@ -25,7 +25,7 @@ namespace EnterpriseMaterial.Logic
         /// <returns></returns>
         public List<Goods> GetGoodsOne(out int conut, int pageinde, int pageSize)
         {
-            var list = db.Goods.Where(y=>y.Status==true).OrderBy(a => a.ID).Skip((pageinde-1)*pageSize).Take(pageSize).ToList();
+            var list = db.Goods.OrderBy(a => a.ID).Skip((pageinde-1)*pageSize).Take(pageSize).ToList();
             conut = list.Count();
             return list;
         }

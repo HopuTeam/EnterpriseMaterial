@@ -50,12 +50,10 @@ namespace EnterpriseMaterial.Web.Controllers
         }
 
         
-          public IActionResult Updateindex(int ID)
+        public IActionResult Updateindex(int ID)
         {
-            IdentityQutput model = identityBLL.LoadEntities(ID).FirstOrDefault();
-            ViewBag.model = model;
-            return View();
-           
+            IdentityQutput model = identityBLL.LoadEntities(ID).FirstOrDefault();       
+            return View(model);          
         }
        
 
@@ -120,11 +118,10 @@ namespace EnterpriseMaterial.Web.Controllers
         /// 获取角色信息,不分页
         /// </summary>
         /// <returns></returns>
-        public string GetJsonList1()// 获取角色信息,不分页
+        public string GetJsonList1(int page = 1, int limit = 5)// 获取角色信息,不分页
         {
-
-
-            List<IdentityQutput> outlist = identityBLL.LoadEntities();
+            int dataConunt;
+            List<IdentityQutput> outlist = identityBLL.LoadEntities(out dataConunt, page , limit);
             DataResult<List<IdentityQutput>> dataResult = new DataResult<List<IdentityQutput>>()
             {
                 code = 0,

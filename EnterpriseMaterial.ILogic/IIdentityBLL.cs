@@ -42,7 +42,7 @@ namespace EnterpriseMaterial.ILogic
         /// 普通查询
         /// </summary>
         /// <returns></returns>
-        List<IdentityQutput> LoadEntities();
+        List<IdentityQutput> LoadEntities(out int conut, int pageinde, int pageSize);
 
         /// <summary>
         /// 根据id查询

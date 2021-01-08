@@ -26,7 +26,7 @@
 
     <script type="text/html" id="checkboxTpl">
         <!-- 这里的 checked 的状态只是演示 -->
-        <input type="checkbox" name="lock" value="{{d.Id}}" title="开启角色" lay-filter="lockDemo" {{ d.DelFlag == 0 ? 'checked' : '' }}>
+        <input type="checkbox" name="lock" value="{{d.ID}}" title="开启角色" lay-filter="lockDemo" {{ d.Status == true ? 'checked' : '' }}>
     </script>
 
 </div>
@@ -62,7 +62,7 @@
                     , { field: 'Description', title: '角色描述', sort: false }
                     , { field: 'Status', title: '角色状态', templet: '#checkboxTpl', unresize: true }
                     , { field: 'EntryTime', title: '添加时间', sort: false }
-                    , { field: 'LockTime', title: '禁用时间', sort: false }
+                    , { field: 'LockTime', title: '上次禁用时间', sort: false }
                 ]],
 
             });
@@ -80,7 +80,16 @@
                             //转成json格式
                             var jsondata = JSON.parse(strdata);
                             //调用更新的方法
-                            btn_update(jsondata[0].Id);                           
+                            //btn_update(jsondata[0].ID);   
+                            var id = jsondata[0].ID
+                            Shutdown = layer.open({
+                                type: 2,
+                                title: '修改页',
+                                shadeClose: true,
+                                shade: 0.45,
+                                area: ['45%', '50%'],
+                                content: '/Identity/UpdateIndex?ID=' + id
+                            });
                         } else {
                             layer.alert("必须选中且只能选中一条信息！");
                         }
@@ -113,8 +122,7 @@
 
             //监听锁定操作
             form.on('checkbox(lockDemo)', function (obj) {
-                //layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
-
+                layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);         
                 $.ajax({
                     type: 'post',
                     url: '/identity/ForbidRole',
@@ -183,18 +191,19 @@
         //添加
         btn_add = function () {
 
-            action = "添加";
-            url = "/identity/ADDIndex";
-            var othis = $(this);
-
-            active["notice"] ? active["notice"].call(this, othis) : '';
+            Shutdown = layer.open({
+                type: 2,
+                title: '添加页',
+                shadeClose: true,
+                shade: 0.45,
+                area: ['55%', '77%'],
+                content: '/Identity/Addindex'
+            });
         };
-
         //修改
-        btn_update = function (Id) {
-            //alert(Id);
+        btn_update = function (Id) {        
             action = "修改";
-            url = '/Identity/UpdateIndex?ID=' + Id + "";
+            url = '/Identity/UpdateIndex?ID=' + Id;
             var othis = $(this);
             active["notice"] ? active["notice"].call(this, othis) : '';
         };
@@ -211,7 +220,7 @@
         //关闭页面弹窗页
         function Cancel() {
             layer.close(Shutdown);
-            Tree();
+            btn_search();
         }
     </script>
 }
