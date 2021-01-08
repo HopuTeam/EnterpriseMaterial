@@ -25,35 +25,26 @@ namespace EnterpriseMaterial.Web.Controllers
             return View(Iuser.GetInfo(HttpContext.Session.GetModel<Model.User>("User").SignID));
         }
 
-        //[HttpPost]
-        //public IActionResult Edit(Dto.UserDto.UserOut user)
-        //{
-        //    var SessionInfo = HttpContext.Session.GetModel<Model.User>("User");
-        //    var Smod = Isign.GetAccount(null, SessionInfo.SignID);
-        //    var Umod = Iuser.GetAccount(null, SessionInfo.SignID);
-        //    if (user.Password == null)
-        //    {
-        //        if (Umod.Email == user.Email)
-        //            return Json(new { status = false, message = "未进行任何修改" });
+        public IActionResult Manager()
+        {
+            return View((List<Dto.UserDto.UserOut>)Newtonsoft.Json.JsonConvert.DeserializeObject(Iuser.GetUsers()));
+        }
 
-        //        Umod.Email = user.Email;
-        //        Umod.Status = false;
-        //    }
-        //    else
-        //    {
-        //        if (Umod.Email != user.Email)
-        //        {
-        //            Umod.Email = user.Email;
-        //            Umod.Status = false;
-        //        }
-        //        Smod.Password = Security.MD5Encrypt32(user.Password);
-        //    }
-        //    if (EF.SaveChanges() <= 0)
-        //        return Content("数据更新异常");
+        [HttpPost]
+        public IActionResult Edit(Dto.UserDto.UserOut user)
+        {
+            if (user.ID == 0)
+                user.ID = HttpContext.Session.GetModel<Model.User>("User").SignID;
 
-        //    HttpContext.Session.SetModel("User", Iuser.GetAccount(null, SessionInfo.SignID));
-        //    return Json(new { status = true, message = "用户信息更新成功" });
-        //}
+            if (user.Password != null)
+                user.Password = Security.MD5Encrypt32(user.Password);
+
+            if (!Iuser.GetEdit(user))
+                return Json(new { status = false, message = "未进行任何修改" });
+
+            HttpContext.Session.SetModel("User", Iuser.GetAccount(null, user.ID));
+            return Json(new { status = true, message = "用户信息更新成功" });
+        }
 
         [HttpPost]
         public IActionResult Logout()

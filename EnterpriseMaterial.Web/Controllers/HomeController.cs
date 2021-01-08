@@ -20,7 +20,7 @@ namespace EnterpriseMaterial.Web.Controllers
             return View();
         }
 
-          [HttpPost]
+        [HttpPost]
         public IActionResult GetMenu()
         {
             return Json(new { mod = Iuser.GetPower(HttpContext.Session.GetModel<Model.User>("User").SignID) });

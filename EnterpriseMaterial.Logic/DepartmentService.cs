@@ -121,7 +121,5 @@ namespace EnterpriseMaterial.Logic
                 GetParentBoss(ref list, parentList);
             }
         }
-
-
     }
 }

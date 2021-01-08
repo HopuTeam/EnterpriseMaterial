@@ -14,6 +14,27 @@ namespace EnterpriseMaterial.Logic
             EF = _ef;
         }
 
+        public string GetUsers()
+        {
+            var mod = (from s in EF.Signs
+                       join u in EF.Users on s.ID equals u.SignID
+                       select new
+                       {
+                           s.ID,
+                           s.Account,
+                           s.IdentityID,
+                           u.Name,
+                           u.Email,
+                           u.Phone,
+                           u.Birthday,
+                           u.Sex,
+                           u.Status,
+                           u.EntryTime
+                       }).ToList();
+            var info = new { mod };
+            return Newtonsoft.Json.JsonConvert.SerializeObject(info);
+        }
+
         public List<Model.Power> GetPower(int ID)
         {
             return (from u in EF.Signs
@@ -43,6 +64,33 @@ namespace EnterpriseMaterial.Logic
                 return false;
         }
 
+        public bool GetEdit(Dto.UserDto.UserOut user)
+        {
+            var Smod = EF.Signs.FirstOrDefault(x => x.ID == user.ID);
+            var Umod = GetAccount(null, user.ID);
+            if (user.Password != null)
+            {
+                Smod.Password = user.Password;
+            }
+            else if (Umod.Email != user.Email)
+            {
+                Umod.Email = user.Email;
+                Umod.Status = false;
+            }
+
+            Umod.Sex = user.Sex;
+            Umod.Name = user.Name;
+            Umod.Email = user.Email;
+            Umod.Phone = user.Phone;
+            Umod.Birthday = user.Birthday;
+            Smod.IdentityID = user.IdentityID;
+
+            if (EF.SaveChanges() > 0)
+                return true;
+            else
+                return false;
+        }
+
         public Dto.UserDto.UserOut GetInfo(int ID)
         {
             var mod = (from s in EF.Signs
@@ -50,6 +98,7 @@ namespace EnterpriseMaterial.Logic
                        where s.ID == ID
                        select new
                        {
+                           s.ID,
                            s.Account,
                            u.Name,
                            u.Email,
@@ -61,6 +110,7 @@ namespace EnterpriseMaterial.Logic
                        }).FirstOrDefault();
             return new Dto.UserDto.UserOut()
             {
+                ID = mod.ID,
                 Account = mod.Account,
                 Name = mod.Name,
                 Email = mod.Email,
