@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace EnterpriseMaterial.Web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult GetMenu()
         {

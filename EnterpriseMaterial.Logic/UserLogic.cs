@@ -14,7 +14,7 @@ namespace EnterpriseMaterial.Logic
             EF = _ef;
         }
 
-        public string GetUsers()
+        public object GetUsers(int page, int limit)
         {
             var mod = (from s in EF.Signs
                        join u in EF.Users on s.ID equals u.SignID
@@ -29,10 +29,17 @@ namespace EnterpriseMaterial.Logic
                            u.Birthday,
                            u.Sex,
                            u.Status,
-                           u.EntryTime
+                           u.EntryTime,
+                           u.LockTime
                        }).ToList();
-            var info = new { mod };
-            return Newtonsoft.Json.JsonConvert.SerializeObject(info);
+            var info = new
+            {
+                code = 0,
+                msg = "",
+                count = mod.Count(),
+                data = mod.Skip((page - 1) * limit).Take(limit)
+            };
+            return info;
         }
 
         public List<Model.Power> GetPower(int ID)

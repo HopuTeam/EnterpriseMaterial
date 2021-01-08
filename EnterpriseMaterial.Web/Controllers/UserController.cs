@@ -25,9 +25,15 @@ namespace EnterpriseMaterial.Web.Controllers
             return View(Iuser.GetInfo(HttpContext.Session.GetModel<Model.User>("User").SignID));
         }
 
+        [HttpGet]
         public IActionResult Manager()
         {
-            return View((List<Dto.UserDto.UserOut>)Newtonsoft.Json.JsonConvert.DeserializeObject(Iuser.GetUsers()));
+            return View();
+        }
+        [HttpPost]
+        public IActionResult MagUserList(int page = 1, int limit = 10)
+        {
+            return Json(Iuser.GetUsers(page, limit));
         }
 
         [HttpPost]

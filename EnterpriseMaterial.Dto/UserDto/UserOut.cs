@@ -17,5 +17,6 @@ namespace EnterpriseMaterial.Dto.UserDto
         public int Sex { get; set; }
         public int IdentityID { get; set; }
         public DateTime? EntryTime { get; set; }
+        public DateTime? LockTime { get; set; }
     }
 }

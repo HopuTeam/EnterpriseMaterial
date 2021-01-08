@@ -12,6 +12,6 @@ namespace EnterpriseMaterial.ILogic
         Model.User GetAccount(string Email, int SignID = 0);
         bool Auth(int SignID);
         bool GetEdit(Dto.UserDto.UserOut user);
-        string GetUsers();
+        object GetUsers(int page, int limit);
     }
 }

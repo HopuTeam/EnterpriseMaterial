@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "用户管理";
+}
+<table id="tableInfo" lay-filter="tableInfo"></table>
+<script type="text/html" id="tableBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+@section scripts{
+    <script>
+        layui.use('table', function () {
+            var table = layui.table;
+
+            //第一个实例
+            table.render({
+                elem: '#tableInfo'
+                //, height: 312
+                , url: '/User/MagUserList' //数据接口
+                , page: true //开启分页
+                , method: "post"
+                , cols: [[ //表头
+                    { field: 'id', title: 'ID', sort: true, width: 60, fixed: 'left' }
+                    , { field: 'account', title: '用户名', width: 100 }
+                    , { field: 'name', title: '姓名', width: 80, sort: true }
+                    , { field: 'email', title: '邮箱', width: 140 }
+                    , { field: 'phone', title: '电话', width: 120 }
+                    , { field: 'birthday', title: '生日', width: 110, sort: true }
+                    , {
+                        field: 'sex', title: '性别', width: 80, sort: true, templet(d) {
+                            switch (d.sex) {
+                                case 0: return '女'; break;
+                                case 1: return '男'; break;
+                                case 2: return '保密'; break;
+                            }
+                        }
+                    }
+                    , {
+                        field: 'status', title: '状态', width: 90, templet(d) {
+                            switch (d.status) {
+                                case false: return '<input type="checkbox" onclick="cheOpen(' + d.id + ')" checked="" name="open" lay-skin="switch" lay-text="ON|OFF">'; break;
+                                case true: return '<input type="checkbox" onclick="cheOpen(' + d.id + ')" name="close" lay-skin="switch" lay-text="ON|OFF">'; break;
+                                default: return d.status; break;
+                            }
+                        }
+                    }
+                    , { field: 'entryTime', title: '注册时间', sort: true }
+                    , { field: 'lockTime', title: '锁定时间', sort: true }
+                    , { title: '操作', align: 'center', width: 120, toolbar: '#tableBar' }
+                ]]
+            });
+
+            table.on('tool(tableInfo)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    , layEvent = obj.event; //获得 lay-event 对应的值
+                if (layEvent === 'detail') {
+                    layer.msg('查看操作');
+                } else if (layEvent === 'del') {
+                    layer.confirm('真的删除行么', function (index) {
+                        obj.del(); //删除对应行（tr）的DOM结构
+                        layer.close(index);
+                        //向服务端发送删除指令
+                    });
+                } else if (layEvent === 'edit') {
+                    layer.msg('编辑操作');
+                }
+            });
+        });
+
+        function cheOpen(id) {
+
+        };
+    </script>
+}
