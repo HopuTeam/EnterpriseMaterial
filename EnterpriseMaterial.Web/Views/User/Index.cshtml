@@ -81,11 +81,7 @@
                 setTimeout(function () {
                     layer.closeAll('loading');
                 }, 350);
-                if (res == "success") {
-                    layer.alert("验证邮件已发送至您的邮箱");
-                } else {
-                    layer.alert(res);
-                };
+                layer.alert(res.message);
             });
         });
 
@@ -103,14 +99,12 @@
                 $.post("/User/Edit", data, function (res) {
                     layer.alert(res.message);
                     if (res.status) {
-                        setTimeout(function () {
-                            window.location.href = "/User/Index";
-                        }, 1500);
+                        layer.alert(res.message);
                     };
+                    setTimeout(function () {
+                        layer.closeAll('loading');
+                    }, 350);
                 });
-                setTimeout(function () {
-                    layer.closeAll('loading');
-                }, 350);
             } else {
                 layer.alert("两次输入的密码不一致");
             };

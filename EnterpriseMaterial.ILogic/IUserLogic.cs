@@ -13,5 +13,6 @@ namespace EnterpriseMaterial.ILogic
         bool Auth(int SignID);
         bool GetEdit(Dto.UserDto.UserOut user);
         object GetUsers(int page, int limit);
+        bool SwichStatus(int SignID);
     }
 }

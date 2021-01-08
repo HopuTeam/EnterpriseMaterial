@@ -46,19 +46,18 @@ namespace EnterpriseMaterial.Web.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Register(Model.Sign sign, string Email)
+        public IActionResult Register(Dto.UserDto.UserOut user)
         {
-            if (Isign.GetAccount(sign.Account) != null)
+            if (Isign.GetAccount(user.Account) != null)
                 return Json(new { status = false, message = "用户名被占用" });
 
-            if (Iuser.GetEmail(Email) != null)
+            if (Iuser.GetEmail(user.Email) != null)
                 return Json(new { status = false, message = "邮箱被占用" });
 
-            sign.IdentityID = 1;
-            sign.Password = Security.MD5Encrypt32(sign.Password);
+            user.Password = Security.MD5Encrypt32(user.Password);
 
-            if (Isign.GetRegister(sign))
-                return Json(new { status = true, message = "登录成功" });
+            if (Isign.GetRegister(user))
+                return Json(new { status = true, message = "注册成功" });
             else
                 return Json(new { status = false, message = "表单数据异常" });
         }

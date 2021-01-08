@@ -42,6 +42,26 @@ namespace EnterpriseMaterial.Logic
             return info;
         }
 
+        public bool SwichStatus(int SignID)
+        {
+            var mod = EF.Users.FirstOrDefault(x => x.SignID == SignID);
+            if (mod.Status)
+            {
+                mod.Status = false;
+                mod.LockTime = DateTime.Now;
+            }
+            else
+            {
+                mod.Status = true;
+                mod.LockTime = null;
+            }
+
+            if (EF.SaveChanges() > 0)
+                return true;
+            else
+                return false;
+        }
+
         public List<Model.Power> GetPower(int ID)
         {
             return (from u in EF.Signs
@@ -83,6 +103,9 @@ namespace EnterpriseMaterial.Logic
             {
                 Umod.Email = user.Email;
                 Umod.Status = false;
+            }else if (user.IdentityID != 0)
+            {
+                Smod.IdentityID = user.IdentityID;
             }
 
             Umod.Sex = user.Sex;
@@ -90,7 +113,6 @@ namespace EnterpriseMaterial.Logic
             Umod.Email = user.Email;
             Umod.Phone = user.Phone;
             Umod.Birthday = user.Birthday;
-            Smod.IdentityID = user.IdentityID;
 
             if (EF.SaveChanges() > 0)
                 return true;
@@ -128,6 +150,12 @@ namespace EnterpriseMaterial.Logic
                 EntryTime = mod.EntryTime
             };
         }
+
+        //public bool DelUser(int ID)
+        //{
+        //    var sign = EF.Signs.FirstOrDefault(x => x.ID == ID);
+        //    var user = EF.Users.FirstOrDefault(x => x.SignID == ID);
+        //}
 
         public Model.User GetEmail(string Email)
         {

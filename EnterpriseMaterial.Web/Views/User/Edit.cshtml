@@ -1,0 +1,122 @@
+﻿@model EnterpriseMaterial.Dto.UserDto.UserOut
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 20px;
+        }
+
+        .demo-carousel {
+            height: 200px;
+            line-height: 200px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <form id="submit">
+        <input type="hidden" value="@Model.ID" id="ID">
+        <div class="form-group">
+            <label>账号:</label>
+            <input type="text" class="form-control" disabled value="@Model.Account">
+        </div>
+        <div class="form-group">
+            <label>姓名:</label>
+            <input type="text" class="form-control" id="Name" value="@Model.Name">
+        </div>
+        <div class="form-group">
+            <label>邮箱:</label>
+            <input type="email" required class="form-control" value="@Model.Email" id="Email">
+        </div>
+        <div class="form-group">
+            <label>联系方式:</label>
+            <input type="tel" class="form-control" id="Phone" value="@Model.Phone">
+        </div>
+        <div class="form-group">
+            <label>性别:</label>
+            <select class="form-control" id="Sex">
+                @switch (Model.Sex)
+                {
+                    case 0:
+                        <option value="0" selected>女</option>
+                        <option value="1">男</option>
+                        <option value="2">保密</option>
+                        break;
+                    case 1:
+                        <option value="0">女</option>
+                        <option value="1" selected>男</option>
+                        <option value="2">保密</option>
+                        break;
+                    case 2:
+                        <option value="0">女</option>
+                        <option value="1">男</option>
+                        <option value="2" selected>保密</option>
+                        break;
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label>生日:</label>
+            <input type="date" class="form-control" id="Birthday" value="@Model.Birthday">
+        </div>
+        <div class="form-group">
+            <label>密码:</label>
+            <input type="password" class="form-control" id="Password" placeholder="不修改密码无需填写">
+        </div>
+        <div class="form-group">
+            <label>确认密码:</label>
+            <input type="password" class="form-control" id="PWD" placeholder="不修改密码无需填写">
+        </div>
+        <div class="form-group">
+            <label>注册时间:</label>
+            <input type="text" disabled class="form-control" value="@Model.EntryTime.ToString()">
+        </div>
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="button" class="btn btn-secondary" id="btnClose">返回</button>
+        </div>
+    </form>
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script src="~/Content/layui/layui.all.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script>
+        $("#submit").submit(function () {
+            if ($("#Password").val() == $("#PWD").val()) {
+                layer.load(2, { shade: false });
+                var data = {
+                    ID: $("#ID").val(),
+                    Sex: $("#Sex").val(),
+                    Name: $("#Name").val(),
+                    Email: $("#Email").val(),
+                    Phone: $("#Phone").val(),
+                    Birthday: $("#Birthday").val(),
+                    Password: $("#Password").val(),
+                };
+                $.post("/User/Edit", data, function (res) {
+                    layer.alert(res.message);
+                    if (res.status) {
+                        layer.alert(res.message);
+                        setTimeout(function () {
+                            window.parent.closeFrame();
+                        }, 1500);
+                    };
+                    setTimeout(function () {
+                        layer.closeAll('loading');
+                    }, 350);
+                });
+            } else {
+                layer.alert("两次输入的密码不一致");
+            };
+            return false;
+        });
+
+        $("#btnClose").click(function () {
+            window.parent.closeFrame();
+        });
+    </script>
+</body>
+</html>

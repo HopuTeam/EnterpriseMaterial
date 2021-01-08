@@ -2,15 +2,23 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "用户管理";
 }
+<button class="btn btn-primary" id="addUser">添加用户</button>
+<hr />
 <table id="tableInfo" lay-filter="tableInfo"></table>
 <script type="text/html" id="tableBar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
+<script type="text/html" id="swichStatus">
+    <input type="checkbox" lay-filter="status" value="{{ d.id }}" {{ d.status == true ? 'checked' : '' }} lay-skin="switch" lay-text="ON|OFF">'
+</script>
 @section scripts{
     <script>
+        var winOpen, table = null;
+        var form = layui.form;
+
         layui.use('table', function () {
-            var table = layui.table;
+            table = layui.table;
 
             //第一个实例
             table.render({
@@ -35,15 +43,7 @@
                             }
                         }
                     }
-                    , {
-                        field: 'status', title: '状态', width: 90, templet(d) {
-                            switch (d.status) {
-                                case false: return '<input type="checkbox" onclick="cheOpen(' + d.id + ')" checked="" name="open" lay-skin="switch" lay-text="ON|OFF">'; break;
-                                case true: return '<input type="checkbox" onclick="cheOpen(' + d.id + ')" name="close" lay-skin="switch" lay-text="ON|OFF">'; break;
-                                default: return d.status; break;
-                            }
-                        }
-                    }
+                    , { field: 'status', title: '状态', width: 90, templet: '#swichStatus', unresize: true }
                     , { field: 'entryTime', title: '注册时间', sort: true }
                     , { field: 'lockTime', title: '锁定时间', sort: true }
                     , { title: '操作', align: 'center', width: 120, toolbar: '#tableBar' }
@@ -57,18 +57,49 @@
                     layer.msg('查看操作');
                 } else if (layEvent === 'del') {
                     layer.confirm('真的删除行么', function (index) {
+                        layer.msg('删除操作' + obj.data.id);
                         obj.del(); //删除对应行（tr）的DOM结构
                         layer.close(index);
                         //向服务端发送删除指令
                     });
                 } else if (layEvent === 'edit') {
-                    layer.msg('编辑操作');
+                    winOpen = layer.open({
+                        type: 2,
+                        title: '修改信息',
+                        shadeClose: true,
+                        shade: [0.45],
+                        area: ['340px', '450px'],
+                        content: '/User/Edit?ID=' + obj.data.id,
+                    });
                 }
             });
         });
 
-        function cheOpen(id) {
+        $("#addUser").click(function () {
+            winOpen = layer.open({
+                type: 2,
+                title: '添加用户',
+                shadeClose: true,
+                shade: [0.45],
+                area: ['340px', '450px'],
+                content: '/Sign/Register',
+            });
+        });
 
+        form.on('switch(status)', function (data) {
+            layer.load(2, { shade: false });
+            $.post("/User/SwichStatus", { SignID: this.value }, function (res) {
+                table.reload('table', { url: '/User/MagUserList', where: {} });
+                layer.alert(res.message);
+                setTimeout(function () {
+                    layer.closeAll('loading');
+                }, 350);
+            });
+        });
+
+        function closeFrame() {
+            layer.close(winOpen);
+            table.reload('table', { url: '/User/MagUserList', where: {} });
         };
     </script>
 }

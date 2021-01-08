@@ -8,7 +8,7 @@ namespace EnterpriseMaterial.ILogic
     {
         Model.User GetSign(Model.Sign sign);
         Model.Sign GetAccount(string Account, int ID = 0);
-        bool GetRegister(Model.Sign sign);
+        bool GetRegister(Dto.UserDto.UserOut info);
         bool EditPassword(Model.Sign sign);
     }
 }

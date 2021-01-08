@@ -32,19 +32,28 @@ namespace EnterpriseMaterial.Logic
                 return EF.Signs.FirstOrDefault(x => x.ID == ID);
         }
 
-        public bool GetRegister(Model.Sign sign)
+        public bool GetRegister(Dto.UserDto.UserOut info)
         {
+            Model.Sign sign = new Model.Sign()
+            {
+                Account = info.Account,
+                Password = info.Password,
+                IdentityID = 1
+            };
             EF.Signs.Add(sign);
+
             if (EF.SaveChanges() <= 0)
                 return false;
 
             Model.User user = new Model.User()
             {
-                Name = sign.Account,
+                Name = info.Account,
                 Sex = 2,
                 SignID = sign.ID,
                 DepartmentID = 1,
-                Status = false
+                Status = false,
+                Email = info.Email,
+                EntryTime = DateTime.Now
             };
             EF.Users.Add(user);
 

@@ -12,7 +12,6 @@ namespace EnterpriseMaterial.Web.Controllers
     {
         private ILogic.IUserLogic Iuser { get; }
         private ILogic.ISignLogic Isign { get; }
-
         public UserController(ILogic.IUserLogic Iuser, ILogic.ISignLogic Isign)
         {
             this.Iuser = Iuser;
@@ -21,8 +20,11 @@ namespace EnterpriseMaterial.Web.Controllers
 
         public IActionResult Index()
         {
-            // Dto.UserDto.UserOut
             return View(Iuser.GetInfo(HttpContext.Session.GetModel<Model.User>("User").SignID));
+        }
+        public IActionResult Edit(int ID)
+        {
+            return View(Iuser.GetInfo(ID));
         }
 
         [HttpGet]
@@ -39,7 +41,8 @@ namespace EnterpriseMaterial.Web.Controllers
         [HttpPost]
         public IActionResult Edit(Dto.UserDto.UserOut user)
         {
-            if (user.ID == 0)
+            int ID = user.ID;
+            if (ID == 0)
                 user.ID = HttpContext.Session.GetModel<Model.User>("User").SignID;
 
             if (user.Password != null)
@@ -48,7 +51,9 @@ namespace EnterpriseMaterial.Web.Controllers
             if (!Iuser.GetEdit(user))
                 return Json(new { status = false, message = "未进行任何修改" });
 
-            HttpContext.Session.SetModel("User", Iuser.GetAccount(null, user.ID));
+            if (ID == 0)
+                HttpContext.Session.SetModel("User", Iuser.GetAccount(null, user.ID));
+
             return Json(new { status = true, message = "用户信息更新成功" });
         }
 
@@ -92,6 +97,15 @@ namespace EnterpriseMaterial.Web.Controllers
                 return Json(new { status = true, message = "邮件发送成功" });
             else
                 return Json(new { status = false, message = "邮件发送失败" });
+        }
+
+        [HttpPost]
+        public IActionResult SwichStatus(int SignID)
+        {
+            if (Iuser.SwichStatus(SignID))
+                return Json(new { status = true, message = "状态更新成功" });
+            else
+                return Json(new { status = false, message = "状态更新失败" });
         }
     }
 }
