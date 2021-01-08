@@ -18,7 +18,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">编号</label>
             <div class="layui-input-inline">
-                <input type="number" required class="form-control" id="Number" value="1" min="1" max="@Model.ID">
+                <input type="number" required class="form-control" id="ID"  value="@Model.ID">
             </div>
         </div>
 
@@ -42,7 +42,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">申请数量</label>
                 <div class="layui-input-inline">
-                    <input type="number" required class="form-control" id="Number" value="1" min="1" max="@Model.Number">
+                    <input type="number" required class="form-control" id="Number" value="@Model.Number" min="1" max="20">
                 </div>
             </div>
 
@@ -85,24 +85,22 @@
     <script src="~/Content/layui/layui.all.js"></script>
     <script src="~/Scripts/copyright.js"></script>
     <script>
-        $("submit").click(function () {
+        $("#submit").click(function () {
             var data = {
                 ID: $("#ID").val(),
-                StatusID=$("#selec").get(0).selectedIndex,
-                Suggest=$("#Reason").val(),
-                GoodName=$("#GoodName").val(),
-                Number=$("#Number").val(),
-                UserName=$("UserName").val(),
-            }
+                StatusID: $("#selec").val(),
+                Suggest: $("#Reason").val(),
+                GoodName: $("#GoodName").val(),
+                Number: $("#Number").val(),
+                UserName: $("UserName").val()
+            };
             $.post("/borrow/GetApply", data, function (res) {
-                layer.msg(res, function () {
-                    window.parent.Cancel();
-
+                
                 });
             })
-            // layer.alert(res),
+            // 
 
-            $('#cancel').click(function () {
+        $("#cancel").click(function () {
                 window.parent.Cancel();
             })
     </script>
