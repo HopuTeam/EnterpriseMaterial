@@ -25,5 +25,12 @@ namespace EnterpriseMaterial.ILogic
         bool Agree(Dto.BorrowDto.BorrowOut borrow);
         String Userapply(int Uid);
         #endregion
+
+
+        #region 用户领取
+     string Downpass( out int conut,int Uid, int pageinde, int pageSize);
+
+        public string Getapply(out int conut, int Uid, int pageinde, int pageSize);
+        #endregion
     }
 }

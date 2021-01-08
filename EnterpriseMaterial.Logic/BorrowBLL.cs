@@ -122,19 +122,15 @@ namespace EnterpriseMaterial.Logic
                         return false;
              
             }
-            else  if(Sta.ID!=5){
-                mod.StatusID = 3;
+            else  {
+                mod.StatusID = 2;
                 mod.EndTime = DateTime.Now;
                 if (db.SaveChanges() > 0)
                     return true;
                 else
                     return false;
             }
-            mod.StatusID = 5;
-            if (db.SaveChanges() > 0)
-                return true;
-            else
-                return false;
+           
         }
         #endregion
         #region 耗材申领  
@@ -161,7 +157,7 @@ namespace EnterpriseMaterial.Logic
                        join Users in db.Users on Borrows.UserID equals Users.ID
                        join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
                        join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
-                       where Borrows.SendTime != null && Borrows.MiddleTime == null && Borrows.EndTime == null
+                       where Borrows.SendTime != null && Borrows.MiddleTime == null && Borrows.EndTime == null&& Statuses.ID!=5
                        select new
                        {
                            ID = Borrows.ID,
@@ -190,7 +186,7 @@ namespace EnterpriseMaterial.Logic
                        join Users in db.Users on Borrows.UserID equals Users.ID
                        join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
                        join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
-                       where Borrows.MiddleTime != null&&Borrows.EndTime == null
+                       where Borrows.MiddleTime != null&&Borrows.EndTime == null&&Statuses.ID!=5
                        select new
                        {
                            ID = Borrows.ID,
@@ -210,19 +206,6 @@ namespace EnterpriseMaterial.Logic
             return JsonConvert.SerializeObject(mod);
         }
 
-        //public List<object> Dispose(List<Model.Borrow> mod)
-        //{ 
-
-        //    List<object> list;
-        //    foreach (var item in mod)
-        //    {
-        //        var Dis=from 
-        //    }
-
-        //}
-
-
-        //同意申请
         public BorrowOut Upapply(int Bid)
         {
             var mod = (from Borrows in db.Borrows
@@ -292,5 +275,61 @@ namespace EnterpriseMaterial.Logic
                        }).ToList();
             return JsonConvert.SerializeObject(mod);
         }
+
+
+
+        #region 用户领取管理
+        public string Downpass( out int conut,int Uid, int pageinde, int pageSize)
+        { 
+           var mod= (from Borrows in db.Borrows
+                     join Users in db.Users on Borrows.UserID equals Users.ID
+                     join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
+                     join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
+                     where Statuses.ID==2&&Users.ID==Uid
+                     select new
+                     {
+                         ID = Borrows.ID,
+                         GoodsName = Goods.Name,
+                         UserName = Users.Name,
+                         Description = Borrows.Description,
+                         StatusName = Statuses.Name,
+                         Suggest = Borrows.Suggest,
+                         SendTime = Borrows.SendTime,
+                         MiddleTime = Borrows.MiddleTime,
+                         EndTime = Borrows.EndTime,
+                         Number = Borrows.Number,
+
+                     }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+            conut = mod.Count();
+            var list = JsonConvert.SerializeObject(mod);
+            return list;
+               
+        }
+        //申请管理
+        public string Getapply(out int conut, int Uid, int pageinde, int pageSize)
+        {
+            var mod = (from Borrows in db.Borrows
+                       join Users in db.Users on Borrows.UserID equals Users.ID
+                       join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
+                       join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
+                       where Statuses.ID == 2 && Users.ID == Uid
+                       select new
+                       {
+                           ID = Borrows.ID,
+                           GoodsName = Goods.Name,
+                           UserName = Users.Name,
+                           Description = Borrows.Description,
+                           StatusName = Statuses.Name,
+                           Suggest = Borrows.Suggest,
+                           SendTime = Borrows.SendTime,
+                           MiddleTime = Borrows.MiddleTime,
+                           EndTime = Borrows.EndTime,
+                           Number = Borrows.Number,
+
+                       }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+            conut = mod.Count();
+            return JsonConvert.SerializeObject(mod);
+        }
+        #endregion
     }
 }

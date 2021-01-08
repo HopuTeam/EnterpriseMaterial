@@ -136,7 +136,6 @@ namespace EnterpriseMaterial.Web.Controllers
         {
             //dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpBorrow(out int dataConunt, page, limit));
             dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpSuperior(out int dataConunt, page, limit));
-            //List<Borrow> list =(List<Borrow>)JsonConvert.DeserializeObject(mod.ToString());
             var result = new
             {
                 code = 0,
@@ -165,9 +164,45 @@ namespace EnterpriseMaterial.Web.Controllers
                 return Content("失败");
         }
 
+        public IActionResult DownIndex()
+        {
+            return View();
+        }
 
+        public string Down(int Uid, int page = 1, int limit = 5)
+        { 
+         Uid= HttpContext.Session.GetModel<Model.User>("User").SignID;
+            int dataConunt = 0;
+              dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.Downpass(out dataConunt,Uid, page, limit));
 
+            dynamic result = new 
+            {
+                code = 0,
+                msg = "",
+                count = dataConunt,
+                data = mod
+            };
+            var list = JsonConvert.SerializeObject(result);
+            return list;
 
+        }
+
+        public string UserApply(int Uid, int page = 1, int limit = 5)
+        {
+            Uid = HttpContext.Session.GetModel<Model.User>("User").SignID;
+            int dataConunt = 0;
+            dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.Getapply(out dataConunt, Uid, page, limit));
+
+            dynamic result = new
+            {
+                code = 0,
+                msg = "",
+                count = dataConunt,
+                data = mod
+            };
+            
+            return JsonConvert.SerializeObject(result);
+        }
 
     }
 }
