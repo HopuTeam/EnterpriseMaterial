@@ -101,7 +101,7 @@ namespace EnterpriseMaterial.Web.Controllers
         {
             return View();
         }
-        public string GetListGoods(int page = 1, int limit = 5)
+        public string GetListGoods(int page = 1, int limit = 10)
         {
             int dataConunt;
             List<Goods> list = goodsBLL.GetGoodsOne(out dataConunt, page, limit);
