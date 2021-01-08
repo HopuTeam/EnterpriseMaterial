@@ -69,12 +69,8 @@
 
             $.post({
                 url: '/Borrow/ToapplySave', data: data, success: function (res) {
-                    layer.msg(res, function () {
-                        window.parent.Cancel();
-
-                    });
-                   // layer.alert(res),
-                    console.log(res)
+                    layer.msg(res);
+                    
                 }, error: function (res) { console.log(res); }
             });
 
@@ -82,6 +78,7 @@
         //关闭页面
         $('#cancel').click(function () {
             window.parent.Cancel();
+            window.location.replace("https://localhost:44339/borrow/indexone")
         })
     </script>
 </body>

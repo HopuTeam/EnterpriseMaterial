@@ -31,6 +31,8 @@ namespace EnterpriseMaterial.ILogic
 
 
 
+        String Userapply(int Uid);
+
 
 
 

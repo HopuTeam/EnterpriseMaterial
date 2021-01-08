@@ -13,12 +13,15 @@
     <link href="~/Content/fontawesome/css/solid.min.css" rel="stylesheet" />
 </head>
 <body>
+    <input type="hidden" required class="form-control" id="Goodsid" value="@Model.Goodsid">
+    <input type="hidden" required class="form-control" id="Userid" value="@Model.Userid">
+
     <h1>审批申请</h1>
     <div class="layui-col-md8" style="margin-left:10%;margin-right:10%">
         <div class="layui-form-item">
             <label class="layui-form-label">编号</label>
             <div class="layui-input-inline">
-                <input type="number" required class="form-control" id="ID"  value="@Model.ID">
+                <input type="number" required class="form-control" id="ID" value="@Model.ID">
             </div>
         </div>
 
@@ -35,6 +38,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">耗材</label>
                 <div class="layui-input-inline">
+
                     <input type="text" id="GoodName" lay-verify="required" autocomplete="off" class="layui-input" value="@Model.GoodsName" readonly="readonly" style="color:red;font-weight:600">
                 </div>
             </div>
@@ -42,6 +46,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">申请数量</label>
                 <div class="layui-input-inline">
+
                     <input type="number" required class="form-control" id="Number" value="@Model.Number" min="1" max="20">
                 </div>
             </div>
@@ -88,21 +93,20 @@
         $("#submit").click(function () {
             var data = {
                 ID: $("#ID").val(),
-                StatusID: $("#selec").val(),
+                StatusName: $("#selec").val(),
                 Suggest: $("#Reason").val(),
-                GoodName: $("#GoodName").val(),
                 Number: $("#Number").val(),
-                UserName: $("UserName").val()
+
             };
             $.post("/borrow/GetApply", data, function (res) {
-                
-                });
-            })
-            // 
+                alert(res);
+            });
+        })
+        //
 
         $("#cancel").click(function () {
-                window.parent.Cancel();
-            })
+            window.parent.Cancel();
+        })
     </script>
 </body>
 </html>

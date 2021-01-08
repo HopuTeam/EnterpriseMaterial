@@ -8,7 +8,9 @@ namespace EnterpriseMaterial.Dto.BorrowDto
     {
         public int ID { get; set; }
         public string GoodsName { get; set; }
+        public int Goodsid { get; set; }
         public string UserName { get; set; }
+        public int Userid { get; set; }
         public string Description { get; set; }
         public string StatusName { get; set; }
         public string Suggest { get; set; }
@@ -29,5 +31,6 @@ namespace EnterpriseMaterial.Dto.BorrowDto
         /// </summary>
         public DateTime? EndTime { get; set; }
         public string Complete { get; set; }
+        public decimal price { get; set; }
     }
 }

@@ -147,7 +147,7 @@ namespace EnterpriseMaterial.Web.Controllers
         }
         public IActionResult Apply(int id)
         {
-            Dto.BorrowDto.BorrowOut mod = BorrowBLL.Upapply(id);
+             Dto.BorrowDto.BorrowOut mod = BorrowBLL.Upapply(id);
             return View(mod);
         }
 
@@ -162,6 +162,10 @@ namespace EnterpriseMaterial.Web.Controllers
             else
                 return Content("失败");
         }
+
+
+
+
 
     }
 }

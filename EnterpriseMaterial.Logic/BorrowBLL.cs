@@ -82,7 +82,7 @@ namespace EnterpriseMaterial.Logic
                 Description = Description,
                 UserID = 1,// /////////////写死UserID
                 SendTime = DateTime.Now,
-                StatusID = 1,
+                StatusID = 4,
             };
             
             db.Borrows.Add(borrow);
@@ -104,28 +104,27 @@ namespace EnterpriseMaterial.Logic
             if (mod.MiddleTime == null)
             {
                 var Sta = db.BorrowStatuses.FirstOrDefault(x => x.Name == borrowOut.StatusName);
-                mod.Suggest = borrowOut.Suggest;
-                mod.StatusID = Sta.ID;
-                var goog = db.Goods.FirstOrDefault(x => x.Name == borrowOut.GoodsName);
-                if (goog.Money * borrowOut.Number > 100)
-                {
-                    mod.MiddleTime = DateTime.Now;
+                mod.Suggest = borrowOut.Suggest;          
+                var goog = db.Goods.FirstOrDefault(x => x.ID == mod.GoodsID);
+                    if (goog.Money * borrowOut.Number > 100)
+                    {
+                             mod.StatusID = 3;
+                        mod.MiddleTime = DateTime.Now;
+                        if (db.SaveChanges() > 0)
+                            return true;
+                        else
+                            return false;
+                    }
                     mod.StatusID = 2;
-                    if (db.SaveChanges() > 0)
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                {
                     mod.EndTime = DateTime.Now;
                     if (db.SaveChanges() > 0)
                         return true;
                     else
                         return false;
-                }
+             
             }
             else {
+                mod.StatusID = 3;
                 mod.EndTime = DateTime.Now;
                 if (db.SaveChanges() > 0)
                     return true;
@@ -158,10 +157,11 @@ namespace EnterpriseMaterial.Logic
                        join Users in db.Users on Borrows.UserID equals Users.ID
                        join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
                        join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
-                       where Borrows.SendTime != null && Borrows.MiddleTime == null
+                       where Borrows.SendTime != null && Borrows.MiddleTime == null && Borrows.EndTime == null
                        select new
                        {
                            ID = Borrows.ID,
+                          
                            GoodsName = Goods.Name,
                            UserName = Users.Name,
                            Description = Borrows.Description,
@@ -186,7 +186,7 @@ namespace EnterpriseMaterial.Logic
                        join Users in db.Users on Borrows.UserID equals Users.ID
                        join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
                        join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
-                       where Borrows.MiddleTime != null
+                       where Borrows.MiddleTime != null&&Borrows.EndTime == null
                        select new
                        {
                            ID = Borrows.ID,
@@ -231,6 +231,8 @@ namespace EnterpriseMaterial.Logic
                            ID = Borrows.ID,
                            GoodsName = Goods.Name,
                            UserName = Users.Name,
+                           Gid = Borrows.GoodsID,
+                           Uid = Borrows.UserID,
                            Description = Borrows.Description,
                            StatusName = Statuses.Name,
                            Suggest = Borrows.Suggest,
@@ -250,6 +252,8 @@ namespace EnterpriseMaterial.Logic
                 ID = mod.ID,
                 GoodsName = mod.GoodsName,
                 UserName = mod.UserName,
+                Goodsid=-mod.Gid,
+                Userid=mod.Uid,
                 Description = mod.Description,
                 StatusName = mod.StatusName,
                 Suggest = mod.Suggest,
@@ -260,5 +264,29 @@ namespace EnterpriseMaterial.Logic
             return borrow;
         }
 
+
+
+        public String Userapply(int Uid)
+        {
+            var mod = (from Borrows in db.Borrows
+                       join Users in db.Users on Borrows.UserID equals Users.ID
+                       join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
+                       join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
+                       where Borrows.UserID == Uid && Borrows.EndTime != null
+                       select new
+                       {
+                           ID = Borrows.ID,
+                           GoodsName = Goods.Name,
+                           UserName = Users.Name,
+                           Gid = Borrows.GoodsID,
+                           Uid = Borrows.UserID,
+                           Description = Borrows.Description,
+                           StatusName = Statuses.Name,
+                           Suggest = Borrows.Suggest,
+                           Number = Borrows.Number,
+                           Complete = Borrows.Complete
+                       }).ToList();
+            return JsonConvert.SerializeObject(mod);
+        }
     }
 }
