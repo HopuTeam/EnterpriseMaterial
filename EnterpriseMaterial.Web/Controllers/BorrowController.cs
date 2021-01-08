@@ -95,9 +95,10 @@ namespace EnterpriseMaterial.Web.Controllers
         #endregion
         #region 物料申请
 
-        public IActionResult ToapplySave(int GoodsID, int Number, string Description)//int UserID 用户ID, int Number数量, string Description申请理由
+        public IActionResult ToapplySave(int GoodsID, int Number, string Description,int Uid)//int UserID 用户ID, int Number数量, string Description申请理由
         {
-            bool T = BorrowBLL.ToapplyOne(GoodsID,Number,Description);
+             Uid = HttpContext.Session.GetModel<Model.User>("User").SignID;
+            bool T = BorrowBLL.ToapplyOne(GoodsID,Number,Description, Uid);
             if (T)
                 return Content("申请成功，请等耐心待领导审批");
             else
@@ -156,6 +157,7 @@ namespace EnterpriseMaterial.Web.Controllers
 
         public IActionResult GetApply(Dto.BorrowDto.BorrowOut borrow)
         {
+            
             bool mod = BorrowBLL.Agree(borrow);
             if (mod)
                 return Content("成功");

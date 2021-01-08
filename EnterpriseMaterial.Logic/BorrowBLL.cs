@@ -54,7 +54,7 @@ namespace EnterpriseMaterial.Logic
         /// <param name="number">申请的数量</param>
         /// <param name="description">申请理由</param>
         /// <returns></returns>
-        public bool ToapplyOne(int GoodsID, int Number, string Description)
+        public bool ToapplyOne(int GoodsID, int Number, string Description, int Uid)
         {
             var mod = db.Goods.FirstOrDefault(x => x.ID == GoodsID);
             if (mod.Number <= 0)
@@ -80,7 +80,7 @@ namespace EnterpriseMaterial.Logic
                 Number = Number,
                 Complete = x,
                 Description = Description,
-                UserID = 1,// /////////////写死UserID
+                UserID = Uid,
                 SendTime = DateTime.Now,
                 StatusID = 4,
             };
@@ -97,13 +97,12 @@ namespace EnterpriseMaterial.Logic
         }
         public bool Agree(Dto.BorrowDto.BorrowOut borrowOut)
         {
-           
-
+          
             var mod = db.Borrows.FirstOrDefault(x => x.ID == borrowOut.ID);
-
+          var Sta = db.BorrowStatuses.FirstOrDefault(x => x.Name == borrowOut.StatusName);
             if (mod.MiddleTime == null)
             {
-                var Sta = db.BorrowStatuses.FirstOrDefault(x => x.Name == borrowOut.StatusName);
+               
                 mod.Suggest = borrowOut.Suggest;          
                 var goog = db.Goods.FirstOrDefault(x => x.ID == mod.GoodsID);
                     if (goog.Money * borrowOut.Number > 100)
@@ -123,7 +122,7 @@ namespace EnterpriseMaterial.Logic
                         return false;
              
             }
-            else {
+            else  if(Sta.ID!=5){
                 mod.StatusID = 3;
                 mod.EndTime = DateTime.Now;
                 if (db.SaveChanges() > 0)
@@ -131,6 +130,11 @@ namespace EnterpriseMaterial.Logic
                 else
                     return false;
             }
+            mod.StatusID = 5;
+            if (db.SaveChanges() > 0)
+                return true;
+            else
+                return false;
         }
         #endregion
         #region 耗材申领  

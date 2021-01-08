@@ -12,15 +12,10 @@ namespace EnterpriseMaterial.ILogic
         List<Model.Goods> GoodsOne(string name);
         Model.Goods SelectIdGoods(int ID);
         #endregion
-        bool ToapplyOne(int GoodsID, int Number, string Description);
+        bool ToapplyOne(int GoodsID, int Number, string Description, int Uid);
         #region 耗材申领
         List<Model.Goods> GetGoodsTwo(out int conut, int pageinde, int pageSize);
         List<Model.Goods> GoodsTwo(string name);
-
-
-
-
-
         //管理员查询申请
         string UpBorrow(out int conut, int pageinde, int pageSize);
         //上级领导查询申请
@@ -28,19 +23,7 @@ namespace EnterpriseMaterial.ILogic
         //同意申请
         Dto.BorrowDto.BorrowOut Upapply(int Bid);
         bool Agree(Dto.BorrowDto.BorrowOut borrow);
-
-
-
         String Userapply(int Uid);
-
-
-
-
         #endregion
-
-
-
-
-
     }
 }

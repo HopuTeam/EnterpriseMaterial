@@ -41,6 +41,7 @@
                     , { field: 'Number', title: '数量', width: 80 }
                     , { field: 'Specification', title: '规格', width: 80 }
                     , { field: 'EntryTime', title: '入库时间', width: 80 }
+                    , { field: 'Status', title: 'd', width: 80 }
                 ]]
                 , page: true
             });
@@ -62,6 +63,7 @@
                             area: ['500px', '90%'],
                             content: '/borrow/Toapply?id=' + a,
                         }); 
+                        window.location.replace();
                         break;
                     case 'getCheckLength':
                         var data = checkStatus.data;
