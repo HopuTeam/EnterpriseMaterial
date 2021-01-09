@@ -14,5 +14,10 @@ namespace EnterpriseMaterial.ILogic
         bool GetEdit(Dto.UserDto.UserOut user);
         object GetUsers(int page, int limit);
         bool SwichStatus(int SignID);
+        List<Model.Power> GetPowerInfo();
+        bool AddPower(Model.Power power);
+        Model.Power GetOnePowerInfo(int ID);
+        bool EditPower(Model.Power power);
+        bool DelPower(int ID);
     }
 }

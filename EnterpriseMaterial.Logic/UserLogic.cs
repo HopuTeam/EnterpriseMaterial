@@ -103,7 +103,8 @@ namespace EnterpriseMaterial.Logic
             {
                 Umod.Email = user.Email;
                 Umod.Status = false;
-            }else if (user.IdentityID != 0)
+            }
+            else if (user.IdentityID != 0)
             {
                 Smod.IdentityID = user.IdentityID;
             }
@@ -160,6 +161,66 @@ namespace EnterpriseMaterial.Logic
         public Model.User GetEmail(string Email)
         {
             return EF.Users.FirstOrDefault(x => x.Email == Email);
+        }
+
+        public List<Model.Power> GetPowerInfo()
+        {
+            return EF.Powers.ToList();
+        }
+
+        public bool AddPower(Model.Power power)
+        {
+            EF.Powers.Add(power);
+            if (EF.SaveChanges() > 0)
+                return true;
+            else
+                return false;
+        }
+
+        public Model.Power GetOnePowerInfo(int ID)
+        {
+            return EF.Powers.FirstOrDefault(x => x.ID == ID);
+        }
+
+        public bool EditPower(Model.Power power)
+        {
+            var mod = GetOnePowerInfo(power.ID);
+            if (mod == null)
+                return false;
+
+            mod.Name = power.Name;
+            mod.Description = power.Description;
+            mod.MenuIcon = power.MenuIcon;
+            mod.ParentID = power.ParentID;
+            if (power.ActionUrl == null)
+                mod.ActionUrl = "#";
+            else
+                mod.ActionUrl = power.ActionUrl;
+
+            if (EF.SaveChanges() > 0)
+                return true;
+            else
+                return false;
+        }
+
+        public bool DelPower(int ID)
+        {
+            var mod = EF.Powers.FirstOrDefault(x => x.ID == ID);
+            var info = EF.Powers.Where(x => x.ParentID == mod.ID);
+            var detail = EF.IdentityPowers.Where(x => x.PowerID == mod.ID);
+            if (info.ToList().Count() > 0)
+                foreach (var item in info)
+                {
+                    EF.Remove(item);
+                    EF.Remove(EF.IdentityPowers.Where(x => x.PowerID == item.ID));
+                }
+
+            EF.Remove(detail);
+            EF.Remove(mod);
+            if (EF.SaveChanges() > 0)
+                return true;
+            else
+                return false;
         }
     }
 }

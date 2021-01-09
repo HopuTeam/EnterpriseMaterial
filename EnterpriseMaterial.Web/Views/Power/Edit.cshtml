@@ -1,0 +1,85 @@
+﻿@model EnterpriseMaterial.Model.Power
+@{
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 20px;
+        }
+
+        .demo-carousel {
+            height: 200px;
+            line-height: 200px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <form id="submit">
+        <input type="hidden" id="ID" value="@Model.ID">
+        <div class="form-group">
+            <label>名称:</label>
+            <input type="text" required class="form-control" id="Name" value="@Model.Name">
+        </div>
+        <div class="form-group">
+            <label>描述:</label>
+            <input type="text" required class="form-control" id="Description" value="@Model.Description">
+        </div>
+        <div class="form-group">
+            <label>图标(使用Layui图标库):</label>
+            <input type="text" class="form-control" id="MenuIcon" placeholder="layui-icon-edit" value="@Model.MenuIcon">
+        </div>
+        @if (Model.ParentID == 0)
+        {
+            <input type="hidden" id="ActionUrl" value="#">
+        }
+        else
+        {
+            <div class="form-group">
+                <label>链接:</label>
+                <input type="text" required class="form-control" id="ActionUrl" value="@Model.ActionUrl">
+            </div>
+        }
+        <div class="btn-group">
+            <button class="btn btn-primary" type="submit">修改</button>
+            <button class="btn btn-secondary" type="button" id="btnClose">取消</button>
+        </div>
+    </form>
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/layui/layui.all.js"></script>
+    <script>
+        $("#submit").submit(function () {
+            layer.load(2, { shade: false });
+            var data = {
+                ID: $("#ID").val(),
+                Name: $("#Name").val(),
+                MenuIcon: $("#MenuIcon").val(),
+                ActionUrl: $("#ActionUrl").val(),
+                Description: $("#Description").val(),
+            };
+            $.post("/Power/Edit", data, function (res) {
+                setTimeout(function () {
+                    layer.closeAll('loading');
+                }, 350);
+                layer.alert(res.messgae);
+                if (res.status) {
+                    setTimeout(function () {
+                        window.parent.closeFrame();
+                    }, 1500);
+                };
+            });
+            return false;
+        });
+
+        $("#btnClose").click(function () {
+            window.parent.closeFrame();
+        });
+    </script>
+</body>
+</html>

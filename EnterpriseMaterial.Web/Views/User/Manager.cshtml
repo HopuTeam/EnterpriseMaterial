@@ -29,8 +29,8 @@
                 , method: "post"
                 , cols: [[ //表头
                     { field: 'id', title: 'ID', sort: true, width: 60, fixed: 'left' }
-                    , { field: 'account', title: '用户名', width: 100 }
-                    , { field: 'name', title: '姓名', width: 80, sort: true }
+                    , { field: 'account', title: '用户名', width: 80 }
+                    , { field: 'name', title: '姓名', width: 100, sort: true }
                     , { field: 'email', title: '邮箱', width: 140 }
                     , { field: 'phone', title: '电话', width: 120 }
                     , { field: 'birthday', title: '生日', width: 110, sort: true }
@@ -89,7 +89,7 @@
         form.on('switch(status)', function (data) {
             layer.load(2, { shade: false });
             $.post("/User/SwichStatus", { SignID: this.value }, function (res) {
-                table.reload('table', { url: '/User/MagUserList', where: {} });
+                window.location.reload();
                 layer.alert(res.message);
                 setTimeout(function () {
                     layer.closeAll('loading');
@@ -99,7 +99,7 @@
 
         function closeFrame() {
             layer.close(winOpen);
-            table.reload('table', { url: '/User/MagUserList', where: {} });
+            window.location.reload();
         };
     </script>
 }
