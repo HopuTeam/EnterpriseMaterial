@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace EnterpriseMaterial.Common
 {
-  public  class LayuiTreeModel
+    public class LayuiTreeModel
     {
         public int Id { get; set; }
         /// <summary>

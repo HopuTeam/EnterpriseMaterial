@@ -1,28 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using EnterpriseMaterial.Common;
+using EnterpriseMaterial.Data;
 using EnterpriseMaterial.Dto.IdentityDTO;
 using EnterpriseMaterial.ILogic;
-using Microsoft.EntityFrameworkCore;
 using EnterpriseMaterial.Model;
-using System.Linq;
-using EnterpriseMaterial.Data;
 using Microsoft.Extensions.Logging;
-using EnterpriseMaterial.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EnterpriseMaterial.Logic
 {
     public class IdentityBLL : IIdentityBLL
     {
-        
-        
+
+
         #region 构造函数注入
         private readonly ILogger<IdentityBLL> logger;
         private readonly CoreEntities coreEntities;
-       
 
 
-        public IdentityBLL(ILogger<IdentityBLL> logger,CoreEntities coreEntities)//
+
+        public IdentityBLL(ILogger<IdentityBLL> logger, CoreEntities coreEntities)//
         {
             this.logger = logger;
             this.coreEntities = coreEntities;
@@ -91,16 +89,16 @@ namespace EnterpriseMaterial.Logic
         /// <returns></returns>
         public List<IdentityQutput> LoadEntities(out int conut, int pageinde, int pageSize)// 普通查询,获取未被禁用的所有
         {
-            List<IdentityQutput> list = (from a in coreEntities.Set<Identity>().Where(u => u.Status==true)
-                                     select new IdentityQutput
-                                     {
-                                         ID = a.ID,
-                                         EntryTime = a.EntryTime,
-                                         Status = a.Status,
-                                         LockTime = a.LockTime,
-                                         Description = a.Description,
-                                         Name = a.Name,
-                                     }).ToList();
+            List<IdentityQutput> list = (from a in coreEntities.Set<Identity>().Where(u => u.Status == true)
+                                         select new IdentityQutput
+                                         {
+                                             ID = a.ID,
+                                             EntryTime = a.EntryTime,
+                                             Status = a.Status,
+                                             LockTime = a.LockTime,
+                                             Description = a.Description,
+                                             Name = a.Name,
+                                         }).ToList();
             conut = list.Count();
             return list;
         }
@@ -112,15 +110,15 @@ namespace EnterpriseMaterial.Logic
         public List<IdentityQutput> LoadEntities(int id)// 根据id查询
         {
             List<IdentityQutput> list = (from a in coreEntities.Set<Identity>().Where(u => u.ID == id)
-                                     select new IdentityQutput
-                                     {
-                                         ID = a.ID,
-                                         EntryTime = a.EntryTime,
-                                         Status = a.Status,
-                                         LockTime = a.LockTime,
-                                         Description = a.Description,
-                                         Name = a.Name,
-                                     }).ToList();
+                                         select new IdentityQutput
+                                         {
+                                             ID = a.ID,
+                                             EntryTime = a.EntryTime,
+                                             Status = a.Status,
+                                             LockTime = a.LockTime,
+                                             Description = a.Description,
+                                             Name = a.Name,
+                                         }).ToList();
             return list;
         }
 
@@ -142,18 +140,18 @@ namespace EnterpriseMaterial.Logic
                 iquery = coreEntities.Set<Identity>().Where(u => u.Name.Contains(selectInfo)).OrderBy(u => u.ID).Skip((pageIndex - 1) * pageSize).Take(pageSize);
             }
             List<IdentityQutput> list = (from a in iquery
-                                     select new IdentityQutput
-                                     {
-                                         ID = a.ID,
-                                         EntryTime = a.EntryTime,
-                                         Status = a.Status,
-                                         LockTime = a.LockTime,
-                                         Description = a.Description,                                        
-                                         Name = a.Name,
-                                     }).ToList();
+                                         select new IdentityQutput
+                                         {
+                                             ID = a.ID,
+                                             EntryTime = a.EntryTime,
+                                             Status = a.Status,
+                                             LockTime = a.LockTime,
+                                             Description = a.Description,
+                                             Name = a.Name,
+                                         }).ToList();
 
             return list;
-         
+
         }
 
 
@@ -220,7 +218,7 @@ namespace EnterpriseMaterial.Logic
                                     RoleID = a.IdentityID,
                                     Status = c.Status,
                                 }).Where(u => u.Status == false);//筛选
-                                                              //构造角色id字符串             
+                                                                 //构造角色id字符串             
             if (r_roleIquery.Count() > 0)
             {
                 string strRoleID = "";
@@ -283,13 +281,13 @@ namespace EnterpriseMaterial.Logic
         {
             //查询到当前身份拥有的权限
             List<Model.IdentityPower> list = coreEntities.IdentityPowers.Where(a => a.IdentityID == ldentityid).ToList();
-            string[] arrUrl = string.Join(',' ,IdentiyiList.Split(',').Distinct().ToArray()).Split(',');//去重，分割后拿到ldentity表的id          
-            if (list.Count>0)
+            string[] arrUrl = string.Join(',', IdentiyiList.Split(',').Distinct().ToArray()).Split(',');//去重，分割后拿到ldentity表的id          
+            if (list.Count > 0)
             {
                 //删除身份原本拥有的权限
                 coreEntities.IdentityPowers.RemoveRange(list);
                 //如果保存数据库成功
-                if (coreEntities.SaveChanges()>0)
+                if (coreEntities.SaveChanges() > 0)
                 {
                     //为当前角色重新添加权限                  
                     for (int i = 0; i < arrUrl.Length; i++)
@@ -297,11 +295,11 @@ namespace EnterpriseMaterial.Logic
                         IdentityPower identityPower = new IdentityPower()
                         {
                             IdentityID = ldentityid,
-                            PowerID =Convert.ToInt32(  arrUrl[i])
+                            PowerID = Convert.ToInt32(arrUrl[i])
                         };
                         coreEntities.IdentityPowers.Add(identityPower);
                     }
-                    if (coreEntities.SaveChanges()>0)
+                    if (coreEntities.SaveChanges() > 0)
                     {
                         return true;
                     }
@@ -317,8 +315,8 @@ namespace EnterpriseMaterial.Logic
             }
             else
             {
-                
-                for (int i = 0; i < arrUrl.Length ; i++)
+
+                for (int i = 0; i < arrUrl.Length; i++)
                 {
                     IdentityPower identityPower = new IdentityPower()
                     {
@@ -355,7 +353,7 @@ namespace EnterpriseMaterial.Logic
         /// <param name="layuiTreeModel">laiuiTree需要的类型</param>
         /// <param name="powers"></param>
         /// <param name="powerid">当前身份id</param>
-        public void DiGui(ref LayuiTreeModel  layuiTreeModel,List<Power> powers ,int powerid)
+        public void DiGui(ref LayuiTreeModel layuiTreeModel, List<Power> powers, int powerid)
         {
             List<LayuiTreeModel> treeModels = new List<LayuiTreeModel>();
             foreach (var item in powers)
@@ -374,7 +372,7 @@ namespace EnterpriseMaterial.Logic
                 };
                 //查询当前权限是否有子目录
                 List<Power> powerlist = coreEntities.Powers.Where(o => o.ParentID == item.ID).ToList();
-                if (powerlist !=null)
+                if (powerlist != null)
                 {
                     entity.Checked = false;
                     DiGui(ref entity, powerlist, powerid);
@@ -384,7 +382,7 @@ namespace EnterpriseMaterial.Logic
             }
         }
 
-      
+
         #endregion
 
 

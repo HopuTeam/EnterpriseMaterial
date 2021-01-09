@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EnterpriseMaterial.Dto.DepartmentDTO
+﻿namespace EnterpriseMaterial.Dto.DepartmentDTO
 {
     public class DepartmentInput
     {
@@ -22,7 +18,7 @@ namespace EnterpriseMaterial.Dto.DepartmentDTO
         /// <summary>
         /// 创建时间
         /// </summary>
-        
+
 
     }
 }

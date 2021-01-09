@@ -1,50 +1,27 @@
 ﻿using EnterpriseMaterial.Common;
-using EnterpriseMaterial.Dto.DepartmentDTO;
 using EnterpriseMaterial.ILogic;
-using EnterpriseMaterial.Logic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EnterpriseMaterial.Web.Controllers
 {
-    
+
     public class DepartmentController : Controller
     {
         private readonly IDepartmentService _departmentService;
-        #region 构造函数注入
-        //private readonly DepartmentService _departmentService;
-
-        //public DepartmentController(DepartmentService departmentService)
-        //{
-        //    _departmentService = departmentService;
-        //}
-
-        //private ILogger<DepartmentController> _logger;
-
-        //public DepartmentController(ILogger<DepartmentController> logger)
-        //{
-        //    _logger = logger;
-        //}
-
-        public DepartmentController(ILogic.IDepartmentService departmentService) {
-            this._departmentService = departmentService;
+        public DepartmentController(ILogic.IDepartmentService departmentService)
+        {
+            _departmentService = departmentService;
         }
-        #endregion
+
         public IActionResult Index()
         {
             return View();
         }
-  #region 非页面       
-        public string GetJsonList(string selectInfo=null ,int page = 1, int limit = 10)
-        {
-            int totalCount = 0;
 
-            var outlist = _departmentService.LoadPageEntities(page, limit, out totalCount, selectInfo);
-            var result = new 
+        public string GetJsonList(string selectInfo = null, int page = 1, int limit = 10)
+        {
+            var outlist = _departmentService.LoadPageEntities(page, limit, out int totalCount, selectInfo);
+            var result = new
             {
                 code = 0,
                 msg = "",
@@ -53,7 +30,5 @@ namespace EnterpriseMaterial.Web.Controllers
             };
             return JsonNetHelper.SerializetoJson(result);
         }
-
-#endregion
     }
 }

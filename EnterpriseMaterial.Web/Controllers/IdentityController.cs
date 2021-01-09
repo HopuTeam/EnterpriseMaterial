@@ -1,17 +1,12 @@
 ﻿using EnterpriseMaterial.Common;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using EnterpriseMaterial.Model;
-using EnterpriseMaterial.ILogic;
-using EnterpriseMaterial.Data;
-using Microsoft.Extensions.Logging;
-using EnterpriseMaterial.Logic;
 using EnterpriseMaterial.Dto.IdentityDTO;
+using EnterpriseMaterial.ILogic;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EnterpriseMaterial.Web.Controllers
 {
@@ -21,7 +16,7 @@ namespace EnterpriseMaterial.Web.Controllers
         private readonly ILogger<IdentityController> logger;
         private readonly IIdentityBLL identityBLL;
 
-        public IdentityController(ILogger<IdentityController> logger,IIdentityBLL identityBLL) 
+        public IdentityController(ILogger<IdentityController> logger, IIdentityBLL identityBLL)
         {
             this.logger = logger;
             this.identityBLL = identityBLL;
@@ -49,13 +44,13 @@ namespace EnterpriseMaterial.Web.Controllers
             return View();
         }
 
-        
+
         public IActionResult Updateindex(int ID)
         {
-            IdentityQutput model = identityBLL.LoadEntities(ID).FirstOrDefault();       
-            return View(model);          
+            IdentityQutput model = identityBLL.LoadEntities(ID).FirstOrDefault();
+            return View(model);
         }
-       
+
 
         /// <summary>
         /// 角色分配权限视图
@@ -75,8 +70,8 @@ namespace EnterpriseMaterial.Web.Controllers
         #region 非页面
 
 
-    
-       
+
+
         [HttpPost]
         public IActionResult Add(identityInput inputEntity) ///添加
         {
@@ -121,7 +116,7 @@ namespace EnterpriseMaterial.Web.Controllers
         public string GetJsonList1(int page = 1, int limit = 5)// 获取角色信息,不分页
         {
             int dataConunt;
-            List<IdentityQutput> outlist = identityBLL.LoadEntities(out dataConunt, page , limit);
+            List<IdentityQutput> outlist = identityBLL.LoadEntities(out dataConunt, page, limit);
             DataResult<List<IdentityQutput>> dataResult = new DataResult<List<IdentityQutput>>()
             {
                 code = 0,
@@ -151,7 +146,7 @@ namespace EnterpriseMaterial.Web.Controllers
                 count = totalCount,
                 data = outlist,
             };
-           // return JsonNetHelper.SerializetoJson(dataResult);
+            // return JsonNetHelper.SerializetoJson(dataResult);
             return Newtonsoft.Json.JsonConvert.SerializeObject(dataResult);
         }
 
@@ -243,7 +238,7 @@ namespace EnterpriseMaterial.Web.Controllers
         /// <returns></returns>
         public string GetIdentityPower(int id)
         {
-           // int id= HttpContext.Session.GetModel<User>("User").ID;
+            // int id= HttpContext.Session.GetModel<User>("User").ID;
             LayuiTreeModel view = identityBLL.LayuiTreeModels(id);
             var setting = new JsonSerializerSettings
             {
@@ -252,7 +247,7 @@ namespace EnterpriseMaterial.Web.Controllers
             };
             var result = JsonConvert.SerializeObject(view, Formatting.Indented, setting);
             return "[" + result + "]";
-         
+
         }
         /// <summary>
         /// 为身份配置权限
@@ -261,10 +256,10 @@ namespace EnterpriseMaterial.Web.Controllers
         /// <param name="ldentityid">ldentity表的id</param>
         /// <returns></returns>
         [HttpPost]
-        public string SetPower(string  IdentiyiList,int ldentityid)
+        public string SetPower(string IdentiyiList, int ldentityid)
         {
-            bool result= identityBLL.SetPower(IdentiyiList, ldentityid);
-  
+            bool result = identityBLL.SetPower(IdentiyiList, ldentityid);
+
             if (result == true)
             {
                 return "success";

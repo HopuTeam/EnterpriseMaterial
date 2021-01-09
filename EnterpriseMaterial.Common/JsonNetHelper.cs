@@ -34,7 +34,7 @@ namespace EnterpriseMaterial.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="dt"></param>
         /// <returns></returns>
-        public static List<T> DataTableToList<T>(DataTable dt) where T:class,new()
+        public static List<T> DataTableToList<T>(DataTable dt) where T : class, new()
         {
             IsoDateTimeConverter timeConverter = new IsoDateTimeConverter();
             timeConverter.DateTimeFormat = "yyyy'-'MM'-'dd HH':'mm':'ss";//格式化时间，默认是ISO8601格式

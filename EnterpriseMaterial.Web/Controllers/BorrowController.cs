@@ -1,13 +1,9 @@
 ﻿using EnterpriseMaterial.Common;
-using EnterpriseMaterial.Data;
 using EnterpriseMaterial.ILogic;
 using EnterpriseMaterial.Model;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EnterpriseMaterial.Web.Controllers
 {
@@ -95,10 +91,10 @@ namespace EnterpriseMaterial.Web.Controllers
         #endregion
         #region 物料申请
 
-        public IActionResult ToapplySave(int GoodsID, int Number, string Description,int Uid)//int UserID 用户ID, int Number数量, string Description申请理由
+        public IActionResult ToapplySave(int GoodsID, int Number, string Description, int Uid)//int UserID 用户ID, int Number数量, string Description申请理由
         {
-             Uid = HttpContext.Session.GetModel<Model.User>("User").SignID;
-            bool T = BorrowBLL.ToapplyOne(GoodsID,Number,Description, Uid);
+            Uid = HttpContext.Session.GetModel<Model.User>("User").SignID;
+            bool T = BorrowBLL.ToapplyOne(GoodsID, Number, Description, Uid);
             if (T)
                 return Content("申请成功，请等耐心待领导审批");
             else
@@ -107,7 +103,7 @@ namespace EnterpriseMaterial.Web.Controllers
         #endregion
         #region  管理员管理申请
 
-             //管理员
+        //管理员
         public IActionResult IndexFour()
         {
             return View();
@@ -115,7 +111,7 @@ namespace EnterpriseMaterial.Web.Controllers
         public string GetListFour(int page = 1, int limit = 5)
         {
             dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpBorrow(out int dataConunt, page, limit));
-           // dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpSuperior(out int dataConunt, page, limit));
+            // dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.UpSuperior(out int dataConunt, page, limit));
             //List<Borrow> list =(List<Borrow>)JsonConvert.DeserializeObject(mod.ToString());
             var result = new
             {
@@ -147,7 +143,7 @@ namespace EnterpriseMaterial.Web.Controllers
         }
         public IActionResult Apply(int id)
         {
-             Dto.BorrowDto.BorrowOut mod = BorrowBLL.Upapply(id);
+            Dto.BorrowDto.BorrowOut mod = BorrowBLL.Upapply(id);
             return View(mod);
         }
 
@@ -156,7 +152,7 @@ namespace EnterpriseMaterial.Web.Controllers
 
         public IActionResult GetApply(Dto.BorrowDto.BorrowOut borrow)
         {
-            
+
             bool mod = BorrowBLL.Agree(borrow);
             if (mod)
                 return Content("成功");
@@ -170,12 +166,11 @@ namespace EnterpriseMaterial.Web.Controllers
         }
 
         public string Down(int Uid, int page = 1, int limit = 5)
-        { 
-         Uid= HttpContext.Session.GetModel<Model.User>("User").SignID;
-            int dataConunt = 0;
-              dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.Downpass(out dataConunt,Uid, page, limit));
+        {
+            Uid = HttpContext.Session.GetModel<Model.User>("User").SignID;
+            dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.Downpass(out int dataConunt, Uid, page, limit));
 
-            dynamic result = new 
+            dynamic result = new
             {
                 code = 0,
                 msg = "",
@@ -190,8 +185,7 @@ namespace EnterpriseMaterial.Web.Controllers
         public string UserApply(int Uid, int page = 1, int limit = 5)
         {
             Uid = HttpContext.Session.GetModel<Model.User>("User").SignID;
-            int dataConunt = 0;
-            dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.Getapply(out dataConunt, Uid, page, limit));
+            dynamic mod = JsonConvert.DeserializeObject(BorrowBLL.Getapply(out int dataConunt, Uid, page, limit));
 
             dynamic result = new
             {
@@ -200,7 +194,7 @@ namespace EnterpriseMaterial.Web.Controllers
                 count = dataConunt,
                 data = mod
             };
-            
+
             return JsonConvert.SerializeObject(result);
         }
 

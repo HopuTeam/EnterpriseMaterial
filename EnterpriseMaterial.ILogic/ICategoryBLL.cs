@@ -1,11 +1,8 @@
 ﻿using EnterpriseMaterial.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EnterpriseMaterial.ILogic
 {
-   public interface ICategoryBLL
+    public interface ICategoryBLL
     {
         /// <summary>
         /// 展示分类树 
@@ -31,11 +28,11 @@ namespace EnterpriseMaterial.ILogic
         /// <param name="Name"></param>
         /// <returns></returns>
         bool EditSave(Category view);
-       /// <summary>
-       /// 删除
-       /// </summary>
-       /// <param name="id"></param>
-       /// <returns></returns>
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         bool Delete(int id);
     }
 }

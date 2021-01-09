@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EnterpriseMaterial.Dto.PowerDTO
+﻿namespace EnterpriseMaterial.Dto.PowerDTO
 {
     public class PowerOutput
     {
@@ -10,7 +6,7 @@ namespace EnterpriseMaterial.Dto.PowerDTO
         public string Name { get; set; }
         /// <summary>
         /// 说明
-    public int PowerId { get; set; }
+        public int PowerId { get; set; }
         /// </summary>
         public string Description { get; set; }
         /// <summary>

@@ -2,11 +2,9 @@
 using EnterpriseMaterial.Dto.DepartmentDTO;
 using EnterpriseMaterial.ILogic;
 using EnterpriseMaterial.Model;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 
 namespace EnterpriseMaterial.Logic
@@ -33,7 +31,7 @@ namespace EnterpriseMaterial.Logic
                     from c in join_a.DefaultIfEmpty()
                     select new DepartmentOutput
                     {
-                       
+
                         Name = a.Name,
                         Id = a.ID,
                         UserID = a.UserID,
@@ -60,8 +58,8 @@ namespace EnterpriseMaterial.Logic
 
         public object LoadPageEntities(int pageIndex, int pageSize, out int totalCount, string selectInfo)
         {
-            
-            if (selectInfo==null)
+
+            if (selectInfo == null)
             {
                 var list = (from deq in _dbContext.Departments
                             join u in _dbContext.Users on deq.UserID equals u.SignID
@@ -82,7 +80,7 @@ namespace EnterpriseMaterial.Logic
             }
             else
             {
-                IQueryable<Department> iquery = _dbContext.Set<Department>().Where(u => u.Name.Contains(selectInfo)).OrderBy(u => u.ID).Skip((pageIndex - 1) * pageSize).Take(pageSize) ;
+                IQueryable<Department> iquery = _dbContext.Set<Department>().Where(u => u.Name.Contains(selectInfo)).OrderBy(u => u.ID).Skip((pageIndex - 1) * pageSize).Take(pageSize);
                 var list = (from a in iquery
                             join u in _dbContext.Users on a.UserID equals u.ID into join_a
                             from c in join_a.DefaultIfEmpty()
@@ -96,12 +94,12 @@ namespace EnterpriseMaterial.Logic
                                 ShiJian = a.EntryTime
                             }
                           ).ToList();
-               
 
-                  totalCount = list.Count();
+
+                totalCount = list.Count();
                 return list;
             }
-         
+
         }
 
         public int Update(DepartmentInput inputEntity)

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace EnterpriseMaterial.Dto.PowerDTO
 {
@@ -45,4 +43,4 @@ namespace EnterpriseMaterial.Dto.PowerDTO
         /// </summary>
         public List<PowerTreeOutput> Children { get; set; }
     }
-    }
+}

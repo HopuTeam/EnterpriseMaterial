@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EnterpriseMaterial.Dto.IdentityDTO
 {
@@ -28,5 +26,5 @@ namespace EnterpriseMaterial.Dto.IdentityDTO
 
     }
 
-    }
+}
 

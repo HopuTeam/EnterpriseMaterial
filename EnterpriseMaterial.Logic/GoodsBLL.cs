@@ -1,12 +1,8 @@
 ﻿using EnterpriseMaterial.Data;
-using EnterpriseMaterial.ILogic;
 using EnterpriseMaterial.Model;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace EnterpriseMaterial.Logic
 {
@@ -25,7 +21,7 @@ namespace EnterpriseMaterial.Logic
         /// <returns></returns>
         public List<Goods> GetGoodsOne(out int conut, int pageinde, int pageSize)
         {
-            var list = db.Goods.OrderBy(a => a.ID).Skip((pageinde-1)*pageSize).Take(pageSize).ToList();
+            var list = db.Goods.OrderBy(a => a.ID).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
             conut = list.Count();
             return list;
         }
@@ -34,9 +30,9 @@ namespace EnterpriseMaterial.Logic
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public List<Goods> GoodsOne(string name, out int conut, int pageinde , int pageSize)
+        public List<Goods> GoodsOne(string name, out int conut, int pageinde, int pageSize)
         {
-            List<Goods> res= db.Goods.Where(a => a.Name.Contains(name)).OrderBy(c => c.ID).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+            List<Goods> res = db.Goods.Where(a => a.Name.Contains(name)).OrderBy(c => c.ID).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
             conut = res.Count();
             return res;
         }
@@ -57,7 +53,7 @@ namespace EnterpriseMaterial.Logic
         /// <param name="number">申请的数量</param>
         /// <param name="description">申请理由</param>
         /// <returns></returns>
-        public bool ToapplyOne(int id,int number ,string description)
+        public bool ToapplyOne(int id, int number, string description)
         {
             bool x = true;
             //查询这个物品总价属于什么类型
@@ -66,7 +62,7 @@ namespace EnterpriseMaterial.Logic
                          select go
                        ).FirstOrDefault();
             //如果是设备借取类的就要归还
-            if (goods.TypeID==2)
+            if (goods.TypeID == 2)
             {
                 x = false;
             }
@@ -93,15 +89,15 @@ namespace EnterpriseMaterial.Logic
                 goods.Number -= number;
                 db.SaveChanges();
                 return true;
-            }          
-          else
-            return false;
+            }
+            else
+                return false;
         }
         #endregion
         #region 耗材申领  
         public List<Goods> GetGoodsTwo(out int conut, int pageinde, int pageSize)
         {
-          var list= db.Goods.Where(a => a.TypeID == 2).OrderBy(a => a.ID).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+            var list = db.Goods.Where(a => a.TypeID == 2).OrderBy(a => a.ID).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
             conut = list.Count();
             return list;
         }
@@ -118,7 +114,7 @@ namespace EnterpriseMaterial.Logic
         #endregion
         #region 增删改查
         public List<Model.Category> GetCategories()
-        {            
+        {
             return db.Categories.ToList();
         }
 
@@ -130,21 +126,21 @@ namespace EnterpriseMaterial.Logic
         public bool EditGoods(Goods view)
         {
             Goods goods = db.Goods.FirstOrDefault(a => a.ID == view.ID);
-            if (goods==null)
+            if (goods == null)
             {
                 return false;
             }
             goods.CategoryID = view.CategoryID;
-            goods.Description = view.Description;         
+            goods.Description = view.Description;
             goods.Money = view.Money;
             goods.Name = view.Name;
             goods.Number = view.Number;
             goods.Specification = view.Specification;
-            goods.Status = view.Status;    
+            goods.Status = view.Status;
             goods.Unit = view.Unit;
             goods.WarningNum = view.WarningNum;
             goods.Status = view.Status;
-            if (db.SaveChanges()>0)
+            if (db.SaveChanges() > 0)
             {
                 return true;
             }

@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.IO;
-using EnterpriseMaterial.Common;
+﻿using EnterpriseMaterial.Common;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace EnterpriseMaterial.Web.Controllers
 {

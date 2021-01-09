@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EnterpriseMaterial.Model
 {
@@ -10,7 +7,7 @@ namespace EnterpriseMaterial.Model
     /// </summary>
     public class BorrowStatus
     {
-    
+
         [Key]
         public int ID { get; set; }
         /// <summary>

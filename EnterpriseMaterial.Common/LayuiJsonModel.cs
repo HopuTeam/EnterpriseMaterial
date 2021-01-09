@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace EnterpriseMaterial.Common
 {
-   public class LayuiJsonModel<T>
+    public class LayuiJsonModel<T>
     {
         public int code { get; set; }
         public string msg { get; set; }

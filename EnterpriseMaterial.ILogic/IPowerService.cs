@@ -1,11 +1,9 @@
 ﻿using EnterpriseMaterial.Dto.PowerDTO;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace EnterpriseMaterial.ILogic
 {
-   public interface IPowerService
+    public interface IPowerService
     {
         PowerTreeOutput GetPowerList(int allRoleID);
 

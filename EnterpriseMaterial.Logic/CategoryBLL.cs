@@ -1,11 +1,8 @@
 ﻿using EnterpriseMaterial.Common;
 using EnterpriseMaterial.Data;
-using EnterpriseMaterial.ILogic;
 using EnterpriseMaterial.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace EnterpriseMaterial.Logic
 {
@@ -13,7 +10,7 @@ namespace EnterpriseMaterial.Logic
     {
         private readonly CoreEntities db;
 
-        public CategoryBLL(CoreEntities _db) 
+        public CategoryBLL(CoreEntities _db)
         {
             db = _db;
         }
@@ -48,7 +45,7 @@ namespace EnterpriseMaterial.Logic
                     Checked = true
                 };
                 List<Category> list = db.Categories.Where(a => a.ParentID == item.ID).ToList();
-                if (list!=null)
+                if (list != null)
                 {
                     entit.Checked = false;
                     DiGui(ref entit, list);
@@ -56,7 +53,7 @@ namespace EnterpriseMaterial.Logic
                 treeModels.Add(entit);
                 model.Children = treeModels;
             };
-          
+
         }
 
         public Category Selectid(int id)

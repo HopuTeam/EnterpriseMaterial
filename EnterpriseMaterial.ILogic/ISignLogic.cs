@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EnterpriseMaterial.ILogic
+﻿namespace EnterpriseMaterial.ILogic
 {
     public interface ISignLogic
     {

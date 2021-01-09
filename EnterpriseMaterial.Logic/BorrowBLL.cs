@@ -1,11 +1,10 @@
 ﻿using EnterpriseMaterial.Data;
+using EnterpriseMaterial.Dto.BorrowDto;
 using EnterpriseMaterial.ILogic;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using Newtonsoft.Json;
-using EnterpriseMaterial.Dto.BorrowDto;
 
 namespace EnterpriseMaterial.Logic
 {
@@ -84,7 +83,7 @@ namespace EnterpriseMaterial.Logic
                 SendTime = DateTime.Now,
                 StatusID = 4,
             };
-            
+
             db.Borrows.Add(borrow);
             if (db.SaveChanges() > 0)
             {
@@ -97,32 +96,33 @@ namespace EnterpriseMaterial.Logic
         }
         public bool Agree(Dto.BorrowDto.BorrowOut borrowOut)
         {
-          
+
             var mod = db.Borrows.FirstOrDefault(x => x.ID == borrowOut.ID);
-          var Sta = db.BorrowStatuses.FirstOrDefault(x => x.Name == borrowOut.StatusName);
+            var Sta = db.BorrowStatuses.FirstOrDefault(x => x.Name == borrowOut.StatusName);
             if (mod.MiddleTime == null)
             {
-               
-                mod.Suggest = borrowOut.Suggest;          
+
+                mod.Suggest = borrowOut.Suggest;
                 var goog = db.Goods.FirstOrDefault(x => x.ID == mod.GoodsID);
-                    if (goog.Money * borrowOut.Number > 100)
-                    {
-                             mod.StatusID = 3;
-                        mod.MiddleTime = DateTime.Now;
-                        if (db.SaveChanges() > 0)
-                            return true;
-                        else
-                            return false;
-                    }
-                    mod.StatusID = 2;
-                    mod.EndTime = DateTime.Now;
+                if (goog.Money * borrowOut.Number > 100)
+                {
+                    mod.StatusID = 3;
+                    mod.MiddleTime = DateTime.Now;
                     if (db.SaveChanges() > 0)
                         return true;
                     else
                         return false;
-             
+                }
+                mod.StatusID = 2;
+                mod.EndTime = DateTime.Now;
+                if (db.SaveChanges() > 0)
+                    return true;
+                else
+                    return false;
+
             }
-            else  {
+            else
+            {
                 mod.StatusID = 2;
                 mod.EndTime = DateTime.Now;
                 if (db.SaveChanges() > 0)
@@ -130,7 +130,7 @@ namespace EnterpriseMaterial.Logic
                 else
                     return false;
             }
-           
+
         }
         #endregion
         #region 耗材申领  
@@ -157,11 +157,11 @@ namespace EnterpriseMaterial.Logic
                        join Users in db.Users on Borrows.UserID equals Users.ID
                        join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
                        join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
-                       where Borrows.SendTime != null && Borrows.MiddleTime == null && Borrows.EndTime == null&& Statuses.ID!=5
+                       where Borrows.SendTime != null && Borrows.MiddleTime == null && Borrows.EndTime == null && Statuses.ID != 5
                        select new
                        {
                            ID = Borrows.ID,
-                          
+
                            GoodsName = Goods.Name,
                            UserName = Users.Name,
                            Description = Borrows.Description,
@@ -170,9 +170,9 @@ namespace EnterpriseMaterial.Logic
                            MiddleTime = Borrows.MiddleTime,
                            EndTime = Borrows.EndTime,
                            Number = Borrows.Number,
-             Complete =Borrows.Complete,
-                       
-        }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+                           Complete = Borrows.Complete,
+
+                       }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
             conut = mod.Count();
 
             return JsonConvert.SerializeObject(mod);
@@ -186,7 +186,7 @@ namespace EnterpriseMaterial.Logic
                        join Users in db.Users on Borrows.UserID equals Users.ID
                        join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
                        join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
-                       where Borrows.MiddleTime != null&&Borrows.EndTime == null&&Statuses.ID!=5
+                       where Borrows.MiddleTime != null && Borrows.EndTime == null && Statuses.ID != 5
                        select new
                        {
                            ID = Borrows.ID,
@@ -199,8 +199,8 @@ namespace EnterpriseMaterial.Logic
                            MiddleTime = Borrows.MiddleTime,
                            EndTime = Borrows.EndTime,
                            Number = Borrows.Number,
-                           
-        }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+
+                       }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
             conut = mod.Count();
 
             return JsonConvert.SerializeObject(mod);
@@ -224,23 +224,24 @@ namespace EnterpriseMaterial.Logic
                            StatusName = Statuses.Name,
                            Suggest = Borrows.Suggest,
                            Number = Borrows.Number,
-                           Complete=Borrows.Complete
+                           Complete = Borrows.Complete
                        }).FirstOrDefault();
             string Complete = null;
             if (mod.Complete)
             {
-                Complete = "耗材领用"; 
+                Complete = "耗材领用";
             }
-            else {
-               Complete = "设备借取";
+            else
+            {
+                Complete = "设备借取";
             }
             BorrowOut borrow = new BorrowOut()
             {
                 ID = mod.ID,
                 GoodsName = mod.GoodsName,
                 UserName = mod.UserName,
-                Goodsid=-mod.Gid,
-                Userid=mod.Uid,
+                Goodsid = -mod.Gid,
+                Userid = mod.Uid,
                 Description = mod.Description,
                 StatusName = mod.StatusName,
                 Suggest = mod.Suggest,
@@ -279,31 +280,31 @@ namespace EnterpriseMaterial.Logic
 
 
         #region 用户领取管理
-        public string Downpass( out int conut,int Uid, int pageinde, int pageSize)
-        { 
-           var mod= (from Borrows in db.Borrows
-                     join Users in db.Users on Borrows.UserID equals Users.ID
-                     join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
-                     join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
-                     where Statuses.ID==2&&Users.ID==Uid
-                     select new
-                     {
-                         ID = Borrows.ID,
-                         GoodsName = Goods.Name,
-                         UserName = Users.Name,
-                         Description = Borrows.Description,
-                         StatusName = Statuses.Name,
-                         Suggest = Borrows.Suggest,
-                         SendTime = Borrows.SendTime,
-                         MiddleTime = Borrows.MiddleTime,
-                         EndTime = Borrows.EndTime,
-                         Number = Borrows.Number,
+        public string Downpass(out int conut, int Uid, int pageinde, int pageSize)
+        {
+            var mod = (from Borrows in db.Borrows
+                       join Users in db.Users on Borrows.UserID equals Users.ID
+                       join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
+                       join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
+                       where Statuses.ID == 2 && Users.ID == Uid
+                       select new
+                       {
+                           ID = Borrows.ID,
+                           GoodsName = Goods.Name,
+                           UserName = Users.Name,
+                           Description = Borrows.Description,
+                           StatusName = Statuses.Name,
+                           Suggest = Borrows.Suggest,
+                           SendTime = Borrows.SendTime,
+                           MiddleTime = Borrows.MiddleTime,
+                           EndTime = Borrows.EndTime,
+                           Number = Borrows.Number,
 
-                     }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+                       }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
             conut = mod.Count();
             var list = JsonConvert.SerializeObject(mod);
             return list;
-               
+
         }
         //申请管理
         public string Getapply(out int conut, int Uid, int pageinde, int pageSize)

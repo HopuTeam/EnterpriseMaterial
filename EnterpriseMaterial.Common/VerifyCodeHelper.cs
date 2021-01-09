@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-
-namespace EnterpriseMaterial.Common
+﻿namespace EnterpriseMaterial.Common
 {
-   public class VerifyCodeHelper
+    public class VerifyCodeHelper
     {
         //public static Bitmap CreateVerifyCode(out string code)
         //{

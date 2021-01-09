@@ -1,7 +1,5 @@
-﻿using EnterpriseMaterial.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace EnterpriseMaterial.ILogic
 {
@@ -28,7 +26,7 @@ namespace EnterpriseMaterial.ILogic
 
 
         #region 用户领取
-     string Downpass( out int conut,int Uid, int pageinde, int pageSize);
+        string Downpass(out int conut, int Uid, int pageinde, int pageSize);
 
         public string Getapply(out int conut, int Uid, int pageinde, int pageSize);
         #endregion

@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace EnterpriseMaterial.Logic
 {
@@ -110,7 +109,7 @@ namespace EnterpriseMaterial.Logic
                     list.Add(item);
                 }
             }
-          
+
             //【4】转换
             List<PowerOutput> outlist = (from a in list
                                          select new PowerOutput

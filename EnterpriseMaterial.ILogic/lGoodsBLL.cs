@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace EnterpriseMaterial.ILogic
 {
-   public interface lGoodsBLL
+    public interface lGoodsBLL
     {
         #region 设备借取  
-        List<Model.Goods> GetGoodsOne(out int  conut,int pageinde,int pageSize);
+        List<Model.Goods> GetGoodsOne(out int conut, int pageinde, int pageSize);
         List<Model.Goods> GoodsOne(string name, out int conut, int pageinde, int pageSize);
         Model.Goods SelectIdGoods(int ID);
-        bool ToapplyOne(int id, int number,string description);
+        bool ToapplyOne(int id, int number, string description);
         #endregion
 
         #region 耗材申领

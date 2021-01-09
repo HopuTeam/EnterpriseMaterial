@@ -4,10 +4,6 @@ using EnterpriseMaterial.Model;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EnterpriseMaterial.Web.Controllers
 {
@@ -42,7 +38,7 @@ namespace EnterpriseMaterial.Web.Controllers
             Model.Category result = categoryBLL.Selectid(id);
             return View(result);
         }
-        public IActionResult AddSave(int id,string Name)
+        public IActionResult AddSave(int id, string Name)
         {
             bool result = categoryBLL.AddSave(id, Name);
             if (result)
@@ -76,7 +72,7 @@ namespace EnterpriseMaterial.Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IActionResult Delete(int  id)
+        public IActionResult Delete(int id)
         {
             bool result = categoryBLL.Delete(id);
             if (result)

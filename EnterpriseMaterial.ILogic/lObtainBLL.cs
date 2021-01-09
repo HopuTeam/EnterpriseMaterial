@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace EnterpriseMaterial.ILogic
 {
-   public interface lObtainBLL
+    public interface lObtainBLL
     {
-        List<Model.Goods> GetGoods(out int dataConunt,int page,int limit);
+        List<Model.Goods> GetGoods(out int dataConunt, int page, int limit);
 
 
     }

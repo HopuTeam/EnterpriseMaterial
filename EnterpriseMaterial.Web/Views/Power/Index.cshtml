@@ -3,8 +3,6 @@
     ViewData["Title"] = "菜单管理";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>菜单管理</h2>
-<hr />
 <button class="btn btn-info" onclick="add(0)">添加菜单 <i class="layui-icon layui-icon-add-1"></i></button>
 @foreach (var x in Model)
 {
@@ -65,7 +63,7 @@
                     ID: index,
                 };
                 $.post("/Power/Delete", data, function (res) {
-                    layer.alert(res.messgae);
+                    layer.alert(res.message);
                     if (res.status) {
                         setTimeout(function () {
                             window.location.reload();

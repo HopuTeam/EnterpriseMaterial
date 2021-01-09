@@ -1,13 +1,11 @@
-﻿using System;
+﻿using EnterpriseMaterial.Dto.IdentityDTO;
 using System.Collections.Generic;
-using System.Text;
-using EnterpriseMaterial.Dto.IdentityDTO;
 
 
 namespace EnterpriseMaterial.ILogic
 {
 
-  public  interface IIdentityBLL
+    public interface IIdentityBLL
     {
         /// <summary>
         /// 添加

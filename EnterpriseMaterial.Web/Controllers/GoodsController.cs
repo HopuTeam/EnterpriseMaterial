@@ -2,10 +2,7 @@
 using EnterpriseMaterial.ILogic;
 using EnterpriseMaterial.Model;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EnterpriseMaterial.Web.Controllers
 {
@@ -14,10 +11,11 @@ namespace EnterpriseMaterial.Web.Controllers
     {
         private readonly lGoodsBLL goodsBLL;
 
-        public GoodsController(ILogic.lGoodsBLL goodsBLL) {
+        public GoodsController(ILogic.lGoodsBLL goodsBLL)
+        {
             this.goodsBLL = goodsBLL;
         }
-    
+
         #region 设备借取  
         /// <summary>
         /// 设备借取页面
@@ -37,18 +35,18 @@ namespace EnterpriseMaterial.Web.Controllers
                 msg = "",
                 count = dataConunt,
                 data = list
-            };       
+            };
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
-       /// <summary>
-       /// 申请界面
-       /// </summary>
-       /// <param name="id"></param>
-       /// <returns></returns>
+        /// <summary>
+        /// 申请界面
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IActionResult ToapplyOne(int id)
         {
-           Goods goods = goodsBLL.SelectIdGoods(id);
-          return  View(goods);
+            Goods goods = goodsBLL.SelectIdGoods(id);
+            return View(goods);
         }
         /// <summary>
         /// 提交申请页面
@@ -129,7 +127,7 @@ namespace EnterpriseMaterial.Web.Controllers
         public IActionResult GetSelectSave(Goods view)
         {
             bool result = goodsBLL.EditGoods(view);
-            if (result==true)
+            if (result == true)
             {
                 return Content("success");
             }
@@ -137,7 +135,7 @@ namespace EnterpriseMaterial.Web.Controllers
             {
                 return Content("fail");
             }
-           
+
         }
         /// <summary>
         /// 根据物品名字模糊查询
@@ -149,7 +147,7 @@ namespace EnterpriseMaterial.Web.Controllers
         public string SelectName(string Name, int page = 1, int limit = 5)
         {
             int dataConunt;
-            List< Goods> goods = goodsBLL.GoodsOne(Name, out dataConunt, page,limit);
+            List<Goods> goods = goodsBLL.GoodsOne(Name, out dataConunt, page, limit);
             var result = new LayuiJsonModel<Goods>()
             {
                 code = 0,
@@ -168,11 +166,11 @@ namespace EnterpriseMaterial.Web.Controllers
             ViewData["categories"] = goodsBLL.GetCategories();
             return View();
         }
-       /// <summary>
-       /// 保存修改
-       /// </summary>
-       /// <param name="view"></param>
-       /// <returns></returns>
+        /// <summary>
+        /// 保存修改
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
         public IActionResult AddGoodsSave(Goods view)
         {
             bool result = goodsBLL.AddGoods(view);
