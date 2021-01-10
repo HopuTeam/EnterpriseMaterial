@@ -33,16 +33,14 @@
 
 @section scripts{
     <script type="text/javascript">
-
-
         var table, Shutdown;
         var active;
         var url = "";
         var action;
-
+        var form = layui.form;
         layui.use('table', function () {
             table = layui.table;
-            var form = layui.form;
+          
             //第一个实例
             table.render({
                 elem: '#mytable'
@@ -120,22 +118,6 @@
                 };
             });
 
-            //监听锁定操作
-            form.on('checkbox(lockDemo)', function (obj) {
-                layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);         
-                $.ajax({
-                    type: 'post',
-                    url: '/identity/ForbidRole',
-                    data: {
-                        id: this.value,
-                        flag: obj.elem.checked,
-                    },
-                    success: function (data) {
-                        layer.alert(data);
-                        btn_search();
-                    }
-                });
-            });
         });
 
         layui.use('layer', function () {
@@ -173,6 +155,23 @@
             };
         });
 
+
+        //监听锁定操作
+        form.on('checkbox(lockDemo)', function (obj) {
+            layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+            $.ajax({
+                type: 'post',
+                url: '/identity/ForbidRole',
+                data: {
+                    id: this.value,
+                    flag: obj.elem.checked,
+                },
+                success: function (data) {
+                    layer.alert(data);
+                    btn_search();
+                }
+            });
+        });
         //查询
         btn_search = function () {
 

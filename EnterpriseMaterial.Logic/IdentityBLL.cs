@@ -277,6 +277,12 @@ namespace EnterpriseMaterial.Logic
             return coreEntities.Identities.FirstOrDefault(a => a.ID == id);
         }
 
+       /// <summary>
+       /// 配置权限
+       /// </summary>
+       /// <param name="IdentiyiList"></param>
+       /// <param name="ldentityid"></param>
+       /// <returns></returns>
         public bool SetPower(string IdentiyiList, int ldentityid)
         {
             //查询到当前身份拥有的权限

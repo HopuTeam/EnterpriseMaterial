@@ -19,10 +19,7 @@ namespace EnterpriseMaterial.Logic
             _logger = logger;
             _dbContext = dbcontext;
         }
-        public int Add(DepartmentInput inputEntity)
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public List<DepartmentOutput> GetList()
         {
@@ -51,11 +48,15 @@ namespace EnterpriseMaterial.Logic
             GetParentBoss(ref list, dpEntity);
             return list;
         }
-        public List<DepartmentOutput> LoadEntities(int id)
-        {
-            throw new NotImplementedException();
-        }
-
+      
+        /// <summary>
+        /// 数据表格查询
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="totalCount"></param>
+        /// <param name="selectInfo"></param>
+        /// <returns></returns>
         public object LoadPageEntities(int pageIndex, int pageSize, out int totalCount, string selectInfo)
         {
 
@@ -132,6 +133,65 @@ namespace EnterpriseMaterial.Logic
                 List<Department> parentList = _dbContext.Set<Department>().Where(u => u.ID == sonEntity[0].ParentID).ToList();
                 GetParentBoss(ref list, parentList);
             }
+        }
+
+        /// <summary>
+        /// 添加部门
+        /// </summary>
+        /// <param name="inputEntity"></param>
+        /// <returns></returns>
+        public string AddDep(Department inputEntity)
+        {
+            User user = _dbContext.Users.FirstOrDefault(a => a.ID == inputEntity.UserID);
+            if (user!=null)
+            {
+                Sign sign = _dbContext.Signs.FirstOrDefault(a => a.ID == user.SignID);
+                //如果当前身份不等于3就不能添加，因为身份表id=3的是普通员工
+                if (sign.IdentityID == 3)
+                {
+                    Department input = new Department()
+                    {
+                        Name = inputEntity.Name,
+                        ParentID = inputEntity.ID,
+                        UserID = inputEntity.UserID,
+                        EntryTime = DateTime.Now,
+                    };
+                    _dbContext.Departments.Add(input);
+                    //身份自动升级为部门领导
+                    sign.IdentityID = 1;
+                  
+                    if (_dbContext.SaveChanges()>0)
+                    {
+                        user.DepartmentID = input.ID;
+                        _dbContext.SaveChanges();
+                        return "添加成功！";
+                    }
+                    return "添加失败";
+                }
+                else
+                {
+                    return "此用户身份不是部门领导或者已经是别的管理身份！";
+                }
+            }
+            else
+            {
+                return "没有这个账户";
+            }        
+        }
+
+        /// <summary>
+        /// 根据id查询部门
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Department SelectId(int id)
+        {
+            return _dbContext.Departments.FirstOrDefault(a => a.ID == id);
+        }
+
+        public  List< User> SelectUser()
+        {
+            return _dbContext.Users.ToList();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace EnterpriseMaterial.ILogic
         /// </summary>
         /// <param name="inputEntity"></param>
         /// <returns></returns>
-        int Add(DepartmentInput inputEntity);
+        string AddDep(Model.Department inputEntity);
 
         /// <summary>
         /// 修改
@@ -41,8 +41,13 @@ namespace EnterpriseMaterial.ILogic
         /// 根据id查询
         /// </summary>
         /// <returns></returns>
-        List<DepartmentOutput> LoadEntities(int id);
+        Model.Department  SelectId(int id);
 
+        /// <summary>
+        /// 查询用户表，为了给添加修改部门做选择
+        /// </summary>
+        /// <returns></returns>
+        List<Model.User> SelectUser();
 
         /// <summary>
         /// 获取签核人的信息（对应部门的领导）--递归获取对应用户以及他所有上级领导的信息，并从上往下排列好

@@ -30,5 +30,24 @@ namespace EnterpriseMaterial.Web.Controllers
             };
             return JsonNetHelper.SerializetoJson(result);
         }
+
+        public IActionResult DeqAdd(int id)
+        {
+            Model.Department res = _departmentService.SelectId(id);
+            ViewData["deq-user"] = _departmentService.SelectUser();
+            return View(res);
+        }
+
+        /// <summary>
+        /// 添加部门
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
+        public IActionResult AddSave(Model.Department view)
+        {
+            string reult = _departmentService.AddDep(view);
+
+            return Content(reult);
+        }
     }
 }

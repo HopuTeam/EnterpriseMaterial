@@ -1,0 +1,70 @@
+﻿@using EnterpriseMaterial.Model
+@model Department
+@{ 
+    ViewData["Title"] = "DeqAdd";
+    var user = ViewData["deq-user"] as List<User>;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title> </title>
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-col-md8">
+      
+            <div class="layui-fluid">
+                <fieldset class="layui-elem-field">
+                    <input type="hidden" id="ID" value="@Model.ID" />
+                    <legend>添加部门</legend>
+                    <legend>为 @Model.Name -添加子部门</legend>
+                    <div class="layui-field-box">
+                        <div class="layui-form">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">部门名字</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" id="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">部门负责人</label>
+                                <div class="layui-input-inline ">
+                                    <select id="DeqID">
+                                       @foreach (var item in user)
+                                       {
+                                           <option value="@item.ID">@item.Name</option>
+                                       }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item" style="text-align:center">
+                                <button class="layui-btn" id="addGqe" lay-submit="" lay-filter="formDemo">确认修改</button>
+                                <button class="layui-btn" id="cancel">返回</button>
+                            </div>
+                        </div>
+                        </div>
+                     </fieldset>
+            </div>               
+        </div> 
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script src="~/Content/layui/layui.all.js"></script>
+    <script>
+        $('#addGqe').click(function () {
+            var data = {               
+                Name: $('#name').val(),
+                ID: $('#ID').val(),
+                UserID: $('#DeqID').val(),
+            };         
+            $.post('/Department/AddSave', data, function (res) {
+                alert(res);
+                window.parent.Cancel();
+            })
+        })
+        //关闭页面
+        $('#cancel').click(function () {
+            window.parent.Cancel();
+        })
+    </script>
+</body>
+</html>
+

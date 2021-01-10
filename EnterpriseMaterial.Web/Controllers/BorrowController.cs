@@ -146,7 +146,6 @@ namespace EnterpriseMaterial.Web.Controllers
             Dto.BorrowDto.BorrowOut mod = BorrowBLL.Upapply(id);
             return View(mod);
         }
-
         #endregion
 
 
