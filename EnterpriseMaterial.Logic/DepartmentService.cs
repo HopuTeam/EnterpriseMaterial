@@ -19,7 +19,7 @@ namespace EnterpriseMaterial.Logic
             _logger = logger;
             _dbContext = dbcontext;
         }
-      
+
 
         public List<DepartmentOutput> GetList()
         {
@@ -48,7 +48,7 @@ namespace EnterpriseMaterial.Logic
             GetParentBoss(ref list, dpEntity);
             return list;
         }
-      
+
         /// <summary>
         /// 数据表格查询
         /// </summary>
@@ -143,7 +143,7 @@ namespace EnterpriseMaterial.Logic
         public string AddDep(Department inputEntity)
         {
             User user = _dbContext.Users.FirstOrDefault(a => a.ID == inputEntity.UserID);
-            if (user!=null)
+            if (user != null)
             {
                 Sign sign = _dbContext.Signs.FirstOrDefault(a => a.ID == user.SignID);
                 //如果当前身份不等于3就不能添加，因为身份表id=3的是普通员工
@@ -159,8 +159,8 @@ namespace EnterpriseMaterial.Logic
                     _dbContext.Departments.Add(input);
                     //身份自动升级为部门领导
                     sign.IdentityID = 1;
-                  
-                    if (_dbContext.SaveChanges()>0)
+
+                    if (_dbContext.SaveChanges() > 0)
                     {
                         user.DepartmentID = input.ID;
                         _dbContext.SaveChanges();
@@ -176,7 +176,7 @@ namespace EnterpriseMaterial.Logic
             else
             {
                 return "没有这个账户";
-            }        
+            }
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace EnterpriseMaterial.Logic
             return _dbContext.Departments.FirstOrDefault(a => a.ID == id);
         }
 
-        public  List< User> SelectUser()
+        public List<User> SelectUser()
         {
             return _dbContext.Users.ToList();
         }

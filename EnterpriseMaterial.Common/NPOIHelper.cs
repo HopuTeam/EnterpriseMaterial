@@ -206,7 +206,7 @@ namespace LDG.HopuGoods.Utility
                 throw ex;
             }
         }
-    
+
 
 
 
@@ -257,7 +257,7 @@ namespace LDG.HopuGoods.Utility
             return buffer;
         }
 
-  
+
 
         /// <summary>
         /// 导出，控制器 return File(buffer, "application/ms-excel", "list.xlsx"); 
@@ -296,7 +296,7 @@ namespace LDG.HopuGoods.Utility
                         object[] entityValues = new object[entityProperties.Length];
                         entityValues[j - 1] = entityProperties[j - 1].GetValue(entity);
                         rows.CreateCell(0).SetCellValue(i);
-                        rows.CreateCell(j).SetCellValue(entityValues[j - 1]==null?"": entityValues[j - 1].ToString());
+                        rows.CreateCell(j).SetCellValue(entityValues[j - 1] == null ? "" : entityValues[j - 1].ToString());
                     }
                 }
             }

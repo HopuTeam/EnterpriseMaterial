@@ -41,7 +41,7 @@ namespace EnterpriseMaterial.ILogic
         /// 根据id查询
         /// </summary>
         /// <returns></returns>
-        Model.Department  SelectId(int id);
+        Model.Department SelectId(int id);
 
         /// <summary>
         /// 查询用户表，为了给添加修改部门做选择
