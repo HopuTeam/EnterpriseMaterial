@@ -189,10 +189,10 @@ namespace EnterpriseMaterial.Web.Controllers
         {
             string strResult = "导入成功";
             int Uid = HttpContext.Session.GetModel<User>("User").SignID;
-            List<Goods> list = null;
+            List<Dto.GoodsDTO.ExcelTheimportModel> list = null;
             try
             {
-                list = NPOIHelper.InputExcel<Goods>(file);
+                list = NPOIHelper.InputExcel<Dto.GoodsDTO.ExcelTheimportModel>(file);
             }
             catch (System.Exception)
             {
@@ -208,7 +208,7 @@ namespace EnterpriseMaterial.Web.Controllers
                 bool flag = true;
                 foreach (var item in list)
                 {
-                    if (string.IsNullOrEmpty(item.Name) || string.IsNullOrEmpty(item.CategoryID.ToString()) || string.IsNullOrEmpty(item.Unit))
+                    if (string.IsNullOrEmpty(item.Name) || string.IsNullOrEmpty(item.Category) || string.IsNullOrEmpty(item.Unit))
                     {
                         flag = false;
                     }

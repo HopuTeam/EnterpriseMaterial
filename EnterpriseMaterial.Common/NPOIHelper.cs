@@ -23,16 +23,15 @@ namespace LDG.HopuGoods.Utility
         public static List<T> InputExcel<T>(IFormFile file) where T : class, new()
         {
             List<T> list = new List<T> { };
-
-            MemoryStream ms = new MemoryStream();
-            file.CopyTo(ms);
+            MemoryStream ms = new MemoryStream();//初始化System.IO的一个新实例
+            file.CopyTo(ms);//将文件内容复制到ms中
             ms.Seek(0, SeekOrigin.Begin);
             IWorkbook workbook = new XSSFWorkbook(ms);
             ISheet sheet = workbook.GetSheetAt(0);
             IRow cellNum = sheet.GetRow(0);
-            var propertys = typeof(T).GetProperties();
-            string value = null;
-            int num = cellNum.LastCellNum;
+            PropertyInfo[] propertys = typeof(T).GetProperties();//获取模型所有字段的类型
+            string value = null;         
+            int num = cellNum.LastCellNum;//Excel的列数
 
             for (int i = 1; i <= sheet.LastRowNum; i++)
             {
@@ -40,8 +39,8 @@ namespace LDG.HopuGoods.Utility
                 var obj = new T();
                 for (int j = 1; j < num; j++)
                 {
-                    value = row.GetCell(j).ToString();
-                    string str = (propertys[j].PropertyType).FullName;//反射获取属性类型
+                    value = row.GetCell(j).ToString();//拿到第j列的值
+                    string str = (propertys[j].PropertyType).FullName;//反射获取第j个模型字段的类型
                     if (str == "System.String")
                     {
                         propertys[j].SetValue(obj, value, null);

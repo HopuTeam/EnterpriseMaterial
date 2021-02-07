@@ -31,7 +31,7 @@ namespace EnterpriseMaterial.Logic
         /// <param name="name"></param>
         /// <returns></returns>
         public List<Goods> GoodsOne(string name, out int conut, int pageinde, int pageSize)
-        {
+        {         
             List<Goods> res = db.Goods.Where(a => a.Name.Contains(name)).OrderBy(c => c.ID).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
             conut = res.Count();
             return res;
@@ -183,9 +183,9 @@ namespace EnterpriseMaterial.Logic
         /// <param name="goods"></param>
         /// <param name="Uid"></param>
         /// <returns></returns>
-        public bool AddExcel(List<Goods> goods, int Uid)
+        public bool AddExcel(List<Dto.GoodsDTO.ExcelTheimportModel> excels, int Uid)
         {
-            foreach (var item in goods)
+            foreach (var item in excels)
             {
                 Goods entity = db.Goods.FirstOrDefault(a => a.Name == item.Name);
                 if (entity==null)
@@ -194,41 +194,66 @@ namespace EnterpriseMaterial.Logic
                     Goods addentity = new Goods()
                     {
                         Name = item.Name,
-                        CategoryID = item.CategoryID,
+                        CategoryID = SelectCategoriesName(item.Category),
                         Description = item.Description,
                         EntryTime = DateTime.Now,
                         Money = item.Money,
                         Number = item.Number,
                         Specification = item.Specification,
-                        Status = item.Status,
-                        TypeID = item.TypeID,
+                        Status = true,
+                        TypeID = SelectTypelName(item.Type),
                         Unit = item.Unit,
                         WarningNum = item.WarningNum
                     };
                     db.Goods.Add(addentity);
                     db.SaveChanges();
+                    //往入库信息表添加记录
+                    Obtain obtain = new Obtain()
+                    {
+                        EntryTime = DateTime.Now,
+                        GoodsID = addentity.ID,
+                        Number = item.Number,
+                        UserID = Uid
+                    };
+                    db.Obtains.Add(obtain);
                 }
                 else
                 {
                     //修改物品信息
                     entity.Number += item.Number;
+                    entity.Money = item.Money;
+                    entity.Specification = item.Specification;
+                    entity.Unit = item.Unit;
+                    entity.WarningNum = item.WarningNum;
+                    entity.Description = item.Description;
+                    entity.TypeID = SelectTypelName(item.Type);
+                    entity.CategoryID = SelectCategoriesName(item.Category);                 
                     db.Set<Goods>().Attach(entity);
                     db.Set<Goods>().Update(entity);
-                }
-                int gid = entity.ID;
-                //往入库信息表添加记录
-                Obtain obtain = new Obtain()
-                {
-                    EntryTime = item.EntryTime,
-                    GoodsID = entity.ID,
-                    Number = item.Number,
-                    UserID = Uid
-                };
-                db.Obtains.Add(obtain);
+                }             
+               
             }
             return db.SaveChanges() > 0;
         }
 
+        /// <summary>
+        /// 根据商品分类名字查询出分类id
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public int SelectCategoriesName(string name)
+        {
+            return db.Categories.FirstOrDefault(a => a.Name == name).ID;
+        }
+        /// <summary>
+        /// 根据Typel分类名字查询出分类id
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public int SelectTypelName(string name)
+        {
+            return db.Types.FirstOrDefault(a => a.Name == name).ID;
+        }
         #endregion
     }
 }
