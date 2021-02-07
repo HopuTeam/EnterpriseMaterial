@@ -22,7 +22,7 @@ namespace EnterpriseMaterial.Logic
         public List<Goods> GetGoodsOne(out int conut, int pageinde, int pageSize)
         {
             var list = db.Goods.OrderBy(a => a.ID).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
-            conut = list.Count();
+            conut = db.Goods.ToList().Count();
             return list;
         }
         /// <summary>
@@ -175,6 +175,58 @@ namespace EnterpriseMaterial.Logic
                 return true;
             else
                 return false;
+        }
+
+        /// <summary>
+        /// Excel批量导入
+        /// </summary>
+        /// <param name="goods"></param>
+        /// <param name="Uid"></param>
+        /// <returns></returns>
+        public bool AddExcel(List<Goods> goods, int Uid)
+        {
+            foreach (var item in goods)
+            {
+                Goods entity = db.Goods.FirstOrDefault(a => a.Name == item.Name);
+                if (entity==null)
+                {
+                    //添加物品
+                    Goods addentity = new Goods()
+                    {
+                        Name = item.Name,
+                        CategoryID = item.CategoryID,
+                        Description = item.Description,
+                        EntryTime = DateTime.Now,
+                        Money = item.Money,
+                        Number = item.Number,
+                        Specification = item.Specification,
+                        Status = item.Status,
+                        TypeID = item.TypeID,
+                        Unit = item.Unit,
+                        WarningNum = item.WarningNum
+                    };
+                    db.Goods.Add(addentity);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    //修改物品信息
+                    entity.Number += item.Number;
+                    db.Set<Goods>().Attach(entity);
+                    db.Set<Goods>().Update(entity);
+                }
+                int gid = entity.ID;
+                //往入库信息表添加记录
+                Obtain obtain = new Obtain()
+                {
+                    EntryTime = item.EntryTime,
+                    GoodsID = entity.ID,
+                    Number = item.Number,
+                    UserID = Uid
+                };
+                db.Obtains.Add(obtain);
+            }
+            return db.SaveChanges() > 0;
         }
 
         #endregion

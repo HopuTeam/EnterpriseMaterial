@@ -1,6 +1,7 @@
 ﻿using EnterpriseMaterial.Common;
 using EnterpriseMaterial.ILogic;
 using EnterpriseMaterial.Model;
+using LDG.HopuGoods.Utility;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -25,7 +26,7 @@ namespace EnterpriseMaterial.Web.Controllers
         {
             return View();
         }
-        public string GetListOne(int page = 1, int limit = 5)
+        public string GetListOne(int page = 1, int limit = 10)
         {
             int dataConunt;
             List<Goods> list = goodsBLL.GetGoodsOne(out dataConunt, page, limit);
@@ -182,6 +183,56 @@ namespace EnterpriseMaterial.Web.Controllers
             {
                 return Content("fail");
             }
+        }
+
+        public IActionResult ExcelAdd(Microsoft.AspNetCore.Http.IFormFile file)
+        {
+            string strResult = "导入成功";
+            int Uid = HttpContext.Session.GetModel<User>("User").SignID;
+            List<Goods> list = null;
+            try
+            {
+                list = NPOIHelper.InputExcel<Goods>(file);
+            }
+            catch (System.Exception)
+            {
+
+                return Json(new
+                {
+                    Result = "数据错误,请检查表格数据！"
+                });
+            }
+            if (list.Count>0)
+            {
+                //做非空验证
+                bool flag = true;
+                foreach (var item in list)
+                {
+                    if (string.IsNullOrEmpty(item.Name) || string.IsNullOrEmpty(item.CategoryID.ToString()) || string.IsNullOrEmpty(item.Unit))
+                    {
+                        flag = false;
+                    }
+                    if (flag)
+                    {
+                        if (goodsBLL.AddExcel(list,Uid))
+                        {
+
+                        }
+                        else
+                        {
+                            strResult = "导入失败";
+                        }
+                    }
+                }
+            }
+            else
+            {
+                strResult = "表格无数据";
+            }
+            return Json(new
+            {
+                Result = strResult,
+            });
         }
         #endregion
 

@@ -22,6 +22,7 @@ namespace EnterpriseMaterial.ILogic
         bool EditGoods(Model.Goods view);
 
         bool AddGoods(Model.Goods view);
+        bool AddExcel(List<Model.Goods> goods, int Uid);
         #endregion
     }
 }

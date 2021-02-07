@@ -34,11 +34,11 @@ namespace LDG.HopuGoods.Utility
             string value = null;
             int num = cellNum.LastCellNum;
 
-            for (int i = 2; i <= sheet.LastRowNum; i++)
+            for (int i = 1; i <= sheet.LastRowNum; i++)
             {
                 IRow row = sheet.GetRow(i);
                 var obj = new T();
-                for (int j = 2; j < num; j++)
+                for (int j = 1; j < num; j++)
                 {
                     value = row.GetCell(j).ToString();
                     string str = (propertys[j].PropertyType).FullName;//反射获取属性类型
