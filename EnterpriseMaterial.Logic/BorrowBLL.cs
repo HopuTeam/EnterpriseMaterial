@@ -24,7 +24,7 @@ namespace EnterpriseMaterial.Logic
         public List<Model.Goods> GetGoodsOne(out int conut, int pageinde, int pageSize)
         {
             var list = db.Goods.Where(y => y.Status == true).OrderBy(a => a.ID).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
-            conut = list.Count();
+            conut = db.Goods.Where(x => x.Status == true).ToList().Count();
             return list;
         }
         /// <summary>
@@ -172,10 +172,10 @@ namespace EnterpriseMaterial.Logic
                            Number = Borrows.Number,
                            Complete = Borrows.Complete,
 
-                       }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+                       }).ToList();
             conut = mod.Count();
-
-            return JsonConvert.SerializeObject(mod);
+            var list = mod.Skip((pageinde - 1) * pageSize).Take(pageSize);
+            return JsonConvert.SerializeObject(list);
         }
 
         #endregion
@@ -200,10 +200,10 @@ namespace EnterpriseMaterial.Logic
                            EndTime = Borrows.EndTime,
                            Number = Borrows.Number,
 
-                       }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+                       }).ToList();          
             conut = mod.Count();
-
-            return JsonConvert.SerializeObject(mod);
+            var list = mod.Skip((pageinde - 1) * pageSize).Take(pageSize);
+            return JsonConvert.SerializeObject(list);
         }
 
         public BorrowOut Upapply(int Bid)
@@ -327,9 +327,10 @@ namespace EnterpriseMaterial.Logic
                            EndTime = Borrows.EndTime,
                            Number = Borrows.Number,
 
-                       }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+                       }).ToList();
             conut = mod.Count();
-            return JsonConvert.SerializeObject(mod);
+            var list = mod.Skip((pageinde - 1) * pageSize).Take(pageSize);
+            return JsonConvert.SerializeObject(list);
         }
         #endregion
     }
