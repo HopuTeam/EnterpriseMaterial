@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewData["Title"] = "downindex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>downindex</h1>
+<table id="demo" class="layui-hide" lay-filter="test"></table>
+
+@section scripts{ 
+    <script>
+        var table;
+        layui.use('table', function () {
+            table = layui.table;
+            //第一个实例
+             table.render({
+                elem: '#demo'
+                , height: 312
+                , url: '/Borrow/UserApply' //数据接口
+                , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                    title: '提示'
+                    , layEvent: 'LAYTABLE_TIPS'
+                    , icon: 'layui-icon-tips'
+                }]
+                , title: '用户数据表'
+                , page: true //开启分页
+                , cols: [[ //表头
+                    { type: 'radio', fixed: 'left' }
+                    , { field: 'ID', title: '编号', width: 80, sort: true, fixed: 'left' }
+                    , { field: 'GoodsName', title: '物品名字', width: 80 }
+                    , { field: 'Description', title: '申请理由', width: 80 }
+                    , { field: 'Suggest', title: '审批意见', width: 80 }
+                    , { field: 'StatusName', title: '流程状态', width: 80 }
+                    , { field: 'Number', title: '数量', width: 80 }
+                    , {
+                        field: 'Complete', title: '是否需要归还', width: 80, templet: function (d) {
+                            var divhtml;
+                            if (d.Complete) { divhtml = "否" } else { divhtml = "是" }
+                            return divhtml;
+                        } }
+                    , {
+                       title: '操作', width: 80, templet: function (d) {
+                            var divhtml;
+                            if (d.StatusName == '申请通过') { divhtml = '<input type="button"  class="layui-btn layui-btn-xs" onclick="Toreceive(' + d.ID + ')"  value="领取" />' } else { divhtml = "无可操作" }
+                            return divhtml;
+                        }
+                    }
+                ]]
+                , page: true
+            });         
+        });
+        //刷新
+        function Therefresh() {
+            table.reload('demo', {
+                url: '/Borrow/UserApply', //数据接口              
+            });
+        }
+        function Toreceive(id) {
+            $.post('/Borrow/Toreceive', { BorriwId: id }, function (res) {               
+                setTimeout(function () {                
+                    if (res) {
+                        layer.alert("领取成功！");
+                        Therefresh();
+                    } else {
+                        layer.alert("领取出错！");
+                    }
+                }, 5000);
+            })
+        }
+    </script>
+}

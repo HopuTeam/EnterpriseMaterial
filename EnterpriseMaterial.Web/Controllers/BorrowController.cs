@@ -20,16 +20,16 @@ namespace EnterpriseMaterial.Web.Controllers
         {
             return View();
         }
-        #region 设备借取  
+   
         /// <summary>
-        /// 设备借取页面
+        /// 申请物品领取列表页面
         /// </summary>
         /// <returns></returns>
         public IActionResult IndexOne()
         {
             return View();
         }
-        public string GetListOne(int page = 1, int limit = 5)
+        public string GetListOne(int page = 1, int limit = 10)
         {
             int dataConunt;
             List<Model.Goods> list = BorrowBLL.GetGoodsOne(out dataConunt, page, limit);
@@ -62,35 +62,8 @@ namespace EnterpriseMaterial.Web.Controllers
             Goods goods = BorrowBLL.SelectIdGoods(id);
             return View(goods);
         }
-        /// <summary>
-        /// 添加申请信息
-        /// </summary>
-        /// <param name="id">物品id</param>
-        /// <param name="number">数量</param>
-        /// <param name="description">理由</param>
-        /// <returns></returns>
-        #endregion
-        #region 耗材申请
-        public IActionResult IndexTwo()
-        {
-            return View();
-        }
-        public string GetListTwo(int page = 1, int limit = 5)
-        {
-            int dataConunt;
-            List<Model.Goods> list = BorrowBLL.GetGoodsTwo(out dataConunt, page, limit);
-            var result = new LayuiJsonModel<Model.Goods>()
-            {
-                code = 0,
-                msg = "",
-                count = dataConunt,
-                data = list
-            };
-            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
-        }
-        #endregion
+      
         #region 物料申请
-
         public IActionResult ToapplySave(int GoodsID, int Number, string Description, int Uid)//int UserID 用户ID, int Number数量, string Description申请理由
         {
             Uid = HttpContext.Session.GetModel<Model.User>("User").SignID;
@@ -195,6 +168,17 @@ namespace EnterpriseMaterial.Web.Controllers
             };
 
             return JsonConvert.SerializeObject(result);
+        }
+
+        /// <summary>
+        /// 领取物品
+        /// </summary>
+        /// <param name="BorriwId"></param>
+        /// <returns></returns>
+        public bool Toreceive(int BorriwId)
+        {
+            bool res = BorrowBLL.Toreceive(BorriwId);
+            return res;
         }
 
     }

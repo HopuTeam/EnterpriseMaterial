@@ -28,7 +28,9 @@ namespace EnterpriseMaterial.ILogic
         #region 用户领取
         string Downpass(out int conut, int Uid, int pageinde, int pageSize);
 
-        public string Getapply(out int conut, int Uid, int pageinde, int pageSize);
+      string Getapply(out int conut, int Uid, int pageinde, int pageSize);
+
+        bool Toreceive(int BorrowId);
         #endregion
     }
 }
