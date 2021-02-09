@@ -42,11 +42,22 @@
                 , cols: [[ //表头
                     { type: 'radio' }
                     , { field: 'ID', title: '编号', width: 80, sort: true}
-                    , { field: 'Name', title: '用户名', width: 80 }
+                    , { field: 'Name', title: '物品名字', width: 80 }
+                    , { field: 'Category', title: '物品类型', width: 80 }
+                    , { field: 'Specification', title: '规格', width: 80 }
+                    , { field: 'Description', title: '说明', width: 80 }
                     , { field: 'Money', title: '价格', width: 80 }
                     , { field: 'Number', title: '数量', width: 80 }
                     , { field: 'Unit', title: '单位', width: 80 }               
-                    , { field: 'Status', title: '状态', width: 80 ,}
+                    , {
+                        field: 'Status', title: '状态', width: 80, templet: function (d) {
+                            var divhtml;
+                            if (d.Status) { divhtml = "开启" } else { divhtml = "已禁用" }
+                            return divhtml;
+                        } }
+                    , { field: 'WarningNum', title: '安全库存', width: 80, }
+                    , { field: 'Type', title: 'Type', width: 80, }
+                    , { field: 'EntryTime', title: '入库时间', width: 80, }
                 ]]
                 , page: true
             });
@@ -100,7 +111,7 @@
                             title: '添加页',
                             shadeClose: true,
                             shade: 0.45,
-                            area: ['55%', '90%'],
+                            area: ['35%', '70%'],
                             content: '/Goods/AddGoods'
                         });
                         break;

@@ -5,7 +5,7 @@ namespace EnterpriseMaterial.ILogic
     public interface lGoodsBLL
     {
         #region 设备借取  
-        List<Model.Goods> GetGoodsOne(out int conut, int pageinde, int pageSize);
+        List<Dto.GoodsDTO.GoodsViewModelDTO> GetGoodsOne(out int conut, int pageinde, int pageSize);
         List<Model.Goods> GoodsOne(string name, out int conut, int pageinde, int pageSize);
         Model.Goods SelectIdGoods(int ID);
         bool ToapplyOne(int id, int number, string description);
@@ -43,6 +43,8 @@ namespace EnterpriseMaterial.ILogic
         /// <param name="name"></param>
         /// <returns></returns>
         int SelectTypelName(string name);
+
+     
         #endregion
     }
 }

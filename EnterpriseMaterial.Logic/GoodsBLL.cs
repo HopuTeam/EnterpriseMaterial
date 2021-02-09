@@ -1,4 +1,6 @@
 ﻿using EnterpriseMaterial.Data;
+using EnterpriseMaterial.Dto.GoodsDTO;
+using EnterpriseMaterial.ILogic;
 using EnterpriseMaterial.Model;
 using System;
 using System.Collections.Generic;
@@ -6,7 +8,7 @@ using System.Linq;
 
 namespace EnterpriseMaterial.Logic
 {
-    public class GoodsBLL : ILogic.lGoodsBLL
+    public class GoodsBLL : lGoodsBLL
     {
         private readonly CoreEntities db;
 
@@ -14,16 +16,36 @@ namespace EnterpriseMaterial.Logic
         {
             db = _db;
         }
-        #region 设备借取类  
+
         /// <summary>
-        /// 查询属于设备类的全部商品
+        /// 查询全部物品
         /// </summary>
         /// <returns></returns>
-        public List<Goods> GetGoodsOne(out int conut, int pageinde, int pageSize)
+        public List<GoodsViewModelDTO> GetGoodsOne(out int conut, int pageinde, int pageSize)
         {
-            var list = db.Goods.OrderBy(a => a.ID).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
-            conut = db.Goods.ToList().Count();
-            return list;
+            List<Goods> mod = db.Goods.ToList();
+            List<Goods> list = mod.OrderBy(a => a.ID).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
+            conut = mod.Count();         
+            List<GoodsViewModelDTO> view = (from goods in list
+                        join categories in db.Categories on goods.CategoryID equals categories.ID
+                        join type in db.Types on goods.TypeID equals type.ID
+                        select new GoodsViewModelDTO
+                        {
+                            ID = goods.ID,
+                            Category = categories.Name,
+                            Description = goods.Description,
+                            EntryTime = goods.EntryTime,
+                            Money = goods.Money,
+                            Name = goods.Name,
+                            Number = goods.Number,
+                            Specification = goods.Specification,
+                            Status = goods.Status,
+                            Type = type.Name,
+                            Unit = goods.Unit,
+                            WarningNum = goods.WarningNum
+                        }
+                      ).ToList();
+            return view;
         }
         /// <summary>
         /// 根据商品名字模糊查询
@@ -31,7 +53,7 @@ namespace EnterpriseMaterial.Logic
         /// <param name="name"></param>
         /// <returns></returns>
         public List<Goods> GoodsOne(string name, out int conut, int pageinde, int pageSize)
-        {         
+        {
             List<Goods> res = db.Goods.Where(a => a.Name.Contains(name)).OrderBy(c => c.ID).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
             conut = res.Count();
             return res;
@@ -93,7 +115,7 @@ namespace EnterpriseMaterial.Logic
             else
                 return false;
         }
-        #endregion
+
         #region 耗材申领  
         public List<Goods> GetGoodsTwo(out int conut, int pageinde, int pageSize)
         {
@@ -188,7 +210,7 @@ namespace EnterpriseMaterial.Logic
             foreach (var item in excels)
             {
                 Goods entity = db.Goods.FirstOrDefault(a => a.Name == item.Name);
-                if (entity==null)
+                if (entity == null)
                 {
                     //添加物品
                     Goods addentity = new Goods()
@@ -227,11 +249,11 @@ namespace EnterpriseMaterial.Logic
                     entity.WarningNum = item.WarningNum;
                     entity.Description = item.Description;
                     entity.TypeID = SelectTypelName(item.Type);
-                    entity.CategoryID = SelectCategoriesName(item.Category);                 
+                    entity.CategoryID = SelectCategoriesName(item.Category);
                     db.Set<Goods>().Attach(entity);
                     db.Set<Goods>().Update(entity);
-                }             
-               
+                }
+
             }
             return db.SaveChanges() > 0;
         }

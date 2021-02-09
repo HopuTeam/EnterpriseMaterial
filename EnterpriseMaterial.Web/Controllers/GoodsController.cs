@@ -17,9 +17,9 @@ namespace EnterpriseMaterial.Web.Controllers
             this.goodsBLL = goodsBLL;
         }
 
-        #region 设备借取  
+      
         /// <summary>
-        /// 设备借取页面
+        /// 物品列表页面
         /// </summary>
         /// <returns></returns>
         public IActionResult IndexOne()
@@ -29,8 +29,8 @@ namespace EnterpriseMaterial.Web.Controllers
         public string GetListOne(int page = 1, int limit = 10)
         {
             int dataConunt;
-            List<Goods> list = goodsBLL.GetGoodsOne(out dataConunt, page, limit);
-            var result = new LayuiJsonModel<Goods>()
+            List<Dto.GoodsDTO.GoodsViewModelDTO> list = goodsBLL.GetGoodsOne(out dataConunt, page, limit);
+            var result = new LayuiJsonModel<Dto.GoodsDTO.GoodsViewModelDTO>()
             {
                 code = 0,
                 msg = "",
@@ -72,7 +72,6 @@ namespace EnterpriseMaterial.Web.Controllers
             bool result = goodsBLL.ToapplyOne(id, number, description);
             return Content("ok");
         }
-        #endregion
 
         #region 耗材申请
         public IActionResult IndexTwo()
@@ -100,19 +99,19 @@ namespace EnterpriseMaterial.Web.Controllers
         {
             return View();
         }
-        public string GetListGoods(int page = 1, int limit = 10)
-        {
-            int dataConunt;
-            List<Goods> list = goodsBLL.GetGoodsOne(out dataConunt, page, limit);
-            var result = new LayuiJsonModel<Goods>()
-            {
-                code = 0,
-                msg = "",
-                count = dataConunt,
-                data = list
-            };
-            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
-        }
+        //public string GetListGoods(int page = 1, int limit = 10)
+        //{
+        //    int dataConunt;
+        //    List<Goods> list = goodsBLL.GetGoodsOne(out dataConunt, page, limit);
+        //    var result = new LayuiJsonModel<Goods>()
+        //    {
+        //        code = 0,
+        //        msg = "",
+        //        count = dataConunt,
+        //        data = list
+        //    };
+        //    return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+        //}
         /// <summary>
         /// 修改页面
         /// </summary>
