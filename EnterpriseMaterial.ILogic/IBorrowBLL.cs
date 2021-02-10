@@ -25,12 +25,18 @@ namespace EnterpriseMaterial.ILogic
         #endregion
 
 
-        #region 用户领取
+        #region 用户领取归还
         string Downpass(out int conut, int Uid, int pageinde, int pageSize);
 
-      string Getapply(out int conut, int Uid, int pageinde, int pageSize);
+       string Getapply(out int conut, int Uid, int pageinde, int pageSize);
 
-        bool Toreceive(int BorrowId);
+       bool Toreceive(int BorrowId);
+        /// <summary>
+        /// 归还物资
+        /// </summary>
+        /// <param name="BorrowId"></param>
+        /// <returns></returns>
+        bool Thereturn(int BorrowId);
         #endregion
     }
 }

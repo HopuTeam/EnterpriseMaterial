@@ -3,10 +3,8 @@
     ViewData["Title"] = "downindex";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <h1>downindex</h1>
 <table id="demo" class="layui-hide" lay-filter="test"></table>
-
 @section scripts{ 
     <script>
         var table;
@@ -42,7 +40,12 @@
                     , {
                        title: '操作', width: 80, templet: function (d) {
                             var divhtml;
-                            if (d.StatusName == '申请通过') { divhtml = '<input type="button"  class="layui-btn layui-btn-xs" onclick="Toreceive(' + d.ID + ')"  value="领取" />' } else { divhtml = "无可操作" }
+                            if (d.StatusName == '申请通过') { divhtml = '<input type="button"  class="layui-btn layui-btn-xs" onclick="Toreceive(' + d.ID + ')"  value="领取" />' }
+                            else if (d.StatusName == "已领取" && d.Complete == true) {
+                                divhtml = '<input type="button"  class="layui-btn layui-btn-xs" onclick="Thereturn(' + d.ID + ')"  value="归还" />'
+                            } else {
+                                divhtml = "无可操作"
+                            }                          
                             return divhtml;
                         }
                     }
@@ -57,15 +60,15 @@
             });
         }
         function Toreceive(id) {
-            $.post('/Borrow/Toreceive', { BorriwId: id }, function (res) {               
-                setTimeout(function () {                
-                    if (res) {
-                        layer.alert("领取成功！");
-                        Therefresh();
-                    } else {
-                        layer.alert("领取出错！");
-                    }
-                }, 5000);
+            $.post('/Borrow/Toreceive', { BorriwId: id }, function (res) {  
+                layer.alert(res.message);
+                Therefresh();        
+            })
+        }
+        function Thereturn(id) {
+            $.post('/Borrow/Thereturn', { BorriwId: id }, function (res) {
+                layer.alert(res.message);
+                Therefresh();
             })
         }
     </script>

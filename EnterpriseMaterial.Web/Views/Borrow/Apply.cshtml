@@ -62,8 +62,8 @@
 
             <div>
                 <select id="Sele">
-                    <option value="1">申请通过</option>
-                    <option value="2">驳回申请</option>
+                    <option value="2">申请通过</option>
+                    <option value="5">驳回申请</option>
                 </select>
             </div>
 
@@ -93,10 +93,9 @@
         $("#submit").click(function () {
             var data = {
                 ID: $("#ID").val(),
-                StatusName: $("#selec").val(),
+                StatusName: $("#Sele").val(),
                 Suggest: $("#Reason").val(),
                 Number: $("#Number").val(),
-
             };
             $.post("/borrow/GetApply", data, function (res) {
                 alert(res);

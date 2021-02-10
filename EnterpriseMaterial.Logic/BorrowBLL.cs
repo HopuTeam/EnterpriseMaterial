@@ -103,7 +103,7 @@ namespace EnterpriseMaterial.Logic
             {
                 mod.Suggest = borrowOut.Suggest;
                 var goog = db.Goods.FirstOrDefault(x => x.ID == mod.GoodsID);
-                if (goog.Money * borrowOut.Number > 100)
+                if (goog.Money * borrowOut.Number >= 100)
                 {
                     mod.StatusID = 3;
                     mod.MiddleTime = DateTime.Now;
@@ -122,7 +122,7 @@ namespace EnterpriseMaterial.Logic
             }
             else
             {
-                mod.StatusID = 2;
+                mod.StatusID =5;
                 mod.EndTime = DateTime.Now;
                 if (db.SaveChanges() > 0)
                     return true;
@@ -323,7 +323,7 @@ namespace EnterpriseMaterial.Logic
                            Complete = Borrows.Complete
                        }).ToList();
             conut = mod.Count();
-            var list = mod.Skip((pageinde - 1) * pageSize).Take(pageSize);
+            var list = mod.OrderByDescending(a=>a.StatusName).Skip((pageinde - 1) * pageSize).Take(pageSize);
             return JsonConvert.SerializeObject(list);
         }
 
@@ -336,6 +336,23 @@ namespace EnterpriseMaterial.Logic
         {
             var borrow = db.Borrows.FirstOrDefault(a => a.ID == BorrowId);
             borrow.StatusID = 6;
+            return db.SaveChanges()>0;
+        }
+
+        /// <summary>
+        /// 归还物资
+        /// </summary>
+        /// <param name="BorrowId"></param>
+        /// <returns></returns>
+        public bool Thereturn(int BorrowId)
+        {
+          var bor = (from boorow in db.Borrows
+                     where boorow.ID == BorrowId
+                     select boorow
+                   ).FirstOrDefault();
+            Model.Goods goods = db.Goods.FirstOrDefault(a => a.ID == bor.GoodsID);
+            goods.Number += bor.Number;
+            bor.StatusID = 7;
             return db.SaveChanges()>0;
         }
         #endregion

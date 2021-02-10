@@ -175,11 +175,29 @@ namespace EnterpriseMaterial.Web.Controllers
         /// </summary>
         /// <param name="BorriwId"></param>
         /// <returns></returns>
-        public bool Toreceive(int BorriwId)
+        public IActionResult Toreceive(int BorriwId)
         {
             bool res = BorrowBLL.Toreceive(BorriwId);
-            return res;
+            if (res)
+            {
+                return Json(new { status = res, message = "领取成功" });
+            }
+            return Json(new { status = res, message = "领取失败" });
         }
 
+        /// <summary>
+        /// 归还物资
+        /// </summary>
+        /// <param name="BorriwId"></param>
+        /// <returns></returns>
+        public IActionResult Thereturn(int BorriwId)
+        {
+            bool res = BorrowBLL.Thereturn(BorriwId);
+            if (res)
+            {
+                return Json(new { status = res, message = "归还成功" });
+            }
+            return Json(new { status = res, message = "归还失败" });
+        }
     }
 }
