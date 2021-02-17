@@ -96,40 +96,27 @@ namespace EnterpriseMaterial.Logic
         }
         public bool Agree(Dto.BorrowDto.BorrowOut borrowOut)
         {
-
             var mod = db.Borrows.FirstOrDefault(x => x.ID == borrowOut.ID);
-            //var Sta = db.BorrowStatuses.FirstOrDefault(x => x.Name == borrowOut.StatusName);
-            if (mod.MiddleTime == null)
+            mod.Suggest = borrowOut.Suggest;
+            if (borrowOut.StatusName == "2")//申请通过
             {
-                mod.Suggest = borrowOut.Suggest;
                 var goog = db.Goods.FirstOrDefault(x => x.ID == mod.GoodsID);
-                if (goog.Money * borrowOut.Number >= 100)
+                if (goog.Money * borrowOut.Number >= 100 && borrowOut.MiddleTime==null)//如果金额大于100要领导审批
                 {
                     mod.StatusID = 3;
                     mod.MiddleTime = DateTime.Now;
-                    if (db.SaveChanges() > 0)
-                        return true;
-                    else
-                        return false;
+                    return db.SaveChanges() > 0;
                 }
                 mod.StatusID = 2;
                 mod.EndTime = DateTime.Now;
-                if (db.SaveChanges() > 0)
-                    return true;
-                else
-                    return false;
-
+                return db.SaveChanges() > 0;
             }
-            else
+            else//驳回申请
             {
-                mod.StatusID =5;
-                mod.EndTime = DateTime.Now;
-                if (db.SaveChanges() > 0)
-                    return true;
-                else
-                    return false;
+                mod.StatusID = 5;
+                mod.EndTime = DateTime.Now;             
+              return db.SaveChanges() > 0;
             }
-
         }
         #endregion
         #region 耗材申领  
@@ -156,7 +143,7 @@ namespace EnterpriseMaterial.Logic
                        join Users in db.Users on Borrows.UserID equals Users.ID
                        join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
                        join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
-                       where Borrows.SendTime != null && Borrows.MiddleTime == null && Borrows.EndTime == null && Statuses.ID ==4
+                       where Borrows.SendTime != null && Borrows.MiddleTime == null && Borrows.EndTime == null && Statuses.ID == 4
                        select new
                        {
                            ID = Borrows.ID,
@@ -184,7 +171,7 @@ namespace EnterpriseMaterial.Logic
                        join Users in db.Users on Borrows.UserID equals Users.ID
                        join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
                        join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
-                       where Borrows.MiddleTime != null && Borrows.EndTime == null && Statuses.ID ==3
+                       where Borrows.MiddleTime != null && Borrows.EndTime == null && Statuses.ID == 3
                        select new
                        {
                            ID = Borrows.ID,
@@ -197,7 +184,7 @@ namespace EnterpriseMaterial.Logic
                            MiddleTime = Borrows.MiddleTime,
                            EndTime = Borrows.EndTime,
                            Number = Borrows.Number,
-                       }).ToList();          
+                       }).ToList();
             conut = mod.Count();
             var list = mod.Skip((pageinde - 1) * pageSize).Take(pageSize);
             return JsonConvert.SerializeObject(list);
@@ -280,7 +267,7 @@ namespace EnterpriseMaterial.Logic
             var mod = (from Borrows in db.Borrows
                        join Users in db.Users on Borrows.UserID equals Users.ID
                        join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
-                       join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID                    
+                       join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
                        where Statuses.ID == 2 && Users.ID == Uid
                        select new
                        {
@@ -293,7 +280,7 @@ namespace EnterpriseMaterial.Logic
                            SendTime = Borrows.SendTime,
                            MiddleTime = Borrows.MiddleTime,
                            EndTime = Borrows.EndTime,
-                           Number = Borrows.Number,               
+                           Number = Borrows.Number,
                        }).Skip((pageinde - 1) * pageSize).Take(pageSize).ToList();
             conut = mod.Count();
             var list = JsonConvert.SerializeObject(mod);
@@ -306,8 +293,8 @@ namespace EnterpriseMaterial.Logic
             var mod = (from Borrows in db.Borrows
                        join Users in db.Users on Borrows.UserID equals Users.ID
                        join Goods in db.Goods on Borrows.GoodsID equals Goods.ID
-                       join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID                   
-                       where  Users.ID == Uid
+                       join Statuses in db.BorrowStatuses on Borrows.StatusID equals Statuses.ID
+                       where Users.ID == Uid
                        select new
                        {
                            ID = Borrows.ID,
@@ -323,7 +310,7 @@ namespace EnterpriseMaterial.Logic
                            Complete = Borrows.Complete
                        }).ToList();
             conut = mod.Count();
-            var list = mod.OrderByDescending(a=>a.StatusName).Skip((pageinde - 1) * pageSize).Take(pageSize);
+            var list = mod.OrderByDescending(a => a.StatusName).Skip((pageinde - 1) * pageSize).Take(pageSize);
             return JsonConvert.SerializeObject(list);
         }
 
@@ -336,7 +323,7 @@ namespace EnterpriseMaterial.Logic
         {
             var borrow = db.Borrows.FirstOrDefault(a => a.ID == BorrowId);
             borrow.StatusID = 6;
-            return db.SaveChanges()>0;
+            return db.SaveChanges() > 0;
         }
 
         /// <summary>
@@ -346,14 +333,14 @@ namespace EnterpriseMaterial.Logic
         /// <returns></returns>
         public bool Thereturn(int BorrowId)
         {
-          var bor = (from boorow in db.Borrows
-                     where boorow.ID == BorrowId
-                     select boorow
-                   ).FirstOrDefault();
+            var bor = (from boorow in db.Borrows
+                       where boorow.ID == BorrowId
+                       select boorow
+                     ).FirstOrDefault();
             Model.Goods goods = db.Goods.FirstOrDefault(a => a.ID == bor.GoodsID);
             goods.Number += bor.Number;
             bor.StatusID = 7;
-            return db.SaveChanges()>0;
+            return db.SaveChanges() > 0;
         }
         #endregion
     }
