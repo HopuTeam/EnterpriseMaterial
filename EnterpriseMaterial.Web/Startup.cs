@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace EnterpriseMaterial.Web
 {
@@ -25,7 +26,7 @@ namespace EnterpriseMaterial.Web
             });
             services.AddDbContext<Data.CoreEntities>(options =>
             {
-                options.UseMySQL(Configuration.GetConnectionString("EFDbConnection"));
+                options.UseMySql(Configuration.GetConnectionString("EFDbConnection"), new MySqlServerVersion(new Version(5, 6, 50)));
             });
             services.AddSession();
             //BLL²ã½Ó¿Ú×¢Èë
@@ -45,6 +46,7 @@ namespace EnterpriseMaterial.Web
             app.UseRouting();
             app.UseSession();
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseMvc(options =>
             {
