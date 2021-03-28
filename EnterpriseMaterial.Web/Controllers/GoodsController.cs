@@ -28,7 +28,7 @@ namespace EnterpriseMaterial.Web.Controllers
         }
         public string GetListOne(int page = 1, int limit = 10)
         {
-            int dataConunt;
+            int dataConunt; 
             List<Dto.GoodsDTO.GoodsViewModelDTO> list = goodsBLL.GetGoodsOne(out dataConunt, page, limit);
             var result = new LayuiJsonModel<Dto.GoodsDTO.GoodsViewModelDTO>()
             {
